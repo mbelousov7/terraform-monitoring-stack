@@ -1,7 +1,8 @@
 resource "kubernetes_secret" "prometheus-secret" {
   metadata {
-    name      = "prometheus-secret"
-    namespace = var.kubernetes_namespace
+    name      = var.app_name
+    namespace = var.namespace
+    labels = local.labels
   }
   data = {
     username = "admin"

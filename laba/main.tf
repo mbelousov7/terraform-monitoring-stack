@@ -10,17 +10,8 @@ provider "kubernetes" {
   token                  = var.kubernetes_token
 }
 
-
 resource "kubernetes_namespace" "monitoring" {
   metadata {
-    name = var.kubernetes_namespace
+    name = var.namespace
   }
-}
-
-module "prometheus" {
-  source = "./modules/prometheus"
-  #kubernetes_namespace = "${kubernetes_namespace.monitoring.id}"
-  kubernetes_namespace = var.kubernetes_namespace
-  container_image = "prom/prometheus:latest"
-  container_name = "prometheus"
 }

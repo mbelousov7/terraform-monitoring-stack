@@ -12,7 +12,7 @@ variable "kubernetes_token" {
   type        = string
 }
 
-variable "kubernetes_namespace" {
+variable "namespace" {
   description = "kubernetes namespace"
   type        = string
 }

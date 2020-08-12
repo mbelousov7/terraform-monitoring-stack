@@ -2,6 +2,8 @@
 monitoring stack(prometheus, grafana, alertmanager, exporters, etc) deploying in kuber by terraform
 
 
+gcloud container clusters get-credentials gke-cluster-mbelousov-kubernetes-laba --zone us-east1-b --project mbelousov-kubernetes-laba
+
 - kubernetes_host, kubernetes_token
 
 ```
