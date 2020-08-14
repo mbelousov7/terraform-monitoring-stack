@@ -1,0 +1,13 @@
+%{ for server in server_list ~}
+server {
+ listen 80;
+ server_name prometheus-cdh-dc.local;
+ #include conf.d/ingress.conf;
+ location / {
+         auth_basic "Restricted";
+         auth_basic_user_file /etc/nginx/password/.htpasswd;
+         set $upstream http://prometheus-cdh-dc:9090;
+         proxy_pass $upstream;
+     }
+  }
+%{ endfor ~}

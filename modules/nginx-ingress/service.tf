@@ -5,16 +5,13 @@ resource "kubernetes_service" "service" {
     labels = local.labels
   }
   spec {
-    #selector = {
-    #  app = "prometheus-cdh-dc"
-    #}
     selector = local.labels
-    type = "ClusterIP"
+    type = "LoadBalancer"
     port {
-      name        = "prometheus"
-      port        = 9090
+      name        = "nginx-ingress"
+      port        = var.container_port
       protocol    = "TCP"
-      target_port = 9090
+      target_port = var.container_port
     }
   }
 }

@@ -1,4 +1,4 @@
-resource "kubernetes_deployment" "prometheus" {
+resource "kubernetes_deployment" "nginx-ingress" {
   timeouts {
     create = "1m"
     delete = "1m"
@@ -32,15 +32,10 @@ resource "kubernetes_deployment" "prometheus" {
         container {
           image = var.container_image
           name  = var.app_name
-          args = [
-            "--web.enable-lifecycle",
-            "--web.enable-admin-api",
-            "--config.file=${var.configPath}/prometheus.yaml",
-            "--web.listen-address=:9090",
-            "--storage.tsdb.path=${var.dataPath}",
-            "--storage.tsdb.retention.time=${var.retentionTime}",
-            "--storage.tsdb.retention.size=${var.retentionSize}"
-          ]
+          port {
+            container_port = var.container_port
+            protocol = "TCP"
+          }
           resources {
             limits {
               cpu    = var.container_resources_limits_cpu
@@ -52,35 +47,52 @@ resource "kubernetes_deployment" "prometheus" {
             }
           }
 
-          volume_mount {
-              mount_path = var.dataPath
-              name       = "storage-volume"
-          }
-
-          dynamic "volume_mount" {
-            for_each = local.configMap_volumes
+          /*dynamic "volume_mount" {
+            for_each = local.secret_volumes
             content {
               mount_path  = volume_mount.value.mount_path
               name = volume_mount.value.name
             }
+          }*/
+
+          volume_mount {
+            mount_path = "/etc/nginx/conf.d"
+            name       = "config-volume"
+          }
+
+          volume_mount {
+            mount_path = "/etc/nginx/password"
+            name       = "password-volume"
           }
 
         }
 
         volume {
-          name = "storage-volume"
-          empty_dir {}
-        }
-
-        dynamic "volume" {
-          for_each = local.configMap_volumes
-          content {
-            name = volume.value.name
-            config_map {
-              name = volume.value.config_map_name
-            }
+          name = "config-volume"
+          secret {
+            secret_name = "${var.app_name}-config-secret"
+            default_mode = "0400"
           }
         }
+
+        volume {
+          name = "password-volume"
+          secret {
+            secret_name = "${var.app_name}-password-secret"
+            default_mode = "0644"
+          }
+        }
+
+        /*dynamic "volume" {
+          for_each = local.secret_volumes
+          content {
+            name = volume.value.name
+            secret_name {
+              name = volume.value.config_map_name
+              mode = 400
+            }
+          }
+        }*/
       }
   }
  }

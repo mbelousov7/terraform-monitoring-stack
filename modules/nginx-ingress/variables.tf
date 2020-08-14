@@ -31,56 +31,35 @@ variable "container_image" {
   type        = string
 }
 
+variable "container_port" {
+  type        = string
+  default     = 8080
+}
+
 variable "container_name" {
   type        = string
 }
 
-variable "configPath" {
-  type        = string
-  default     = "/etc/prometheus"
-}
-
-variable "dataPath" {
-  type        = string
-  default     = "/data/"
-}
-
-variable "retentionTime" {
-  type        = string
-  default     = "7d"
-}
-
-variable "retentionSize" {
-  type        = string
-  default     = "30GB"
-}
-
 variable "container_resources_requests_cpu" {
   type        = string
-  default     = "0.2"
+  default     = "0.05"
 }
 
 variable "container_resources_requests_memory" {
   type        = string
-  default     = "0.3Gi"
+  default     = "0.05"
 }
 
 variable "container_resources_limits_cpu" {
   type        = string
-  default     = "0.3"
+  default     = "0.1"
 }
 
 variable "container_resources_limits_memory" {
   type        = string
-  default     = "0.5Gi"
+  default     = "0.1Gi"
 }
 
-variable "dataVolume" {
-  default = {
-    name = "storage-volume"
-    empty_dir = {}
-  }
-}
 
 variable "configMap_volumes" {
   description = "list config maps and volumes"
@@ -101,33 +80,21 @@ default = [
 ]
 }
 
-variable "configMap_file_sd_config_volumes" {
-  description = "list config maps and volumes"
-  type = list(object({
-    mount_path = string
-    name = string
-    config_map_name = string
-    config_map_data = map(string)
-  }))
-  default = [
-    {
-      mount_path = "/etc/prometheus/file_sd_config"
-      name = "config-filesd-volume"
-      config_map_name = "config-filesd"
-      config_map_data = {}
-    }
-  ]
+variable "server_list" {
+  description = "server config list"
 }
 
-
-variable "nginx_ingress_service_name" {
-  description = "nginx_ingress_service_name"
-  type        = string
-  default     = "nginx-ingress"
+variable "resolver" {
+  description = "variable resolver for nginx"
+  default     = "kube-dns.kube-system.svc.cluster.local"
 }
 
-variable "nginx_ingress_port" {
-  description = "nginx_ingress_port"
-  type        = string
-  default     = 8080
+variable "user" {
+  description = "user"
+  default     = "admin"
+}
+
+variable "password" {
+  description = "password"
+  default     = "$apr1$Zd4voubY$3fMVQZZuDbMIKSeCdPS2y."
 }
