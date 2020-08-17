@@ -1,19 +1,19 @@
 variable "namespace" {
   description = "namespace"
   type        = string
+  default     = "monitoring"
 }
 
 variable "app_name" {
   description = "app name"
   type        = string
-  default     = "prometheus-app"
+  default     = "prometheus"
 }
 
 variable "labels" {
   description = "labels"
   type        = map(string)
-  default     = {
-  }
+  default     = {}
 }
 
 variable "replicas" {
@@ -25,7 +25,6 @@ variable "strategy" {
   type        = string
   default     = "Recreate"
 }
-
 
 variable "container_image" {
   type        = string
@@ -42,7 +41,7 @@ variable "configPath" {
 
 variable "dataPath" {
   type        = string
-  default     = "/data/"
+  default     = "/data"
 }
 
 variable "retentionTime" {
@@ -53,6 +52,11 @@ variable "retentionTime" {
 variable "retentionSize" {
   type        = string
   default     = "30GB"
+}
+
+variable "container_port" {
+  type        = string
+  default     = "9090"
 }
 
 variable "container_resources_requests_cpu" {
@@ -90,7 +94,7 @@ variable "configMap_volumes" {
   config_map_name = string
   config_map_data = map(string)
 }))
-# Default is being set in main.tf
+## Default is being set in main.tf
 default = [
   {
     mount_path = "/etc/prometheus"

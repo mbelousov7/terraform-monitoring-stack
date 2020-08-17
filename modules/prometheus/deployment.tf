@@ -36,7 +36,7 @@ resource "kubernetes_deployment" "prometheus" {
             "--web.enable-lifecycle",
             "--web.enable-admin-api",
             "--config.file=${var.configPath}/prometheus.yaml",
-            "--web.listen-address=:9090",
+            "--web.listen-address=:${var.container_port}",
             "--storage.tsdb.path=${var.dataPath}",
             "--storage.tsdb.retention.time=${var.retentionTime}",
             "--storage.tsdb.retention.size=${var.retentionSize}"

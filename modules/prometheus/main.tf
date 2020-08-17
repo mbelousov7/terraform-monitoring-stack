@@ -7,7 +7,7 @@ locals {
   configMap_volumes =   concat(
     [
       {
-        mount_path = "/etc/prometheus"
+        mount_path = "${var.configPath}"
         name = "config-main-volume"
         config_map_name = "${var.app_name}-config-main"
         config_map_data = {
@@ -15,7 +15,7 @@ locals {
         }
       },
       {
-        mount_path = "/etc/prometheus/rules"
+        mount_path = "${var.configPath}/rules"
         name = "config-rules-volume"
         config_map_name = "${var.app_name}-config-rules"
         config_map_data = {

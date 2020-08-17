@@ -2,10 +2,17 @@ locals {
   prometheus_list = [
     {
       app_name = "prometheus-cdh-dc"
-      config_map_data = {
-        "file_sd_config_test.yaml" = file("./prometheus-cdh-dc/file_sd_config_test.json")
-        "file_sd_config_test1.yaml" = file("./prometheus-cdh-dc/file_sd_config_test1.json")
-      }
+      config_map_data = [
+        {
+          #for_each = fileset("./prometheus-cdh-dc/file_sd_config", "*")
+          #  each.value = file("./prometheus-cdh-dc/file_sd_config/${each.value}")
+          "file_sd_config_test.yaml" = file("./prometheus-cdh-dc/file_sd_config/file_sd_config_test.json")
+          "file_sd_config_test1.yaml" = file("./prometheus-cdh-dc/file_sd_config/file_sd_config_test1.json")
+        },
+        {
+          "rules.yaml" = file("./prometheus-cdh-dc/rules/rules.yaml")
+        }
+      ]
     }
   ]
 }
