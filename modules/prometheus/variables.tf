@@ -105,6 +105,25 @@ default = [
 ]
 }
 
+variable "secret_maps_list" {
+  description = "list secret maps and volumes"
+  type = list(object({
+  mount_path = string
+  name = string
+  secret_name = string
+  secret_data = map(string)
+}))
+## Default is being set in main.tf
+default = [
+  {
+    mount_path = "/etc/prometheus/secrets"
+    name = "config-secret-volume"
+    secret_name = "prometheus-secret"
+    secret_data = {}
+  }
+]
+}
+
 variable "nginx_ingress_service_name" {
   description = "nginx_ingress_service_name"
   type        = string

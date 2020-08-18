@@ -65,6 +65,13 @@ resource "kubernetes_deployment" "prometheus" {
             }
           }
 
+          dynamic "volume_mount" {
+            for_each = local.secret_maps_list
+            content {
+              mount_path  = volume_mount.value.mount_path
+              name = volume_mount.value.name
+            }
+          }
         }
 
         volume {
@@ -77,7 +84,18 @@ resource "kubernetes_deployment" "prometheus" {
           content {
             name = volume.value.name
             config_map {
-              name = volume.value.config_map_name
+              name = "${var.app_name}-${volume.value.config_map_name}"
+            }
+          }
+        }
+
+        dynamic "volume" {
+          for_each = local.secret_maps_list
+          content {
+            name = volume.value.name
+            secret {
+              secret_name = "${var.app_name}-${volume.value.secret_name}"
+              default_mode = "0400"
             }
           }
         }
