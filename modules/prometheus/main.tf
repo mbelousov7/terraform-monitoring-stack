@@ -4,25 +4,6 @@ locals {
     var.labels
   )
 
-  configMap_volumes =   concat(
-    [
-      {
-        mount_path = "${var.configPath}"
-        name = "config-main-volume"
-        config_map_name = "${var.app_name}-config-main"
-        config_map_data = {
-          "prometheus.yaml" = file("./${var.app_name}/prometheus.yaml")
-        }
-      },
-      {
-        mount_path = "${var.configPath}/rules"
-        name = "config-rules-volume"
-        config_map_name = "${var.app_name}-config-rules"
-        config_map_data = {
-          "rules.yaml" = file("./${var.app_name}/rules.yaml")
-        }
-      }
-    ],
-    var.configMap_file_sd_config_volumes
-  )
+  config_maps_list = var.config_maps_list
+
 }

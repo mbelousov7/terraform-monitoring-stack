@@ -58,7 +58,7 @@ resource "kubernetes_deployment" "prometheus" {
           }
 
           dynamic "volume_mount" {
-            for_each = local.configMap_volumes
+            for_each = local.config_maps_list
             content {
               mount_path  = volume_mount.value.mount_path
               name = volume_mount.value.name
@@ -73,7 +73,7 @@ resource "kubernetes_deployment" "prometheus" {
         }
 
         dynamic "volume" {
-          for_each = local.configMap_volumes
+          for_each = local.config_maps_list
           content {
             name = volume.value.name
             config_map {
