@@ -64,14 +64,15 @@ resource "kubernetes_deployment" "prometheus" {
               name = volume_mount.value.name
             }
           }
-
+/*
           dynamic "volume_mount" {
-            for_each = local.secret_maps_list
+            for_each = {for secret in local.secret_maps_list:  secret.name => secret if can(secret.secret_name)}
             content {
               mount_path  = volume_mount.value.mount_path
               name = volume_mount.value.name
             }
           }
+        */  
         }
 
         volume {
@@ -88,9 +89,9 @@ resource "kubernetes_deployment" "prometheus" {
             }
           }
         }
-
+/*
         dynamic "volume" {
-          for_each = local.secret_maps_list
+          for_each = {for secret in local.secret_maps_list:  secret.name => secret if can(secret.secret_name)}
           content {
             name = volume.value.name
             secret {
@@ -98,7 +99,7 @@ resource "kubernetes_deployment" "prometheus" {
               default_mode = "0400"
             }
           }
-        }
+        }*/
       }
   }
  }

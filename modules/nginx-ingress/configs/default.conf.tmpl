@@ -41,11 +41,11 @@ location = /50x.html {
 
   server {
    listen 8080;
-   server_name prometheus-cdh-dc.local;
+   server_name prometheus-cdh.local;
    #include conf.d/ingress.conf;
    location / {
      auth_basic "Restricted";
      auth_basic_user_file /etc/nginx/password/.htpasswd;
-     proxy_pass http://prometheus-cdh-dc:9090;
+     proxy_pass http://prometheus-cdh:9090;
    }
  }
