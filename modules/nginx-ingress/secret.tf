@@ -8,7 +8,7 @@ resource "kubernetes_secret" "nginx-config-secret" {
     "default.conf" = templatefile("${path.module}/configs/default.conf.tmpl", {
       container_port = var.container_port
       })
-    "server.conf" = templatefile("${path.module}/configs/server.conf.tmpl", {
+    "server.conf" = templatefile("${path.module}/configs/server-${var.auth_type}.conf.tmpl", {
       server_list = var.server_list
       container_port = var.container_port
       namespace   = var.namespace

@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 0.12"
+  required_version = ">= 0.13"
 }
 
 provider "kubernetes" {
@@ -16,6 +16,19 @@ resource "kubernetes_namespace" "monitoring" {
   }
 }
 
+module "nginx-ingress" {
+  source = "../modules/nginx-ingress"
+  namespace = var.namespace
+  depends_on = [ kubernetes_namespace.monitoring ]
+  app_name = var.nginx_ingress_name
+  replicas = 1
+  container_image = "nginx"
+  container_name = var.nginx_ingress_name
+  server_list = local.prometheus_list
+  auth_type = "none"
+  resolver = "kube-dns.kube-system.svc.cluster.local"
+}
+
 module "prometheus" {
   for_each = {for prometheus in local.prometheus_list:  prometheus.app_name => prometheus}
   source = "../modules/prometheus"
@@ -30,6 +43,6 @@ module "prometheus" {
   container_resources_limits_cpu = lookup(each.value, "container_resources_limits_cpu", "400m")
   container_resources_requests_memory = lookup(each.value, "container_resources_requests_memory", "254Mi")
   container_resources_limits_memory = lookup(each.value, "container_resources_limits_memory", "512Mi")
+  nginx_ingress_service_name = var.nginx_ingress_name
   nginx_ingress_port = var.nginx_ingress_port
-  nginx_ingress_service_name = "nginx-ingress"
 }

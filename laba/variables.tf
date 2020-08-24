@@ -35,5 +35,11 @@ variable "monitoring_password" {
 variable "nginx_ingress_port" {
   description = "nginx_ingress_port"
   type        = string
-  default     = 8080
+  default     = "8080"
+}
+
+variable "nginx_ingress_name" {
+  description = "nginx-ingress name"
+  type        = string
+  default     = "nginx-ingress"
 }

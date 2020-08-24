@@ -32,3 +32,7 @@ curl $TF_VAR_kubernetes_host/api --header "Authorization: Bearer $TF_VAR_kuberne
 terraform init
 terraform apply -var-file="./secrets/secrets.tfvars" -auto-approve
 ```
+
+## configure ssl cert
+
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout nginx.key -out nginx.crt

@@ -84,17 +84,26 @@ variable "server_list" {
   description = "server config list"
 }
 
+variable "auth_type" {
+  type        = string
+  description = "access to location auth type can be one of [none|basic|ldap]"
+  default     = "basic"
+}
+
 variable "resolver" {
+  type        = string
   description = "variable resolver for nginx"
   default     = "kube-dns.kube-system.svc.cluster.local"
 }
 
 variable "user" {
   description = "user"
+  type        = string
   default     = "admin"
 }
 
 variable "password" {
-  description = "password"
+  description = "encrypted password"
+  type        = string
   default     = "$apr1$Zd4voubY$3fMVQZZuDbMIKSeCdPS2y."
 }

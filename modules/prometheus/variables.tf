@@ -1,22 +1,23 @@
 variable "namespace" {
-  description = "namespace"
+  description = "kubernetes namespace for prometheus"
   type        = string
   default     = "monitoring"
 }
 
 variable "app_name" {
-  description = "app name"
+  description = "app(deployment) name"
   type        = string
   default     = "prometheus"
 }
 
 variable "labels" {
-  description = "labels"
+  description = "kubernetes labels"
   type        = map(string)
   default     = {}
 }
 
 variable "replicas" {
+  description = "replicas count"
   type        = string
   default     = 1
 }
@@ -27,19 +28,23 @@ variable "strategy" {
 }
 
 variable "container_image" {
+  description = "path to prometheus image"
   type        = string
 }
 
 variable "container_name" {
+  description = "prometheus pod name"
   type        = string
 }
 
 variable "configPath" {
+  description = "path to configs folder"
   type        = string
   default     = "/etc/prometheus"
 }
 
 variable "dataPath" {
+  description = "path to data folder"
   type        = string
   default     = "/data"
 }
