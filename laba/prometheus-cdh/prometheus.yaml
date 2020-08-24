@@ -1,0 +1,17 @@
+global:
+  scrape_interval: 60s
+  scrape_timeout: 5s
+
+scrape_configs:
+- job_name: 'node'
+  file_sd_configs:
+  - files:
+    - '/etc/prometheus/file_sd_config/file_sd_config_test.json'
+  basic_auth:
+    username: admin
+    password_file: /etc/prometheus/secrets/.password
+    
+- job_name: 'node1'
+  file_sd_configs:
+  - files:
+    - '/etc/prometheus/file_sd_config/file_sd_config_test1.json'

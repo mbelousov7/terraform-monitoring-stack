@@ -1,22 +1,23 @@
 variable "namespace" {
-  description = "namespace"
+  description = "kubernetes namespace for prometheus"
   type        = string
+  default     = "monitoring"
 }
 
 variable "app_name" {
-  description = "app name"
+  description = "app(deployment) name"
   type        = string
-  default     = "prometheus-app"
+  default     = "prometheus"
 }
 
 variable "labels" {
-  description = "labels"
+  description = "kubernetes labels"
   type        = map(string)
-  default     = {
-  }
+  default     = {}
 }
 
 variable "replicas" {
+  description = "replicas count"
   type        = string
   default     = 1
 }
@@ -26,23 +27,26 @@ variable "strategy" {
   default     = "Recreate"
 }
 
-
 variable "container_image" {
+  description = "path to prometheus image"
   type        = string
 }
 
 variable "container_name" {
+  description = "prometheus pod name"
   type        = string
 }
 
 variable "configPath" {
+  description = "path to configs folder"
   type        = string
   default     = "/etc/prometheus"
 }
 
 variable "dataPath" {
+  description = "path to data folder"
   type        = string
-  default     = "/data/"
+  default     = "/data"
 }
 
 variable "retentionTime" {
@@ -53,6 +57,11 @@ variable "retentionTime" {
 variable "retentionSize" {
   type        = string
   default     = "30GB"
+}
+
+variable "container_port" {
+  type        = string
+  default     = "9090"
 }
 
 variable "container_resources_requests_cpu" {
@@ -82,7 +91,7 @@ variable "dataVolume" {
   }
 }
 
-variable "configMap_volumes" {
+variable "config_maps_list" {
   description = "list config maps and volumes"
   type = list(object({
   mount_path = string
@@ -90,7 +99,7 @@ variable "configMap_volumes" {
   config_map_name = string
   config_map_data = map(string)
 }))
-# Default is being set in main.tf
+## Default is being set in main.tf
 default = [
   {
     mount_path = "/etc/prometheus"
@@ -101,24 +110,24 @@ default = [
 ]
 }
 
-variable "configMap_file_sd_config_volumes" {
-  description = "list config maps and volumes"
+variable "secret_maps_list" {
+  description = "list secret maps and volumes"
   type = list(object({
-    mount_path = string
-    name = string
-    config_map_name = string
-    config_map_data = map(string)
-  }))
-  default = [
-    {
-      mount_path = "/etc/prometheus/file_sd_config"
-      name = "config-filesd-volume"
-      config_map_name = "config-filesd"
-      config_map_data = {}
-    }
-  ]
+  mount_path = string
+  name = string
+  secret_name = string
+  secret_data = map(string)
+}))
+## Default is being set in main.tf
+default = [
+  {
+    mount_path = "/etc/prometheus/secrets"
+    name = "config-secret-volume"
+    secret_name = "prometheus-secret"
+    secret_data = {}
+  }
+]
 }
-
 
 variable "nginx_ingress_service_name" {
   description = "nginx_ingress_service_name"

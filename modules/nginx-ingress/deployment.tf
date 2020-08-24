@@ -26,7 +26,15 @@ resource "kubernetes_deployment" "nginx-ingress" {
     template {
       metadata {
         labels = local.labels
+        annotations = {
+          config_change = sha1(jsonencode(merge(
+            kubernetes_secret.nginx-config-secret.data,
+            kubernetes_secret.nginx-password-secret.data
+          )))
+        }
       }
+
+
 
       spec {
         container {

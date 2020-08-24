@@ -17,23 +17,29 @@ variable "namespace" {
   type        = string
 }
 
+# ------------------------------------------------------------------------------
+# OPTIONAL PARAMETERS
+# ------------------------------------------------------------------------------
+
+variable "monitoring_user" {
+  description = "user for monitoring"
+  type        = string
+  default     = "prometheus"
+}
+
+variable "monitoring_password" {
+  description = "password for monitoring_user"
+  type        = string
+}
+
 variable "nginx_ingress_port" {
   description = "nginx_ingress_port"
   type        = string
-  default     = 8080
+  default     = "8080"
 }
 
-
-/*
-variable "prometheus_list" {
-  description = "prometheus config list"
-  type = list(object({
-    app_name = string
-  }))
-  default = [
-    {
-      app_name = "prometheus"
-    }
-  ]
+variable "nginx_ingress_name" {
+  description = "nginx-ingress name"
+  type        = string
+  default     = "nginx-ingress"
 }
-*/
