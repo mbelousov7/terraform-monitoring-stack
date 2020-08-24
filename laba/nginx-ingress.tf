@@ -6,4 +6,5 @@ module "nginx-ingress" {
   container_image = "nginx"
   container_name = "nginx-ingress"
   server_list = local.prometheus_list
+  resolver = "kube-dns.kube-system.svc.cluster.local"
 }

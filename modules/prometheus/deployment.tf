@@ -64,7 +64,6 @@ resource "kubernetes_deployment" "prometheus" {
               name = volume_mount.value.name
             }
           }
-/*
           dynamic "volume_mount" {
             for_each = {for secret in local.secret_maps_list:  secret.name => secret if can(secret.secret_name)}
             content {
@@ -72,7 +71,6 @@ resource "kubernetes_deployment" "prometheus" {
               name = volume_mount.value.name
             }
           }
-        */  
         }
 
         volume {
@@ -86,20 +84,20 @@ resource "kubernetes_deployment" "prometheus" {
             name = volume.value.name
             config_map {
               name = "${var.app_name}-${volume.value.config_map_name}"
+              default_mode = "0644"
             }
           }
         }
-/*
         dynamic "volume" {
           for_each = {for secret in local.secret_maps_list:  secret.name => secret if can(secret.secret_name)}
           content {
             name = volume.value.name
             secret {
               secret_name = "${var.app_name}-${volume.value.secret_name}"
-              default_mode = "0400"
+              default_mode = "0644"
             }
           }
-        }*/
+        }
       }
   }
  }

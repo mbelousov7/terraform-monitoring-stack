@@ -11,6 +11,8 @@ resource "kubernetes_secret" "nginx-config-secret" {
     "server.conf" = templatefile("${path.module}/configs/server.conf.tmpl", {
       server_list = var.server_list
       container_port = var.container_port
+      namespace   = var.namespace
+      resolver = var.resolver
       })
     "ingress.conf" = templatefile("${path.module}/configs/ingress.conf.tmpl", {
       resolver = var.resolver

@@ -22,14 +22,14 @@ module "prometheus" {
   depends_on = [ kubernetes_namespace.monitoring ]
   namespace = var.namespace
   app_name = each.value.app_name
-  container_image = "prom/prometheus:v2.19.3"
+  container_image = "prom/prometheus:latest"
   container_name = each.value.app_name
   config_maps_list = each.value.config_maps_list
   secret_maps_list = lookup(each.value, "secret_maps_list", {})
-  container_resources_requests_cpu = lookup(each.value, "container_resources_requests_cpu", "0.2")
-  container_resources_limits_cpu = lookup(each.value, "container_resources_limits_cpu", "0.4")
-  container_resources_requests_memory = lookup(each.value, "container_resources_requests_memory", "0.5")
-  container_resources_limits_memory = lookup(each.value, "container_resources_limits_memory", "0.99")
+  container_resources_requests_cpu = lookup(each.value, "container_resources_requests_cpu", "200m")
+  container_resources_limits_cpu = lookup(each.value, "container_resources_limits_cpu", "400m")
+  container_resources_requests_memory = lookup(each.value, "container_resources_requests_memory", "254Mi")
+  container_resources_limits_memory = lookup(each.value, "container_resources_limits_memory", "512Mi")
   nginx_ingress_port = var.nginx_ingress_port
   nginx_ingress_service_name = "nginx-ingress"
 }
