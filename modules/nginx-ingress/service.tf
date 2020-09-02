@@ -6,7 +6,7 @@ resource "kubernetes_service" "service" {
   }
   spec {
     selector = local.labels
-    type = "LoadBalancer"
+    type = var.service_type
     port {
       name        = "nginx-ingress"
       port        = var.container_port

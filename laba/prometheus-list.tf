@@ -6,6 +6,10 @@ locals {
       container_resources_limits_cpu = "400m"
       container_resources_requests_memory = "512Mi"
       container_resources_limits_memory = "1024Mi"
+      ssl_data = {
+        ssl_certificate = file("./secrets/nginx.crt")
+        ssl_certificate_key = file("./secrets/nginx.key")
+      }
       config_maps_list = [
         {
           mount_path = "/etc/prometheus"
@@ -50,6 +54,10 @@ locals {
       container_resources_limits_cpu = "400m"
       container_resources_requests_memory = "512Mi"
       container_resources_limits_memory = "1024Mi"
+      ssl_data = {
+        ssl_certificate = file("./secrets/nginx.crt")
+        ssl_certificate_key = file("./secrets/nginx.key")
+      }
       config_maps_list = [
         {
           mount_path = "/etc/prometheus"

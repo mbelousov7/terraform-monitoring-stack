@@ -60,6 +60,10 @@ variable "container_resources_limits_memory" {
   default     = "0.1Gi"
 }
 
+variable "service_type" {
+  type        = string
+  default     = "ClusterIP"
+}
 
 variable "configMap_volumes" {
   description = "list config maps and volumes"

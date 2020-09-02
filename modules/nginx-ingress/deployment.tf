@@ -1,8 +1,8 @@
 resource "kubernetes_deployment" "nginx-ingress" {
   timeouts {
-    create = "1m"
-    delete = "1m"
-    update = "1m"
+    create = "2m"
+    delete = "2m"
+    update = "2m"
   }
 
   metadata {
@@ -34,8 +34,6 @@ resource "kubernetes_deployment" "nginx-ingress" {
         }
       }
 
-
-
       spec {
         container {
           image = var.container_image
@@ -55,14 +53,6 @@ resource "kubernetes_deployment" "nginx-ingress" {
             }
           }
 
-          /*dynamic "volume_mount" {
-            for_each = local.secret_volumes
-            content {
-              mount_path  = volume_mount.value.mount_path
-              name = volume_mount.value.name
-            }
-          }*/
-
           volume_mount {
             mount_path = "/etc/nginx/conf.d"
             name       = "config-volume"
@@ -71,6 +61,14 @@ resource "kubernetes_deployment" "nginx-ingress" {
           volume_mount {
             mount_path = "/etc/nginx/password"
             name       = "password-volume"
+          }
+
+          dynamic "volume_mount" {
+            for_each = {for ssl in var.server_list:  ssl.app_name => ssl if can(ssl.ssl)}
+            content {
+              mount_path  = "/etc/nginx/ssl/${each.value.app_name}"
+              name = "ssl-${each.value.app_name}"
+            }
           }
 
         }
@@ -91,16 +89,16 @@ resource "kubernetes_deployment" "nginx-ingress" {
           }
         }
 
-        /*dynamic "volume" {
-          for_each = local.secret_volumes
+        dynamic "volume" {
+          for_each = {for ssl in var.server_list:  ssl.app_name => ssl if can(ssl.ssl)}
           content {
-            name = volume.value.name
-            secret_name {
-              name = volume.value.config_map_name
-              mode = 400
+            name = "ssl-${each.value.app_name}"
+            secret {
+              secret_name = "${var.app_name}-ssl-${each.value.app_name}"
+              default_mode = "0644"
             }
           }
-        }*/
+        }
       }
   }
  }

@@ -22,6 +22,16 @@ resource "kubernetes_secret" "nginx-config-secret" {
   type = "Opaque"
 }
 
+resource "kubernetes_secret" "nginx-ssl-secret" {
+  for_each = {for ssl in var.server_list:  ssl.app_name => ssl if can(ssl.ssl)}
+  metadata {
+    name = "${var.app_name}-ssl-${each.value.app_name}"
+    namespace = var.namespace
+    labels = local.labels
+  }
+  data = each.value.ssl_data
+}
+
 resource "kubernetes_secret" "nginx-password-secret" {
   metadata {
     name      = "${var.app_name}-password-secret"

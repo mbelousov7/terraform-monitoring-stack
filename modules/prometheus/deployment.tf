@@ -1,8 +1,8 @@
 resource "kubernetes_deployment" "prometheus" {
   timeouts {
-    create = "2m"
+    create = "5m"
     delete = "2m"
-    update = "2m"
+    update = "5m"
   }
 
   metadata {

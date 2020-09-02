@@ -1,8 +1,13 @@
 %{ for server in server_list ~}
 server {
- listen ${ container_port };
- #resolver ${ resolver } valid=10s;
- server_name ^${ server.app_name }*;
+  server_name ^${ server.app_name }*;
+  listen ${ container_port } %{ if can(server.ssl_data) }ssl%{ endif };
+  #resolver ${ resolver } valid=10s;
+  include conf.d/ingress.conf;
+  %{ if can(server.ssl_data) }
+  ssl_certificate /etc/nginx/ssl/{ server.app_name }/{ server.app_name }.crt;
+  ssl_certificate_key /etc/nginx/ssl/{ server.app_name }/{ server.app_name }.key;
+  %{ endif }
  location / {
    auth_basic "Restricted";
    auth_basic_user_file /etc/nginx/password/.htpasswd;

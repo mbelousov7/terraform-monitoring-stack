@@ -6,7 +6,7 @@ resource "kubernetes_service" "service" {
   }
   spec {
     selector = local.labels
-    type = "ClusterIP"
+    type = var.service_type
     port {
       name        = "prometheus"
       port        = var.container_port

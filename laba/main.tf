@@ -27,6 +27,7 @@ module "nginx-ingress" {
   server_list = local.prometheus_list
   auth_type = "none"
   resolver = "kube-dns.kube-system.svc.cluster.local"
+  service_type = "LoadBalancer"
 }
 
 module "prometheus" {
@@ -43,6 +44,7 @@ module "prometheus" {
   container_resources_limits_cpu = lookup(each.value, "container_resources_limits_cpu", "400m")
   container_resources_requests_memory = lookup(each.value, "container_resources_requests_memory", "254Mi")
   container_resources_limits_memory = lookup(each.value, "container_resources_limits_memory", "512Mi")
+  expose = "ingress"
   nginx_ingress_service_name = var.nginx_ingress_name
   nginx_ingress_port = var.nginx_ingress_port
 }
