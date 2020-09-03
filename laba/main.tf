@@ -25,7 +25,7 @@ module "nginx-ingress" {
   container_image = "nginx"
   container_name = var.nginx_ingress_name
   server_list = local.prometheus_list
-  auth_type = "none"
+  auth_type = "basic"
   resolver = "kube-dns.kube-system.svc.cluster.local"
   service_type = "LoadBalancer"
 }

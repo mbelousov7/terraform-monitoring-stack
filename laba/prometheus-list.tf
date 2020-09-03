@@ -7,8 +7,9 @@ locals {
       container_resources_requests_memory = "512Mi"
       container_resources_limits_memory = "1024Mi"
       ssl_data = {
-        ssl_certificate = file("./secrets/nginx.crt")
-        ssl_certificate_key = file("./secrets/nginx.key")
+        #cert and key for https configuration in nginx-ingress
+        "ssl_certificate.crt" = file("./secrets/nginx.crt")
+        "ssl_certificate_key.key" = file("./secrets/nginx.key")
       }
       config_maps_list = [
         {
@@ -55,8 +56,8 @@ locals {
       container_resources_requests_memory = "512Mi"
       container_resources_limits_memory = "1024Mi"
       ssl_data = {
-        ssl_certificate = file("./secrets/nginx.crt")
-        ssl_certificate_key = file("./secrets/nginx.key")
+        "ssl_certificate.crt" = file("./secrets/nginx.crt")
+        "ssl_certificate_key.key" = file("./secrets/nginx.key")
       }
       config_maps_list = [
         {

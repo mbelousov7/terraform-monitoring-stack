@@ -64,10 +64,10 @@ resource "kubernetes_deployment" "nginx-ingress" {
           }
 
           dynamic "volume_mount" {
-            for_each = {for ssl in var.server_list:  ssl.app_name => ssl if can(ssl.ssl)}
+            for_each = {for ssl in var.server_list:  ssl.app_name => ssl  if can(ssl.ssl_data)}
             content {
-              mount_path  = "/etc/nginx/ssl/${each.value.app_name}"
-              name = "ssl-${each.value.app_name}"
+              mount_path  = "/etc/nginx/ssl/${volume_mount.value.app_name}"
+              name = "ssl-${volume_mount.value.app_name}"
             }
           }
 
@@ -90,11 +90,11 @@ resource "kubernetes_deployment" "nginx-ingress" {
         }
 
         dynamic "volume" {
-          for_each = {for ssl in var.server_list:  ssl.app_name => ssl if can(ssl.ssl)}
+          for_each = {for ssl in var.server_list:  ssl.app_name => ssl if can(ssl.ssl_data)}
           content {
-            name = "ssl-${each.value.app_name}"
+            name = "ssl-${volume.value.app_name}"
             secret {
-              secret_name = "${var.app_name}-ssl-${each.value.app_name}"
+              secret_name = "${var.app_name}-ssl-${volume.value.app_name}"
               default_mode = "0644"
             }
           }

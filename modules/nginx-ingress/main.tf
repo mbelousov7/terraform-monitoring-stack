@@ -9,7 +9,7 @@ resource "random_integer" "config" {
 
 locals {
   labels = merge (
-    { redeploy = random_integer.config.result },
+    #{ redeploy = random_integer.config.result },
     { app = var.app_name },
     var.labels
   )

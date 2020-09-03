@@ -23,7 +23,7 @@ resource "kubernetes_secret" "nginx-config-secret" {
 }
 
 resource "kubernetes_secret" "nginx-ssl-secret" {
-  for_each = {for ssl in var.server_list:  ssl.app_name => ssl if can(ssl.ssl)}
+  for_each = {for ssl in var.server_list:  ssl.app_name => ssl if can(ssl.ssl_data)}
   metadata {
     name = "${var.app_name}-ssl-${each.value.app_name}"
     namespace = var.namespace
