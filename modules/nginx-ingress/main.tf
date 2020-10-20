@@ -3,7 +3,7 @@ resource "random_integer" "config" {
   max     = 50000
   keepers = {
     # Generate a new integer each time we switch to a new listener ARN
-    listener_arn = "${var.app_name}"
+    listener_arn = var.app_name
   }
 }
 
