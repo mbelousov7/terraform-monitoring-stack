@@ -30,9 +30,39 @@ curl $TF_VAR_kubernetes_host/api --header "Authorization: Bearer $TF_VAR_kuberne
 ## Terraform
 ```
 terraform init
+terraform plan -var-file="./secrets/secrets.tfvars"
 terraform apply -var-file="./secrets/secrets.tfvars" -auto-approve
+terraform destroy -var-file="./secrets/secrets.tfvars" -auto-approve
 ```
 
 ## configure ssl cert
-
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout nginx.key -out nginx.crt
+
+## Offline deploy
+
+export TF_VAR_kubernetes_host=<https://API-ENDPOUNT:6443>
+export TF_VAR_kubernetes_token=<SA TOKEN>
+
+1. On oline host
+
+```
+cd git_repo/<enviroment dir>
+terraform providers mirror -platform=linux_amd64 </path_for_providers/>
+```
+
+2. On offline host
+Prepare binaries
+
+```
+mkdir ~/terraform
+cp <@/path_for_binary/terraform> ~/terraform/terraform
+cp <@online_host:/path_for_providers/> ~/terraform/providers
+
+cd git_repo/<enviroment dir>
+~/terraform/terraform init -plugin-dir=~/terraform/providers
+```
+
+Prepare enviroment variables
+```
+export TF_VAR_kubernetes_host=<https://API-ENDPOUNT:6443>
+export TF_VAR_kubernetes_token=<SA TOKEN>

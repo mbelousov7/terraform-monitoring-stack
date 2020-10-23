@@ -84,6 +84,11 @@ variable "container_resources_limits_memory" {
   default     = "0.5Gi"
 }
 
+variable "service_type" {
+  type        = string
+  default     = "ClusterIP"
+}
+
 variable "dataVolume" {
   default = {
     name = "storage-volume"
@@ -128,6 +133,13 @@ default = [
   }
 ]
 }
+
+variable "expose" {
+  description = "expose resource type(ingress for kubernetes or route for openshift)"
+  type        = string
+  default     = "ingress"
+}
+
 
 variable "nginx_ingress_service_name" {
   description = "nginx_ingress_service_name"

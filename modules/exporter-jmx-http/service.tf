@@ -8,7 +8,7 @@ resource "kubernetes_service" "service" {
     selector = local.labels
     type = var.service_type
     port {
-      name        = "prometheus"
+      name        = "exporter-jmx"
       port        = var.container_port
       protocol    = "TCP"
       target_port = var.container_port
