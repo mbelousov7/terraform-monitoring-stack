@@ -1,7 +1,7 @@
 locals {
   prometheus_list = [
     {
-      app_name = "prometheus-cdh"
+      name = "prometheus-cdh"
       container_resources_requests_cpu = "200m"
       container_resources_limits_cpu = "400m"
       container_resources_requests_memory = "512Mi"
@@ -50,7 +50,7 @@ locals {
       ]
     },
     {
-      app_name = "prometheus-sdp"
+      name = "prometheus-sdp"
       container_resources_requests_cpu = "200m"
       container_resources_limits_cpu = "400m"
       container_resources_requests_memory = "512Mi"

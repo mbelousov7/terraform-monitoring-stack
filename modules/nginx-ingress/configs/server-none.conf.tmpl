@@ -2,9 +2,9 @@
 server {
  listen ${ container_port };
  #resolver ${ resolver } valid=10s;
- server_name ${ server.app_name }.local;
+ server_name ${ server.name }.local;
  location / {
-   set $upstream http://${ server.app_name }.${ namespace }.svc.cluster.local:9090;
+   set $upstream http://${ server.name }.${ namespace }.svc.cluster.local:9090;
    proxy_pass $upstream;
  }
 }

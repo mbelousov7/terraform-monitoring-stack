@@ -3,8 +3,8 @@ variable "namespace" {
   type        = string
 }
 
-variable "app_name" {
-  description = "app name"
+variable "name" {
+  description = "application name, using as deoloyment,serivce names, also in lables, als as configmap and secret prefix"
   type        = string
   default     = "prometheus-app"
 }
@@ -12,8 +12,7 @@ variable "app_name" {
 variable "labels" {
   description = "labels"
   type        = map(string)
-  default     = {
-  }
+  default     = {}
 }
 
 variable "replicas" {
@@ -34,10 +33,6 @@ variable "container_image" {
 variable "container_port" {
   type        = string
   default     = 8080
-}
-
-variable "container_name" {
-  type        = string
 }
 
 variable "container_resources_requests_cpu" {

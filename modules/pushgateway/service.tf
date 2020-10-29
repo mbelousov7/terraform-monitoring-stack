@@ -1,6 +1,6 @@
 resource "kubernetes_service" "service" {
   metadata {
-    name = local.app_name
+    name = var.name
     namespace = var.namespace
     labels = local.labels
   }
@@ -8,7 +8,7 @@ resource "kubernetes_service" "service" {
     selector = local.labels
     type = var.service_type
     port {
-      name        = "exporter-jmx"
+      name        = "pushgateway"
       port        = var.container_port
       protocol    = "TCP"
       target_port = var.container_port
