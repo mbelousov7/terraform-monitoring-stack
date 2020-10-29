@@ -38,8 +38,26 @@ variable "nginx_ingress_port" {
   default     = "8080"
 }
 
-variable "nginx_ingress_name" {
-  description = "nginx-ingress name"
+variable "prometheus_port" {
+  description = "prometheus_port"
   type        = string
-  default     = "nginx-ingress"
+  default     = "9090"
+}
+
+variable "pushgateway_port" {
+  description = "pushgateway_port"
+  type        = string
+  default     = "9091"
+}
+
+variable "resolver" {
+  type        = string
+  description = "variable resolver for nginx"
+  default     = "kube-dns.kube-system.svc.cluster.local"
+}
+
+variable "route_path_for_config" {
+  type        = string
+  description = "variable resolver for upstream in server.conf depends on instance of kubernetes cluster "
+  default     = ".svc.cluster.local"
 }

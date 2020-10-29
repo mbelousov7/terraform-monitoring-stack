@@ -16,28 +16,14 @@ resource "kubernetes_namespace" "monitoring" {
   }
 }
 
-module "nginx-ingress" {
-  source = "../modules/nginx-ingress"
-  namespace = var.namespace
-  depends_on = [ kubernetes_namespace.monitoring ]
-  app_name = var.nginx_ingress_name
-  replicas = 1
-  container_image = "nginx"
-  container_name = var.nginx_ingress_name
-  server_list = local.prometheus_list
-  auth_type = "basic"
-  resolver = "kube-dns.kube-system.svc.cluster.local"
-  service_type = "LoadBalancer"
-}
-
 module "prometheus" {
-  for_each = {for prometheus in local.prometheus_list:  prometheus.app_name => prometheus}
+  for_each = {for prometheus in local.prometheus_list:  prometheus.name => prometheus}
   source = "../modules/prometheus"
   depends_on = [ kubernetes_namespace.monitoring ]
   namespace = var.namespace
-  app_name = each.value.app_name
+  name = each.value.name
+  container_port = var.prometheus_port
   container_image = "prom/prometheus:latest"
-  container_name = each.value.app_name
   config_maps_list = each.value.config_maps_list
   secret_maps_list = lookup(each.value, "secret_maps_list", {})
   container_resources_requests_cpu = lookup(each.value, "container_resources_requests_cpu", "200m")
@@ -45,6 +31,53 @@ module "prometheus" {
   container_resources_requests_memory = lookup(each.value, "container_resources_requests_memory", "254Mi")
   container_resources_limits_memory = lookup(each.value, "container_resources_limits_memory", "512Mi")
   expose = "ingress"
-  nginx_ingress_service_name = var.nginx_ingress_name
+  nginx_ingress_service_name = "nginx-ingress-prometheus-list"
   nginx_ingress_port = var.nginx_ingress_port
+}
+
+module "nginx-ingress-prometheus-list" {
+  source = "../modules/nginx-ingress"
+  namespace = var.namespace
+  depends_on = [ kubernetes_namespace.monitoring, module.prometheus.service_name ]
+  name = "nginx-ingress-prometheus-list"
+  replicas = 1
+  container_image = "nginx"
+  server_list = local.prometheus_list
+  auth_type = "basic"
+  resolver = var.resolver
+  route_path_for_config = var.route_path_for_config
+  app_port = var.prometheus_port
+  service_type = "LoadBalancer"
+}
+
+module "pushgateway" {
+  for_each = {for pushgateway in local.pushgateway_list:  pushgateway.name => pushgateway}
+  source = "../modules/pushgateway"
+  depends_on = [ kubernetes_namespace.monitoring ]
+  namespace = var.namespace
+  name = each.value.name
+  container_image = "prom/pushgateway:latest"
+  container_port = var.pushgateway_port
+  container_resources_requests_cpu = lookup(each.value, "container_resources_requests_cpu", "100m")
+  container_resources_limits_cpu = lookup(each.value, "container_resources_limits_cpu", "200m")
+  container_resources_requests_memory = lookup(each.value, "container_resources_requests_memory", "64Mi")
+  container_resources_limits_memory = lookup(each.value, "container_resources_limits_memory", "128Mi")
+  expose = "ingress"
+  nginx_ingress_service_name = "nginx-ingress-pushgateway-list"
+  nginx_ingress_port = var.nginx_ingress_port
+}
+
+module "nginx-ingress-pushgateway-list" {
+  source = "../modules/nginx-ingress"
+  namespace = var.namespace
+  depends_on = [ kubernetes_namespace.monitoring ]
+  name = "nginx-ingress-pushgateway-list"
+  replicas = 1
+  container_image = "nginx"
+  server_list = local.pushgateway_list
+  auth_type = "basic"
+  resolver = var.resolver
+  route_path_for_config = var.route_path_for_config
+  app_port = var.pushgateway_port
+  service_type = "LoadBalancer"
 }

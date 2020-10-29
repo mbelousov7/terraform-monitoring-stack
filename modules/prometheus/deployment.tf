@@ -6,7 +6,7 @@ resource "kubernetes_deployment" "prometheus" {
   }
 
   metadata {
-    name        = var.app_name
+    name        = var.name
     namespace   = var.namespace
     labels      = local.labels
   }
@@ -31,7 +31,7 @@ resource "kubernetes_deployment" "prometheus" {
       spec {
         container {
           image = var.container_image
-          name  = var.app_name
+          name  = var.name
           args = [
             "--web.enable-lifecycle",
             "--web.enable-admin-api",
@@ -83,7 +83,7 @@ resource "kubernetes_deployment" "prometheus" {
           content {
             name = volume.value.name
             config_map {
-              name = "${var.app_name}-${volume.value.config_map_name}"
+              name = "${var.name}-${volume.value.config_map_name}"
               default_mode = "0644"
             }
           }
@@ -93,7 +93,7 @@ resource "kubernetes_deployment" "prometheus" {
           content {
             name = volume.value.name
             secret {
-              secret_name = "${var.app_name}-${volume.value.secret_name}"
+              secret_name = "${var.name}-${volume.value.secret_name}"
               default_mode = "0644"
             }
           }

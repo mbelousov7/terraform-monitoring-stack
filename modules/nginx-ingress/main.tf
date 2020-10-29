@@ -3,14 +3,15 @@ resource "random_integer" "config" {
   max     = 50000
   keepers = {
     # Generate a new integer each time we switch to a new listener ARN
-    listener_arn = var.app_name
+    listener_arn = var.name
   }
 }
 
 locals {
   labels = merge (
     #{ redeploy = random_integer.config.result },
-    { app = var.app_name },
+    { name = var.name },
+    { module = "nginx-ingress"},
     var.labels
   )
 

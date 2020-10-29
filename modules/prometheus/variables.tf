@@ -4,14 +4,14 @@ variable "namespace" {
   default     = "monitoring"
 }
 
-variable "app_name" {
-  description = "app(deployment) name"
+variable "name" {
+  description = "application name, using as deoloyment,serivce names, also in lables, als as configmap and secret prefix"
   type        = string
   default     = "prometheus"
 }
 
 variable "labels" {
-  description = "kubernetes labels"
+  description = "additional kubernetes labels, values provided from outside the module"
   type        = map(string)
   default     = {}
 }
@@ -29,11 +29,6 @@ variable "strategy" {
 
 variable "container_image" {
   description = "path to prometheus image"
-  type        = string
-}
-
-variable "container_name" {
-  description = "prometheus pod name"
   type        = string
 }
 
@@ -144,11 +139,11 @@ variable "expose" {
 variable "nginx_ingress_service_name" {
   description = "nginx_ingress_service_name"
   type        = string
-  default     = "nginx-ingress"
+  #default     = "nginx-ingress"
 }
 
 variable "nginx_ingress_port" {
   description = "nginx_ingress_port"
   type        = string
-  default     = 8080
+  #default     = 8080
 }

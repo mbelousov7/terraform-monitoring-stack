@@ -1,6 +1,7 @@
 locals {
   labels = merge (
-    { app = var.app_name },
+    { name = var.name },
+    { module = "prometheus" },
     var.labels
   )
 

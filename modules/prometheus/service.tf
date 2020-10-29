@@ -1,6 +1,6 @@
 resource "kubernetes_service" "service" {
   metadata {
-    name = var.app_name
+    name = var.name
     namespace = var.namespace
     labels = local.labels
   }

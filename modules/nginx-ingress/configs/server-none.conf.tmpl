@@ -1,10 +1,11 @@
 %{ for server in server_list ~}
 server {
- listen ${ container_port };
- #resolver ${ resolver } valid=10s;
- server_name ${ server.app_name }.local;
+  server_name ~^${ server.name }*;
+  listen ${ container_port } %{ if can(server.ssl_data) }ssl%{ endif };
+  #resolver ${ resolver } valid=10s;
+  include conf.d/ingress.conf;
  location / {
-   set $upstream http://${ server.app_name }.${ namespace }.svc.cluster.local:9090;
+   set $upstream http://${ server.name }.${ namespace }${ route_path_for_config }:${ app_port };
    proxy_pass $upstream;
  }
 }

@@ -73,39 +73,8 @@ variable "system" {
   type        = string
 }
 
-variable "env_jmx_role" {
-  type        = string
-  default     = "default"
-}
-variable "env_exporter_port" {
-  type        = string
-  default     = "5555"
-}
-variable "env_host" {
-  type        = string
-  default     = "localhost"
-}
-variable "env_port" {
-  type        = string
-  default     = "5555"
-}
-variable "env_jvm_opts" {
-  type        = string
-  default     = ""
-}
-variable "env_jmxurl" {
-  type        = string
-  default     = ""
-}
-variable "env_ssl" {
-  type        = string
-  default     = ""
-}
-variable "env_username" {
-  type        = string
-  default     = ""
-}
-variable "env_password" {
-  type        = string
-  default     = ""
+variable "env" {
+  description = "main pod enviroment variables, values provided from outside the module"
+  type        = map
+  default     = {}  
 }

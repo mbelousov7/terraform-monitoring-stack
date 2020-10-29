@@ -6,7 +6,7 @@ resource "kubernetes_deployment" "nginx-ingress" {
   }
 
   metadata {
-    name        = var.app_name
+    name        = var.name
     namespace   = var.namespace
     labels      = local.labels
   }
@@ -37,7 +37,7 @@ resource "kubernetes_deployment" "nginx-ingress" {
       spec {
         container {
           image = var.container_image
-          name  = var.app_name
+          name  = var.name
           port {
             container_port = var.container_port
             protocol = "TCP"
@@ -64,10 +64,10 @@ resource "kubernetes_deployment" "nginx-ingress" {
           }
 
           dynamic "volume_mount" {
-            for_each = {for ssl in var.server_list:  ssl.app_name => ssl  if can(ssl.ssl_data)}
+            for_each = {for ssl in var.server_list:  ssl.name => ssl  if can(ssl.ssl_data)}
             content {
-              mount_path  = "/etc/nginx/ssl/${volume_mount.value.app_name}"
-              name = "ssl-${volume_mount.value.app_name}"
+              mount_path  = "/etc/nginx/ssl/${volume_mount.value.name}"
+              name = "ssl-${volume_mount.value.name}"
             }
           }
 
@@ -76,7 +76,7 @@ resource "kubernetes_deployment" "nginx-ingress" {
         volume {
           name = "config-volume"
           secret {
-            secret_name = "${var.app_name}-config-secret"
+            secret_name = "${var.name}-config-secret"
             default_mode = "0400"
           }
         }
@@ -84,17 +84,17 @@ resource "kubernetes_deployment" "nginx-ingress" {
         volume {
           name = "password-volume"
           secret {
-            secret_name = "${var.app_name}-password-secret"
+            secret_name = "${var.name}-password-secret"
             default_mode = "0644"
           }
         }
 
         dynamic "volume" {
-          for_each = {for ssl in var.server_list:  ssl.app_name => ssl if can(ssl.ssl_data)}
+          for_each = {for ssl in var.server_list:  ssl.name => ssl if can(ssl.ssl_data)}
           content {
-            name = "ssl-${volume.value.app_name}"
+            name = "ssl-${volume.value.name}"
             secret {
-              secret_name = "${var.app_name}-ssl-${volume.value.app_name}"
+              secret_name = "${var.name}-ssl-${volume.value.name}"
               default_mode = "0644"
             }
           }

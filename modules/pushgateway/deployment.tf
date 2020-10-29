@@ -1,12 +1,12 @@
-resource "kubernetes_deployment" "exporter" {
+resource "kubernetes_deployment" "prometheus_pushgateway" {
   timeouts {
-    create = "1m"
-    delete = "1m"
-    update = "1m"
+    create = "5m"
+    delete = "2m"
+    update = "5m"
   }
 
   metadata {
-    name        = local.app_name
+    name        = var.name
     namespace   = var.namespace
     labels      = local.labels
   }
@@ -31,17 +31,9 @@ resource "kubernetes_deployment" "exporter" {
       spec {
         container {
           image = var.container_image
-          name  = local.app_name
-          args = [
-          ]
+          name  = var.name
+          args = [ ]
 
-          dynamic "env" {
-            for_each = var.env
-            content {
-              name  = env.key
-              value = env.value
-            }
-          }
           resources {
             limits {
               cpu    = var.container_resources_limits_cpu
@@ -52,9 +44,9 @@ resource "kubernetes_deployment" "exporter" {
               memory = var.container_resources_requests_memory
             }
           }
-
         }
+
       }
+    }
   }
- }
 }
