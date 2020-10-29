@@ -95,6 +95,19 @@ variable "resolver" {
   default     = "kube-dns.kube-system.svc.cluster.local"
 }
 
+variable "route_path_for_config" {
+  type        = string
+  description = "variable resolver for upstream in server.conf depends on instance of kubernetes cluster "
+  default     = ".svc.cluster.local"
+}
+
+variable "app_port" {
+  type        = string
+  description = "target application port"
+}
+
+
+
 variable "user" {
   description = "user"
   type        = string

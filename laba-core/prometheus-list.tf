@@ -1,4 +1,5 @@
 locals {
+  //configs for multiple independed prometheuses
   prometheus_list = [
     {
       name = "prometheus-cdh"

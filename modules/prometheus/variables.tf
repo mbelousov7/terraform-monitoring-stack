@@ -139,11 +139,11 @@ variable "expose" {
 variable "nginx_ingress_service_name" {
   description = "nginx_ingress_service_name"
   type        = string
-  default     = "nginx-ingress"
+  #default     = "nginx-ingress"
 }
 
 variable "nginx_ingress_port" {
   description = "nginx_ingress_port"
   type        = string
-  default     = 8080
+  #default     = 8080
 }

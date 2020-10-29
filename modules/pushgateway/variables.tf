@@ -75,7 +75,7 @@ variable "expose" {
 variable "nginx_ingress_service_name" {
   description = "nginx_ingress_service_name"
   type        = string
-  default     = "nginx-ingress_pushgateway"
+  #default     = "nginx-ingress_pushgateway"
 }
 
 variable "nginx_ingress_port" {
