@@ -16,7 +16,6 @@ variable "labels" {
   default     = {}
 }
 
-
 variable "replicas" {
   description = "replicas count"
   type        = string
