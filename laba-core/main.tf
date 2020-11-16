@@ -49,6 +49,7 @@ module "nginx-ingress-prometheus-list" {
   service_type = "LoadBalancer"
 }
 
+/*
 module "pushgateway" {
   for_each = {for pushgateway in local.pushgateway_list:  pushgateway.name => pushgateway}
   source = "../modules/pushgateway"
@@ -63,7 +64,6 @@ module "pushgateway" {
   container_resources_limits_memory = lookup(each.value, "container_resources_limits_memory", "128Mi")
   expose = "ingress"
   nginx_ingress_service_name = "nginx-ingress-pushgateway-list"
-  #nginx_ingress_port = var.nginx_ingress_port
 }
 
 module "nginx-ingress-pushgateway-list" {
@@ -80,7 +80,7 @@ module "nginx-ingress-pushgateway-list" {
   app_port = var.pushgateway_container_port
   service_type = "LoadBalancer"
 }
-
+*/
 module "grafana" {
   for_each = {for grafana in local.grafana_list:  grafana.name => grafana}
   source = "../modules/grafana"

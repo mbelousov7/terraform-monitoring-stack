@@ -17,7 +17,7 @@ locals {
           name = "config-provisioning"
           config_map_name = "config-provisioning"
           config_map_data = {
-            "prometheus.yaml" = file("./prometheus-cdh/prometheus.yaml")
+            "prometheus.yaml" = file("./prometheus-infra/prometheus.yaml")
           }
         },
         {
