@@ -18,8 +18,8 @@ variable "labels" {
 
 variable "replicas" {
   description = "replicas count"
-  type        = string
-  default     = 2
+  type        = number
+  default     = 1
 }
 
 variable "strategy" {
@@ -32,18 +32,6 @@ variable "container_image" {
   type        = string
 }
 
-variable "configPath" {
-  description = "path to grafana configs folder"
-  type        = string
-  default     = "/etc/grafana"
-}
-
-variable "provisioningPath" {
-  description = "path to grafana provisioning folder"
-  type        = string
-  default     = "/usr/share/grafana/provisioning"
-}
-
 variable "env" {
   description = "main pod enviroment variables, values provided from outside the module"
   type        = map
@@ -51,33 +39,38 @@ variable "env" {
     GF_SECURITY_ADMIN_USER = "admin"
     GF_SECURITY_ADMIN_PASSWORD = "password"
     GF_PATHS_PROVISIONING = "/etc/grafana/provisioning"
+    GF_PATHS_CONFIG = "/etc/grafana_config/grafana.ini"
     GF_DATABASE_USER = "admin"
     GF_DATABASE_PASSWORD = "password"
     GF_DATABASE_HOST = "grafana-db"
     GF_DATABASE_NAME = "grafana"
-    GF_DATABASE_TYPE = "sqlite"
+    GF_DATABASE_TYPE = "sqlite3"
   }
 }
 
+variable "container_port" {
+  type        = number
+  default     = 3000
+}
 
 variable "container_resources_requests_cpu" {
   type        = string
-  default     = "0.2"
+  default     = "100m"
 }
 
 variable "container_resources_requests_memory" {
   type        = string
-  default     = "0.2Gi"
+  default     = "128M"
 }
 
 variable "container_resources_limits_cpu" {
   type        = string
-  default     = "0.3"
+  default     = "200m"
 }
 
 variable "container_resources_limits_memory" {
   type        = string
-  default     = "0.4Gi"
+  default     = "254M"
 }
 
 variable "service_type" {
@@ -94,14 +87,14 @@ variable "config_maps_list" {
   config_map_data = map(string)
 }))
 ## Default is being set in main.tf
-default = [
-  {
-    mount_path = "/etc/grafana"
-    name = "config-main-volume"
-    config_map_name = "grafana-config-main"
-    config_map_data = {}
-  }
-]
+#default = [
+#  {
+#    mount_path = "/etc/grafana"
+#    name = "config-main-volume"
+#    config_map_name = "grafana-config-main"
+#    config_map_data = {}
+#  }
+#]
 }
 
 variable "secret_maps_list" {
@@ -113,31 +106,18 @@ variable "secret_maps_list" {
   secret_data = map(string)
 }))
 ## Default is being set in main.tf
-default = [
-  {
-    mount_path = "/etc/grafana/secrets"
-    name = "config-secret-volume"
-    secret_name = "grafana-secret"
-    secret_data = {}
-  }
-]
+#default = [
+#  {
+#    mount_path = "/etc/grafana/secrets"
+#    name = "config-secret-volume"
+#    secret_name = "grafana-secret"
+#    secret_data = {}
+#  }
+#]
 }
 
 variable "expose" {
   description = "expose resource type(ingress for kubernetes or route for openshift)"
   type        = string
   default     = "ingress"
-}
-
-
-variable "nginx_ingress_service_name" {
-  description = "nginx_ingress_service_name"
-  type        = string
-  #default     = "nginx-ingress"
-}
-
-variable "nginx_ingress_port" {
-  description = "nginx_ingress_port"
-  type        = string
-  #default     = 8080
 }

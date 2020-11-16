@@ -3,8 +3,7 @@ output "service_name" {
   value       = kubernetes_service.service.metadata[0].name
 }
 
-output "service_port" {
-  description = "app service name"
+output "container_port" {
+  description = "app port"
   value       = var.container_port
-
 }

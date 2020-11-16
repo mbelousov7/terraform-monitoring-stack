@@ -17,6 +17,27 @@ variable "namespace" {
   type        = string
 }
 
+variable "prometheus_container_image" {
+  description = "image path"
+  type        = string
+}
+variable "prometheus_container_port" {
+  description = "prometheus port"
+  type        = number
+  default     = 9090
+}
+
+variable "pushgateway_container_image" {
+  description = "image path"
+  type        = string
+}
+
+variable "pushgateway_container_port" {
+  description = "pushgateway port, DO NOT CHANGE"
+  type        = number
+  default     = 9091
+}
+
 # ------------------------------------------------------------------------------
 # OPTIONAL PARAMETERS
 # ------------------------------------------------------------------------------
@@ -30,24 +51,6 @@ variable "monitoring_user" {
 variable "monitoring_password" {
   description = "password for monitoring_user"
   type        = string
-}
-
-variable "nginx_ingress_port" {
-  description = "nginx_ingress_port"
-  type        = string
-  default     = "8080"
-}
-
-variable "prometheus_port" {
-  description = "prometheus_port"
-  type        = string
-  default     = "9090"
-}
-
-variable "pushgateway_port" {
-  description = "pushgateway_port"
-  type        = string
-  default     = "9091"
 }
 
 variable "resolver" {

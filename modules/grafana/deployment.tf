@@ -1,8 +1,8 @@
-resource "kubernetes_deployment" "prometheus" {
+resource "kubernetes_deployment" "grafana" {
   timeouts {
-    create = "5m"
-    delete = "2m"
-    update = "5m"
+    create = "2m"
+    delete = "1m"
+    update = "2m"
   }
 
   metadata {
@@ -52,11 +52,6 @@ resource "kubernetes_deployment" "prometheus" {
             }
           }
 
-          volume_mount {
-              mount_path = var.dataPath
-              name       = "storage-volume"
-          }
-
           dynamic "volume_mount" {
             for_each = local.config_maps_list
             content {
@@ -71,11 +66,6 @@ resource "kubernetes_deployment" "prometheus" {
               name = volume_mount.value.name
             }
           }
-        }
-
-        volume {
-          name = "storage-volume"
-          empty_dir {}
         }
 
         dynamic "volume" {

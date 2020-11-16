@@ -4,7 +4,6 @@ output "service_name" {
 }
 
 output "service_port" {
-  description = "app service name"
+  description = "app service port"
   value       = var.container_port
-
 }

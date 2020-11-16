@@ -18,7 +18,7 @@ variable "labels" {
 
 variable "replicas" {
   description = "replicas count"
-  type        = string
+  type        = number
   default     = 1
 }
 
@@ -55,8 +55,8 @@ variable "retentionSize" {
 }
 
 variable "container_port" {
-  type        = string
-  default     = "9090"
+  type        = number
+  default     = 9090
 }
 
 variable "container_resources_requests_cpu" {
@@ -132,6 +132,6 @@ variable "nginx_ingress_service_name" {
 
 variable "nginx_ingress_port" {
   description = "nginx_ingress_port"
-  type        = string
-  #default     = 8080
+  type        = number
+  default     = 8080
 }

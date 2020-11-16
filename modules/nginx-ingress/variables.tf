@@ -16,7 +16,7 @@ variable "labels" {
 }
 
 variable "replicas" {
-  type        = string
+  type        = number
   default     = 1
 }
 
@@ -31,7 +31,7 @@ variable "container_image" {
 }
 
 variable "container_port" {
-  type        = string
+  type        = number
   default     = 8080
 }
 
@@ -102,7 +102,6 @@ variable "route_path_for_config" {
 }
 
 variable "app_port" {
-  type        = string
   description = "target application port"
 }
 

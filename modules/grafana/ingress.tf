@@ -11,8 +11,8 @@ resource "kubernetes_ingress" "nginx-ingress" {
       http {
         path {
           backend {
-            service_name = var.nginx_ingress_service_name
-            service_port = var.nginx_ingress_port
+            service_name = var.name
+            service_port = var.container_port
           }
         }
       }
