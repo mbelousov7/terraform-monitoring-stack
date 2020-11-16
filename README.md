@@ -5,11 +5,13 @@ monitoring stack(prometheus, grafana, alertmanager, exporters, etc) deploying in
 For kubernetes in GKE
 1. get credentials
 
-gcloud container clusters get-credentials gke-cluster-mbelousov-kubernetes-laba --zone us-east1-b --project <your project name>
+gcloud auth login
+gcloud container clusters get-credentials <your GKE cluster name> --zone <your GKE cluster zone> --project <your project name>
 
 for example
 ```
-gcloud container clusters get-credentials gke-cluster-mbelousov-kubernetes-laba --zone us-east1-b --project mbelousov-kubernetes-laba
+gcloud auth login
+gcloud container clusters get-credentials gke-cluster-drjetf-kubernetes-laba --zone us-east1-b --project drjetf-kubernetes-laba
 ```
 
 

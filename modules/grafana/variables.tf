@@ -1,5 +1,5 @@
 variable "namespace" {
-  description = "kubernetes namespace for prometheus"
+  description = "kubernetes namespace for grafana"
   type        = string
   default     = "monitoring"
 }
@@ -7,7 +7,7 @@ variable "namespace" {
 variable "name" {
   description = "application name, using as deoloyment,serivce names, also in lables, als as configmap and secret prefix"
   type        = string
-  default     = "prometheus"
+  default     = "grafana"
 }
 
 variable "labels" {
@@ -19,7 +19,7 @@ variable "labels" {
 variable "replicas" {
   description = "replicas count"
   type        = string
-  default     = 1
+  default     = 2
 }
 
 variable "strategy" {
@@ -28,36 +28,37 @@ variable "strategy" {
 }
 
 variable "container_image" {
-  description = "path to prometheus image"
+  description = "path to grafana image"
   type        = string
 }
 
 variable "configPath" {
-  description = "path to configs folder"
+  description = "path to grafana configs folder"
   type        = string
-  default     = "/etc/prometheus"
+  default     = "/etc/grafana"
 }
 
-variable "dataPath" {
-  description = "path to data folder"
+variable "provisioningPath" {
+  description = "path to grafana provisioning folder"
   type        = string
-  default     = "/data"
+  default     = "/usr/share/grafana/provisioning"
 }
 
-variable "retentionTime" {
-  type        = string
-  default     = "7d"
+variable "env" {
+  description = "main pod enviroment variables, values provided from outside the module"
+  type        = map
+  default     = {
+    GF_SECURITY_ADMIN_USER = "admin"
+    GF_SECURITY_ADMIN_PASSWORD = "password"
+    GF_PATHS_PROVISIONING = "/etc/grafana/provisioning"
+    GF_DATABASE_USER = "admin"
+    GF_DATABASE_PASSWORD = "password"
+    GF_DATABASE_HOST = "grafana-db"
+    GF_DATABASE_NAME = "grafana"
+    GF_DATABASE_TYPE = "sqlite"
+  }
 }
 
-variable "retentionSize" {
-  type        = string
-  default     = "30GB"
-}
-
-variable "container_port" {
-  type        = string
-  default     = "9090"
-}
 
 variable "container_resources_requests_cpu" {
   type        = string
@@ -66,7 +67,7 @@ variable "container_resources_requests_cpu" {
 
 variable "container_resources_requests_memory" {
   type        = string
-  default     = "0.3Gi"
+  default     = "0.2Gi"
 }
 
 variable "container_resources_limits_cpu" {
@@ -76,7 +77,7 @@ variable "container_resources_limits_cpu" {
 
 variable "container_resources_limits_memory" {
   type        = string
-  default     = "0.5Gi"
+  default     = "0.4Gi"
 }
 
 variable "service_type" {
@@ -84,37 +85,42 @@ variable "service_type" {
   default     = "ClusterIP"
 }
 
-variable "dataVolume" {
-  default = {
-    name = "storage-volume"
-    empty_dir = {}
-  }
-}
-
 variable "config_maps_list" {
   description = "list config maps and volumes"
-  type = list
-#  (object({
-#  mount_path = string
-#  name = string
-#  config_map_name = string
-#  config_map_data = map(string)
-#}))
+  type = list(object({
+  mount_path = string
+  name = string
+  config_map_name = string
+  config_map_data = map(string)
+}))
 ## Default is being set in main.tf
-default = []
+default = [
+  {
+    mount_path = "/etc/grafana"
+    name = "config-main-volume"
+    config_map_name = "grafana-config-main"
+    config_map_data = {}
+  }
+]
 }
 
 variable "secret_maps_list" {
   description = "list secret maps and volumes"
-  type = list
-  #(object({
-  #mount_path = string
-  #name = string
-  #secret_name = string
-  #secret_data = map(string)
-#}))
+  type = list(object({
+  mount_path = string
+  name = string
+  secret_name = string
+  secret_data = map(string)
+}))
 ## Default is being set in main.tf
-default = []
+default = [
+  {
+    mount_path = "/etc/grafana/secrets"
+    name = "config-secret-volume"
+    secret_name = "grafana-secret"
+    secret_data = {}
+  }
+]
 }
 
 variable "expose" {

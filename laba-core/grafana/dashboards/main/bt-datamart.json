@@ -1,0 +1,2035 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "limit": 100,
+        "name": "Annotations & Alerts",
+        "showIn": 0,
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "",
+  "editable": true,
+  "gnetId": 3457,
+  "graphTooltip": 0,
+  "id": 5,
+  "iteration": 1591635046531,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1009,
+      "panels": [],
+      "title": "Статус",
+      "type": "row"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorPrefix": false,
+      "colorValue": true,
+      "colors": [
+        "#5794F2",
+        "#56A64B",
+        "#d44a3a"
+      ],
+      "datasource": "$ds",
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 5,
+        "x": 0,
+        "y": 1
+      },
+      "hideTimeOverride": true,
+      "id": 1011,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "maxPerRow": 6,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "options": {},
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "max(wf_loading_status{system=\"$system\", business_block=\"$business_block\", datamart=\"$datamart\", wf_name=~\"$wf_current_name\"}) by (datamart)",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "thresholds": "9,10",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "$datamart",
+      "type": "singlestat",
+      "valueFontSize": "70%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "INIT",
+          "value": "1"
+        },
+        {
+          "op": "=",
+          "text": "PREREQ",
+          "value": "2"
+        },
+        {
+          "op": "=",
+          "text": "PARAM",
+          "value": "3"
+        },
+        {
+          "op": "=",
+          "text": "TIME-WAIT",
+          "value": "4"
+        },
+        {
+          "op": "=",
+          "text": "EVENT-WAIT",
+          "value": "5"
+        },
+        {
+          "op": "=",
+          "text": "LOCK-WAIT",
+          "value": "6"
+        },
+        {
+          "op": "=",
+          "text": "START",
+          "value": "7"
+        },
+        {
+          "op": "=",
+          "text": "RUNNING",
+          "value": "8"
+        },
+        {
+          "op": "=",
+          "text": "SUCCESS",
+          "value": "9"
+        },
+        {
+          "op": "=",
+          "text": "ERROR",
+          "value": "10"
+        },
+        {
+          "op": "=",
+          "text": "ERRORCHECK",
+          "value": "11"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
+      "datasource": "$ds",
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 7,
+        "x": 5,
+        "y": 1
+      },
+      "id": 1029,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "options": {},
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "max(sum(wf_allocatedmb{system=\"$system\", business_block=\"$business_block\", datamart=\"$datamart\", wf_name=~\"$wf_name\"}))",
+          "refId": "A"
+        }
+      ],
+      "thresholds": "",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "$datamart sum allocatedMB",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
+      "datasource": "$ds",
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 7,
+        "x": 17,
+        "y": 1
+      },
+      "id": 1030,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "options": {},
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "max(sum(wf_allocatedvcores{system=\"$system\", business_block=\"$business_block\", datamart=\"$datamart\", wf_name=~\"$wf_name\"}))",
+          "refId": "A"
+        }
+      ],
+      "thresholds": "",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "$datamart sum allocatedVCores",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "datasource": "$ds",
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 3
+      },
+      "id": 1026,
+      "options": {
+        "displayMode": "basic",
+        "fieldOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "defaults": {
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "override": {},
+          "values": false
+        },
+        "orientation": "horizontal"
+      },
+      "pluginVersion": "6.4.3",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "expr": "max(wf_allocatedmb{system=\"$system\", business_block=\"$business_block\", datamart=\"$datamart\", wf_name=~\"$wf_name\"}) by (wf_name)",
+          "legendFormat": "{{ wf_name }}",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "max allocatedMB",
+      "type": "bargauge"
+    },
+    {
+      "datasource": "$ds",
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 3
+      },
+      "id": 1027,
+      "options": {
+        "displayMode": "basic",
+        "fieldOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "defaults": {
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "override": {},
+          "values": false
+        },
+        "orientation": "horizontal"
+      },
+      "pluginVersion": "6.4.3",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "expr": "max(wf_allocatedvcores{system=\"$system\", business_block=\"$business_block\", datamart=\"$datamart\", wf_name=~\"$wf_name\"}) by (wf_name)",
+          "legendFormat": "{{ wf_name }}",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "max allocatedVCores",
+      "type": "bargauge"
+    },
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 13
+      },
+      "id": 1023,
+      "panels": [],
+      "title": "История",
+      "type": "row"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "$ds",
+      "decimals": 0,
+      "fill": 0,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
+      "id": 1015,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "max": true,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "sort": "max",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 3,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "/active/",
+          "color": "#5794F2"
+        },
+        {
+          "alias": "/success/",
+          "color": "#73BF69"
+        },
+        {
+          "alias": "/error/",
+          "color": "#E02F44"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "max(wf_loading_status{system=\"$system\", business_block=\"$business_block\", datamart=\"$datamart\", wf_name=~\"$wf_name\", alive=~\"$alive\",  status=~\"$wf_status_active\"}) by (datamart,wf_name,alive,status)",
+          "legendFormat": "{{ wf_name }} : active",
+          "refId": "A"
+        },
+        {
+          "expr": "max(wf_loading_status{system=~\"$system\", business_block=\"$business_block\", datamart=\"$datamart\", wf_name=~\"$wf_name\", alive=~\"$alive\",  status=~\"$wf_status_success\"}) by (datamart,wf_name,alive,status)",
+          "legendFormat": "{{ wf_name }} : success",
+          "refId": "B"
+        },
+        {
+          "expr": "max(wf_loading_status{system=\"$system\", business_block=\"$business_block\", datamart=\"$datamart\", wf_name=~\"$wf_name\", alive=~\"$alive\",  status=~\"$wf_status_error\"}) by (datamart,wf_name,alive,status)",
+          "legendFormat": "{{ wf_name }} : error",
+          "refId": "C"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "$datamart - статусы потоков",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 0,
+          "format": "short",
+          "label": "Status",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "$ds",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 0,
+        "y": 20
+      },
+      "id": 1020,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "/VCores/",
+          "yaxis": 2
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "wf_allocatedmb{system=\"$system\", business_block=\"$business_block\", datamart=\"$datamart\", wf_name=~\"$wf_name\"}",
+          "hide": false,
+          "legendFormat": "{{ wf_name }}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "$datamart YARN allocatedMB",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "decmbytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "$ds",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 12,
+        "y": 20
+      },
+      "id": 1021,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "wf_allocatedvcores{system=\"$system\", business_block=\"$business_block\", datamart=\"$datamart\", wf_name=~\"$wf_name\"}",
+          "legendFormat": "allocatedVCores {{ wf_name }}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "$datamart YARN allocatedVCores",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 0,
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 32
+      },
+      "id": 899,
+      "panels": [],
+      "repeat": null,
+      "title": "$datamart status сводная таблицы по личным и родительским потокам",
+      "type": "row"
+    },
+    {
+      "columns": [],
+      "datasource": "$ds",
+      "fontSize": "90%",
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 33
+      },
+      "id": 963,
+      "options": {},
+      "pageSize": 6,
+      "repeat": null,
+      "repeatDirection": "v",
+      "showHeader": true,
+      "sort": {
+        "col": 10,
+        "desc": false
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "hidden"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "datamart",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "start",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "Value #A",
+          "thresholds": [],
+          "type": "number",
+          "unit": "dateTimeAsIso"
+        },
+        {
+          "alias": "end",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Value #B",
+          "thresholds": [],
+          "type": "number",
+          "unit": "dateTimeAsIso"
+        },
+        {
+          "alias": "duration",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "Value #C",
+          "thresholds": [],
+          "type": "number",
+          "unit": "s"
+        },
+        {
+          "alias": "loading id",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": null,
+          "mappingType": 1,
+          "pattern": "Value #D",
+          "thresholds": [],
+          "type": "number",
+          "unit": "none"
+        },
+        {
+          "alias": "status",
+          "colorMode": "cell",
+          "colors": [
+            "#5794F2",
+            "#56A64B",
+            "rgba(245, 54, 54, 0.9)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "Value #E",
+          "thresholds": [
+            "9",
+            "10"
+          ],
+          "type": "number",
+          "unit": "none"
+        },
+        {
+          "alias": "актуальность",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "Value #F",
+          "thresholds": [],
+          "type": "number",
+          "unit": "dateTimeFromNow"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 0,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "dateTimeFromNow"
+        }
+      ],
+      "targets": [
+        {
+          "expr": "(max(wf_loading_time_start{system=~\"$system\", business_block=\"$business_block\", datamart=\"$datamart\", wf_name=~\"$wf_name\", alive=~\"$alive\",  status=~\"$status\"}) by (datamart,wf_name,alive,status)) * 1000",
+          "format": "table",
+          "instant": true,
+          "refId": "A"
+        },
+        {
+          "expr": "(max(wf_loading_time_end{system=\"$system\", business_block=\"$business_block\", datamart=\"$datamart\", wf_name=~\"$wf_name\", alive=~\"$alive\",  status=~\"$status\"}) by (datamart,wf_name,alive,status) > 0) * 1000",
+          "format": "table",
+          "instant": true,
+          "refId": "B"
+        },
+        {
+          "expr": "max(wf_loading_duration{system=~\"$system\", business_block=\"$business_block\", datamart=\"$datamart\", wf_name=~\"$wf_name\", alive=~\"$alive\",  status=~\"$status\"}) by (datamart,wf_name,alive,status)",
+          "format": "table",
+          "instant": true,
+          "refId": "C"
+        },
+        {
+          "expr": "max(wf_loading_id{system=\"$system\", business_block=\"$business_block\", datamart=\"$datamart\", wf_name=~\"$wf_name\", alive=~\"$alive\",  status=~\"$status\"}) by (datamart,wf_name,alive,status)",
+          "format": "table",
+          "instant": true,
+          "refId": "D"
+        },
+        {
+          "expr": "max(wf_loading_status{system=~\"$system\", business_block=\"$business_block\", datamart=\"$datamart\", wf_name=~\"$wf_name\", alive=~\"$alive\",  status=~\"$status\"}) by (datamart,wf_name,alive,status)",
+          "format": "table",
+          "instant": true,
+          "refId": "E"
+        },
+        {
+          "expr": "(max(wf_loading_time_end{system=~\"$system\", business_block=\"$business_block\", datamart=\"$datamart\", wf_name=~\"$wf_name\", alive=\"COMPLETED\",  status=\"SUCCESS\"}) by (datamart,wf_name,alive,status)) * 1000",
+          "format": "table",
+          "instant": true,
+          "refId": "F"
+        }
+      ],
+      "timeFrom": "$last",
+      "timeShift": null,
+      "title": "$datamart - личные и родительские потоки, alive=$alive",
+      "transform": "table",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 43
+      },
+      "id": 1017,
+      "panels": [],
+      "title": "$datamart status сводные таблицы по всем типам потоков(личные, дочерние, родительские)",
+      "type": "row"
+    },
+    {
+      "columns": [],
+      "datasource": "$ds",
+      "fontSize": "90%",
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 44
+      },
+      "id": 1013,
+      "options": {},
+      "pageSize": 6,
+      "repeatDirection": "v",
+      "showHeader": true,
+      "sort": {
+        "col": 5,
+        "desc": false
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "hidden"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "datamart",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "start",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "Value #A",
+          "thresholds": [],
+          "type": "number",
+          "unit": "dateTimeAsIso"
+        },
+        {
+          "alias": "end",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Value #B",
+          "thresholds": [],
+          "type": "number",
+          "unit": "dateTimeAsIso"
+        },
+        {
+          "alias": "duration",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "Value #C",
+          "thresholds": [],
+          "type": "number",
+          "unit": "s"
+        },
+        {
+          "alias": "loading id",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": null,
+          "mappingType": 1,
+          "pattern": "Value #D",
+          "thresholds": [],
+          "type": "number",
+          "unit": "none"
+        },
+        {
+          "alias": "status",
+          "colorMode": "cell",
+          "colors": [
+            "#5794F2",
+            "#56A64B",
+            "rgba(245, 54, 54, 0.9)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "Value #E",
+          "thresholds": [
+            "9",
+            "10"
+          ],
+          "type": "number",
+          "unit": "none"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "expr": "(max(wf_loading_time_start{system=~\"$system\", business_block=\"$business_block\", datamart=\"$datamart\", wf_name=~\"$wf_current_name\", alive=~\"$alive\",  status=~\"$status\"}) by (datamart,wf_name,alive,status)) * 1000",
+          "format": "table",
+          "instant": true,
+          "refId": "A"
+        },
+        {
+          "expr": "(max(wf_loading_time_end{system=\"$system\", business_block=\"$business_block\", datamart=~\"$datamart\", wf_name=~\"$wf_current_name\", alive=~\"$alive\",  status=~\"$status\"}) by (datamart,wf_name,alive,status) >0) * 1000",
+          "format": "table",
+          "instant": true,
+          "refId": "B"
+        },
+        {
+          "expr": " max(wf_loading_duration{system=~\"$system\", business_block=\"$business_block\", datamart=\"$datamart\", wf_name=~\"$wf_current_name\", alive=~\"$alive\",  status=~\"$status\"}) by (datamart,wf_name,alive,status)",
+          "format": "table",
+          "instant": true,
+          "refId": "C"
+        },
+        {
+          "expr": "max(wf_loading_id{system=\"$system\", business_block=\"$business_block\", datamart=~\"$datamart\", wf_name=~\"$wf_current_name\", alive=~\"$alive\",  status=~\"$status\"}) by (datamart,wf_name,alive,status)",
+          "format": "table",
+          "instant": true,
+          "refId": "D"
+        },
+        {
+          "expr": "max(wf_loading_status{system=\"$system\", business_block=\"$business_block\", datamart=\"$datamart\", wf_name=~\"$wf_current_name\", alive=\"COMPLETED\",  status=\"SUCCESS\"}) by (datamart,wf_name,alive,status)",
+          "format": "table",
+          "instant": true,
+          "refId": "E"
+        }
+      ],
+      "timeFrom": "$last",
+      "timeShift": null,
+      "title": "$datamart - статус личных потоков, alive=$alive",
+      "transform": "table",
+      "type": "table"
+    },
+    {
+      "columns": [],
+      "datasource": "$ds",
+      "fontSize": "90%",
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 51
+      },
+      "id": 1018,
+      "options": {},
+      "pageSize": 6,
+      "repeatDirection": "v",
+      "showHeader": true,
+      "sort": {
+        "col": 5,
+        "desc": false
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "hidden"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "datamart",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "start",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "Value #A",
+          "thresholds": [],
+          "type": "number",
+          "unit": "dateTimeAsIso"
+        },
+        {
+          "alias": "end",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Value #B",
+          "thresholds": [],
+          "type": "number",
+          "unit": "dateTimeAsIso"
+        },
+        {
+          "alias": "duration",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "Value #C",
+          "thresholds": [],
+          "type": "number",
+          "unit": "s"
+        },
+        {
+          "alias": "loading id",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": null,
+          "mappingType": 1,
+          "pattern": "Value #D",
+          "thresholds": [],
+          "type": "number",
+          "unit": "none"
+        },
+        {
+          "alias": "status",
+          "colorMode": "cell",
+          "colors": [
+            "#5794F2",
+            "#56A64B",
+            "rgba(245, 54, 54, 0.9)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "Value #E",
+          "thresholds": [
+            "9",
+            "10"
+          ],
+          "type": "number",
+          "unit": "none"
+        },
+        {
+          "alias": "wf_name",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "wf_children_name",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "wf_parent_name",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "wf_name",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "expr": "(max(wf_loading_time_start{system=\"$system\", business_block=\"$business_block\", datamart=\"$datamart\", wf_name=~\"$wf_parent_name\", alive=~\"$alive\",  status=~\"$status\"}) by (datamart,wf_name,wf_children_name,alive,status)) * 1000",
+          "format": "table",
+          "instant": true,
+          "refId": "A"
+        },
+        {
+          "expr": "(max(wf_loading_time_end{system=\"$system\", business_block=\"$business_block\", datamart=\"$datamart\", wf_name=~\"$wf_parent_name\", alive=~\"$alive\",  status=~\"$status\"}) by (datamart,wf_name,wf_children_name,alive,status)>0) * 1000",
+          "format": "table",
+          "instant": true,
+          "refId": "B"
+        },
+        {
+          "expr": " max(wf_loading_duration{system=~\"$system\", business_block=\"$business_block\", datamart=\"$datamart\", wf_name=~\"$wf_parent_name\", alive=~\"$alive\",  status=~\"$status\"}) by (datamart,wf_name,wf_children_name,alive,status)",
+          "format": "table",
+          "instant": true,
+          "refId": "C"
+        },
+        {
+          "expr": "max(wf_loading_id{system=\"$system\", business_block=\"$business_block\", datamart=\"$datamart\", wf_name=~\"$wf_parent_name\", alive=~\"$alive\",  status=~\"$status\"}) by (datamart,wf_name,wf_children_name,alive,status)",
+          "format": "table",
+          "instant": true,
+          "refId": "D"
+        },
+        {
+          "expr": "max(wf_loading_status{system=\"$system\", business_block=\"$business_block\", datamart=\"$datamart\", wf_name=~\"$wf_parent_name\", alive=\"COMPLETED\",  status=\"SUCCESS\"}) by (datamart,wf_name,wf_children_name,alive,status)",
+          "format": "table",
+          "instant": true,
+          "refId": "E"
+        }
+      ],
+      "timeFrom": "$last",
+      "timeShift": null,
+      "title": "$datamart - статус родительских потоков",
+      "transform": "table",
+      "type": "table"
+    },
+    {
+      "columns": [],
+      "datasource": "$ds",
+      "fontSize": "90%",
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 59
+      },
+      "id": 1012,
+      "options": {},
+      "pageSize": 6,
+      "repeatDirection": "v",
+      "showHeader": true,
+      "sort": {
+        "col": 5,
+        "desc": false
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "hidden"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "datamart",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "start",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "Value #A",
+          "thresholds": [],
+          "type": "number",
+          "unit": "dateTimeAsIso"
+        },
+        {
+          "alias": "end",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Value #B",
+          "thresholds": [],
+          "type": "number",
+          "unit": "dateTimeAsIso"
+        },
+        {
+          "alias": "duration",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "Value #C",
+          "thresholds": [],
+          "type": "number",
+          "unit": "s"
+        },
+        {
+          "alias": "loading id",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": null,
+          "mappingType": 1,
+          "pattern": "Value #D",
+          "thresholds": [],
+          "type": "number",
+          "unit": "none"
+        },
+        {
+          "alias": "status",
+          "colorMode": "cell",
+          "colors": [
+            "#5794F2",
+            "#56A64B",
+            "rgba(245, 54, 54, 0.9)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "Value #E",
+          "thresholds": [
+            "9",
+            "10"
+          ],
+          "type": "number",
+          "unit": "none"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "expr": "(max(wf_loading_time_start{system=\"$system\", business_block=\"$business_block\", wf_name=~\"$wf_children_name\", alive=~\"$alive\",  status=~\"$status\"}) by (wf_name,alive,status)) * 1000",
+          "format": "table",
+          "instant": true,
+          "refId": "A"
+        },
+        {
+          "expr": "(max(wf_loading_time_end{system=~\"$system\", business_block=\"$business_block\",  wf_name=~\"$wf_children_name\", alive=~\"$alive\",  status=~\"$status\"}) by (wf_name,alive,status) > 0) * 1000",
+          "format": "table",
+          "instant": true,
+          "refId": "B"
+        },
+        {
+          "expr": " max(wf_loading_duration{system=~\"$system\", business_block=\"$business_block\",  wf_name=~\"$wf_children_name\", alive=~\"$alive\",  status=~\"$status\"}) by (wf_name,alive,status)",
+          "format": "table",
+          "instant": true,
+          "refId": "C"
+        },
+        {
+          "expr": "max(wf_loading_id{system=\"$system\", business_block=\"$business_block\", wf_name=~\"$wf_children_name\", alive=~\"$alive\",  status=~\"$status\"}) by (wf_name,alive,status)",
+          "format": "table",
+          "instant": true,
+          "refId": "D"
+        },
+        {
+          "expr": "max(wf_loading_status{system=\"$system\", business_block=\"$business_block\", wf_name=~\"$wf_children_name\", alive=~\"$alive\",  status=~\"$status\"}) by (wf_name,alive,status)",
+          "format": "table",
+          "instant": true,
+          "refId": "E"
+        }
+      ],
+      "timeFrom": "$last",
+      "timeShift": null,
+      "title": "$datamart - статус дочерних потоков",
+      "transform": "table",
+      "type": "table"
+    },
+    {
+      "collapsed": true,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 68
+      },
+      "id": 961,
+      "panels": [],
+      "title": "End",
+      "type": "row"
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 20,
+  "style": "dark",
+  "tags": [
+    "bt",
+    "wf"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "tags": [],
+          "text": "default",
+          "value": "default"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "какой прометеус?",
+        "multi": false,
+        "name": "ds",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "/infra-sys|federation|default/",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "text": "btwf",
+          "value": "btwf"
+        },
+        "datasource": "$ds",
+        "definition": "label_values(system)",
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "system",
+        "options": [],
+        "query": "label_values(system)",
+        "refresh": 1,
+        "regex": "/^bt/",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "text": "riski",
+          "value": "riski"
+        },
+        "datasource": "$ds",
+        "definition": "label_values({system=~\"$system\"},business_block)",
+        "hide": 0,
+        "includeAll": false,
+        "label": "",
+        "multi": false,
+        "name": "business_block",
+        "options": [],
+        "query": "label_values({system=~\"$system\"},business_block)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "",
+        "current": {
+          "text": "СВД Риски. Лимиты КК",
+          "value": "СВД Риски. Лимиты КК"
+        },
+        "datasource": "$ds",
+        "definition": "label_values(wf_loading_time_start{system=\"$system\",business_block=\"$business_block\"},datamart)",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Витрины/выгрузки",
+        "multi": false,
+        "name": "datamart",
+        "options": [],
+        "query": "label_values(wf_loading_time_start{system=\"$system\",business_block=\"$business_block\"},datamart)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "",
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "$ds",
+        "definition": "label_values(wf_loading_time_start{system=\"$system\",business_block=\"$business_block\", datamart=\"$datamart\"},wf_name)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "поток",
+        "multi": true,
+        "name": "wf_name",
+        "options": [],
+        "query": "label_values(wf_loading_time_start{system=\"$system\",business_block=\"$business_block\", datamart=\"$datamart\"},wf_name)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "",
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "$ds",
+        "definition": "label_values(wf_loading_time_start{system=\"$system\",business_block=\"$business_block\", datamart=\"$datamart\",wf_children_name=\"null\"},wf_name)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "личный поток",
+        "multi": true,
+        "name": "wf_current_name",
+        "options": [],
+        "query": "label_values(wf_loading_time_start{system=\"$system\",business_block=\"$business_block\", datamart=\"$datamart\",wf_children_name=\"null\"},wf_name)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "",
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "$ds",
+        "definition": "label_values(wf_loading_time_start{system=\"$system\", wf_children_name=\"$wf_name\"},wf_name)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "родительский поток",
+        "multi": true,
+        "name": "wf_parent_name",
+        "options": [],
+        "query": "label_values(wf_loading_time_start{system=\"$system\", wf_children_name=\"$wf_name\"},wf_name)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "",
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "$ds",
+        "definition": "label_values(wf_loading_time_start{system=\"$system\", wf_name=~\"$wf_name\"},wf_children_name)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "дочерний поток",
+        "multi": true,
+        "name": "wf_children_name",
+        "options": [],
+        "query": "label_values(wf_loading_time_start{system=\"$system\", wf_name=~\"$wf_name\"},wf_children_name)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "",
+        "current": {
+          "text": "COMPLETED",
+          "value": [
+            "COMPLETED"
+          ]
+        },
+        "datasource": "$ds",
+        "definition": "label_values(wf_loading_time_start{system=\"$system\"},alive)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "",
+        "multi": true,
+        "name": "alive",
+        "options": [],
+        "query": "label_values(wf_loading_time_start{system=\"$system\"},alive)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "",
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "$ds",
+        "definition": "label_values(wf_loading_time_start{system=\"$system\"},status)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "",
+        "multi": true,
+        "name": "status",
+        "options": [],
+        "query": "label_values(wf_loading_time_start{system=\"$system\"},status)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "15m",
+          "value": "15m"
+        },
+        "hide": 2,
+        "label": null,
+        "name": "last",
+        "options": [
+          {
+            "selected": true,
+            "text": "15m",
+            "value": "15m"
+          }
+        ],
+        "query": "15m",
+        "skipUrlSync": false,
+        "type": "constant"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "wf_status_active",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "INIT",
+            "value": "INIT"
+          },
+          {
+            "selected": false,
+            "text": "PREREQ",
+            "value": "PREREQ"
+          },
+          {
+            "selected": false,
+            "text": "PARAM",
+            "value": "PARAM"
+          },
+          {
+            "selected": false,
+            "text": "TIME-WAIT",
+            "value": "TIME-WAIT"
+          },
+          {
+            "selected": false,
+            "text": "EVENT-WAIT",
+            "value": "EVENT-WAIT"
+          },
+          {
+            "selected": false,
+            "text": "LOCK-WAIT",
+            "value": "LOCK-WAIT"
+          },
+          {
+            "selected": false,
+            "text": "START",
+            "value": "START"
+          },
+          {
+            "selected": false,
+            "text": "RUNNING",
+            "value": "RUNNING"
+          }
+        ],
+        "query": "INIT, PREREQ, PARAM, TIME-WAIT, EVENT-WAIT, LOCK-WAIT, START, RUNNING",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "wf_status_success",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "SUCCESS",
+            "value": "SUCCESS"
+          }
+        ],
+        "query": "SUCCESS",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "wf_status_error",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "ERROR",
+            "value": "ERROR"
+          },
+          {
+            "selected": false,
+            "text": "ERRORCHECK",
+            "value": "ERRORCHECK"
+          }
+        ],
+        "query": "ERROR, ERRORCHECK",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": "8h",
+          "value": "8h"
+        },
+        "hide": 2,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "last_h",
+        "options": [
+          {
+            "selected": true,
+            "text": "8h",
+            "value": "8h"
+          }
+        ],
+        "query": "8h",
+        "skipUrlSync": false,
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "",
+  "title": "[BT] datamart",
+  "uid": "FUXizD9Wk",
+  "version": 15
+}

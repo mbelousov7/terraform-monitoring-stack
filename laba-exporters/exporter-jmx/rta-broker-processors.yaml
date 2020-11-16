@@ -1,0 +1,21 @@
+---
+startDelaySeconds: 0
+HOSTPORT
+JMXURL
+SSL
+USERNAME
+PASSWORD
+lowercaseOutputName: true
+lowercaseOutputLabelNames: true
+whitelistObjectNames:
+  - 'org.apache.camel:context=RTA Broker,type=processors,name=*'
+blacklistObjectNames: []
+rules:
+- pattern: 'org.apache.camel<context=RTA Broker, type=([a-zA-Z]+), name="([a-zA-Z0-9\s-.:/\\]+)"><>(\w+):'
+  attrNameSnakeCase: true
+  name: rta_broker_jmx_$1_$3
+  labels:
+    type: $1
+    name: $2
+    service: rta
+  type: GAUGE

@@ -1,0 +1,103 @@
+---
+startDelaySeconds: 0
+HOSTPORT
+JMXURL
+SSL
+USERNAME
+PASSWORD
+lowercaseOutputName: true
+lowercaseOutputLabelNames: true
+whitelistObjectNames:
+  - 'com.jolbox.bonecp:*'
+  - 'java.lang:type=GarbageCollector,name=*'
+  - 'java.lang:type=MemoryPool,name=CMS Old Gen,*'
+  - 'java.lang:type=MemoryPool,name=CMS Perm Gen'
+  - 'java.lang:type=MemoryPool,name=Perm Gen'
+  - 'java.lang:type=MemoryPool,name=PS Old Gen'
+  - 'java.lang:type=MemoryPool,name=Tenured Gen'
+  - 'java.lang:type=MemoryPool,name=Code Cache'
+  - 'java.lang:type=Memory'
+  - 'java.lang:type=OperatingSystem*'
+  - 'java.lang:type=ClassLoading'
+  - 'java.lang:type=Compilation'
+  - 'java.lang:type=Runtime'
+  - 'java.lang:type=Threading'
+
+blacklistObjectNames: []
+rules:
+- pattern: 'com.jolbox.bonecp<type=(BoneCP)><>([a-zA-Z\s_]*): (\d+)'
+  name: hadoop_sentry_$1_$2
+  labels:
+    service: sentry
+  type: GAUGE
+#Далее стандартные метрики для JMX приложений
+
+- pattern: 'java.lang<type=(Memory)><([a-zA-Z\s]*)>(used|committed|max|init): (\d+)'
+  name: jmx_java_lang_$1_$2_$3
+  labels:
+    service: sentry
+  type: GAUGE
+  value: $4
+
+- pattern: 'java.lang<type=(Memory|Runtime|Threading)><([a-zA-Z\s]*)>([a-zA-Z\s])<>(used|committed|max|init): (\d+)'
+  name: jmx_java_lang_$1_$2_$3
+  labels:
+    service: sentry
+  type: GAUGE
+
+- pattern: 'java.lang<type=(OperatingSystem)><>([a-zA-Z\s]*): (\d+)'
+  name: jmx_java_lang_$1_$2
+  labels:
+    service: sentry
+  type: GAUGE
+
+- pattern: 'java.lang<type=(ClassLoading)><>(UnloadedClassCount|TotalLoadedClassCount|LoadedClassCount): (\d+)'
+  name: jmx_java_lang_$1_$2
+  labels:
+    service: sentry
+  type: COUNTER
+
+- pattern: 'java.lang<type=(Compilation)><>(TotalCompilationTime|Name): (\d+)'
+  name: jmx_java_lang_$1_$2
+  labels:
+    service: sentry
+  type: GAUGE
+
+- pattern: 'java.lang<type=(Runtime)><>(VmVersion|VmName|Uptime): (\d+)'
+  name: jmx_java_lang_$1_$2
+  labels:
+    service: sentry
+  type: GAUGE
+
+- pattern: 'java.lang<type=(Threading)><>(TotalStartedThreadCount|ThreadCount|PeakThreadCount|DaemonThreadCount): (\d+)'
+  name: jmx_java_lang_$1_$2
+  labels:
+    service: sentry
+  type: GAUGE
+
+- pattern: 'java.lang<type=(GarbageCollector), name=([a-zA-Z\s0-9]*)><>(CollectionTime): (\d+)'
+  name: jmx_java_lang_$1_$3
+  labels:
+    name: $2
+    service: sentry
+  type: GAUGE
+
+- pattern: 'java.lang<type=(GarbageCollector), name=([a-zA-Z\s0-9]*)><>(CollectionCount): (\d+)'
+  name: jmx_java_lang_$1_$3
+  labels:
+    name: $2
+    service: sentry
+  type: COUNTER
+
+- pattern: 'java.lang<type=(MemoryPool), name=([a-zA-Z\s]*)><([a-zA-Z\s]*)>(committed|max|used): (\d+)'
+  name: jmx_java_lang_$1_$3_$4
+  labels:
+    name: $2
+    service: sentry
+  type: GAUGE
+
+- pattern: 'java.lang<type=(Memory)><>(ObjectPendingFinalizationCount): (\d+)'
+  name: jmx_java_lang_$1_$2
+  labels:
+    service: sentry
+  type: GAUGE

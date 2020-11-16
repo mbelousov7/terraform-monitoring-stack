@@ -1,0 +1,33 @@
+---
+#roletype:resourcemanager-q2
+startDelaySeconds: 0
+HOSTPORT
+JMXURL
+SSL
+USERNAME
+PASSWORD
+lowercaseOutputName: true
+lowercaseOutputLabelNames: true
+whitelistObjectNames:
+  - 'Hadoop:service=ResourceManager,name=QueueMetrics,q0=root,q1=*,q2=*'
+
+blacklistObjectNames: []
+rules:
+- pattern: 'Hadoop<service=(ResourceManager), name=(QueueMetrics), q0=(root), q1=([\w]+), q2=([\w]+)><>(\w+): (\d+)'
+  attrNameSnakeCase: true
+  name: hadoop_yarn_jmx_$6
+  labels:
+    name: $2
+    q0: $3
+    q1: $4
+    q2: $5
+    q3: "null"
+    q4: "null"
+    service: yarn
+  type: GAUGE
+
+#- pattern: '[a-z]*'
+#  name: hadoop_yarn_jmx_debug
+#  labels:
+#    debug: $0
+#  type: GAUGE

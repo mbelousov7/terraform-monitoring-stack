@@ -27,6 +27,12 @@ variable "monitoring_user" {
   default     = "prometheus"
 }
 
+variable "exporter_jmx_container_image" {
+  description = "jmx exporter image path"
+  type        = string
+}
+
+
 variable "monitoring_password" {
   description = "password for monitoring_user"
   type        = string

@@ -24,8 +24,8 @@ module "prometheus" {
   name = each.value.name
   container_port = var.prometheus_port
   container_image = "prom/prometheus:latest"
-  config_maps_list = each.value.config_maps_list
-  secret_maps_list = lookup(each.value, "secret_maps_list", {})
+  config_maps_list = lookup(each.value, "config_maps_list", [])
+  secret_maps_list = lookup(each.value, "secret_maps_list", [])
   container_resources_requests_cpu = lookup(each.value, "container_resources_requests_cpu", "200m")
   container_resources_limits_cpu = lookup(each.value, "container_resources_limits_cpu", "400m")
   container_resources_requests_memory = lookup(each.value, "container_resources_requests_memory", "254Mi")
