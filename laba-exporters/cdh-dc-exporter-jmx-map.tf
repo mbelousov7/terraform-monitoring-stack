@@ -34,10 +34,9 @@ locals {
       // то можем замаунтить поверх свои конфиг мапу
       config_maps_list = [
         {
-          mount_path = "/opt/exporter-jmx/configs/"
-          name = "config"
-          config_map_name = "default"
-          config_map_data = {
+          map_name = "config"
+          map_path = "/opt/exporter-jmx/configs/"      
+          map_data = {
             "default.yaml" = file("./exporter-jmx/default.yaml")
           }
         }
