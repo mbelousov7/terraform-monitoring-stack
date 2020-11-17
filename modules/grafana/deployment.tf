@@ -68,41 +68,42 @@ resource "kubernetes_deployment" "grafana" {
           }
 
           dynamic "volume_mount" {
-            for_each = local.config_maps_list
+            for_each = {for map in local.config_maps_list:  map.map_name => map if can(map.map_name)}
             content {
-              mount_path  = volume_mount.value.mount_path
-              name = volume_mount.value.name
+              mount_path  = volume_mount.value.map_path
+              name = volume_mount.value.map_name
             }
           }
           dynamic "volume_mount" {
-            for_each = {for secret in local.secret_maps_list:  secret.name => secret if can(secret.secret_name)}
+            for_each = {for map in local.secret_maps_list:  map.map_name => map if can(map.map_name)}
             content {
-              mount_path  = volume_mount.value.mount_path
-              name = volume_mount.value.name
+              mount_path  = volume_mount.value.map_path
+              name = volume_mount.value.map_name
             }
           }
         }
 
         dynamic "volume" {
-          for_each = local.config_maps_list
+          for_each = {for map in local.config_maps_list:  map.map_name => map if can(map.map_name)}
           content {
-            name = volume.value.name
+            name = volume.value.map_name
             config_map {
-              name = "${var.name}-${volume.value.config_map_name}"
+              name = "${var.name}-${volume.value.map_name}"
               default_mode = "0644"
             }
           }
         }
         dynamic "volume" {
-          for_each = {for secret in local.secret_maps_list:  secret.name => secret if can(secret.secret_name)}
+          for_each = {for map in local.secret_maps_list:  map.map_name => map if can(map.map_name)}
           content {
-            name = volume.value.name
+            name = volume.value.map_name
             secret {
-              secret_name = "${var.name}-${volume.value.secret_name}"
+              secret_name = "${var.name}-${volume.value.map_name}"
               default_mode = "0644"
             }
           }
         }
+
       }
   }
  }

@@ -1,0 +1,23 @@
+apiVersion: 1
+
+providers:
+- name: 'main'
+  orgId: 1
+  folder: 'main'
+  type: file
+  disableDeletion: false
+  editable: false
+  updateIntervalSeconds: 60
+  options:
+    path: /var/lib/grafana/dashboards/main
+    foldersFromFilesStructure: false
+- name: 'service'
+  orgId: 1
+  folder: 'service'
+  type: file
+  disableDeletion: false
+  editable: false
+  updateIntervalSeconds: 60
+  options:
+    path: /var/lib/grafana/dashboards/service
+    foldersFromFilesStructure: false

@@ -20,30 +20,40 @@ locals {
         "ssl_certificate.crt" = file("./secrets/grafana.crt")
         "ssl_certificate_key.key" = file("./secrets/grafana.key")
       }
+
       config_maps_list = [
         {
-          mount_path = "/etc/grafana/provisioning/datasources1"
-          name = "config-provisioning-datasources1"
-          config_map_name = "config-provisioning-datasources1"
-          config_map_data = {
-            "datasources.yaml" = file("./grafana/datasources.yaml")
+          map_name = "config-provisioning-dashboards"
+          map_path = "/etc/grafana/provisioning/dashboards"
+          map_data = {
+            "datasources.yaml" = file("./grafana/dashboards.yaml")
           }
         },
+        //main dashboards start
         {
-          mount_path = "/etc/grafana_config"
-          name = "config-grafana"
-          config_map_name = "config-grafana"
-          config_map_data = {
-            "grafana.ini" = file("./grafana/grafana.ini")
+          map_name = "config-provisioning-dashboards-main-node-os"
+          map_path = "/var/lib/grafana/dashboards/main/node-os"
+          map_data = {
+            "node-os.json" = file("./grafana/dashboards/main/node-os.json")
+          }
+        },
+        //main dashboards end
+        //services dashboards start
+        {
+          map_name = "config-provisioning-dashboards-service-clickhouse"
+          map_path = "/var/lib/grafana/dashboards/service/service-clickhouse"
+          map_data = {
+            "service-clickhouse.json" = file("./grafana/dashboards/services/service-clickhouse.json")
           }
         }
+        //services dashboards end
       ]
+
       secret_maps_list = [
         {
-          mount_path = "/etc/grafana/provisioning/datasources"
-          name = "config-provisioning-datasources"
-          secret_name = "config-provisioning-datasources"
-          secret_data = {
+          map_name = "config-provisioning-datasources"
+          map_path = "/etc/grafana/provisioning/datasources"
+          map_data = {
             "datasources.yaml" = file("./grafana/datasources.yaml")
           }
         }

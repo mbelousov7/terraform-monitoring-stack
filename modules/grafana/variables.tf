@@ -103,18 +103,18 @@ variable "service_type" {
 variable "config_maps_list" {
   description = "list config maps and volumes"
   type = list(object({
-  mount_path = string
-  name = string
-  config_map_name = string
-  config_map_data = map(string)
-}))
+    map_name = string
+    map_path = string
+    map_data = map(string)
+  }))
+  default = []
 ## Default is being set in main.tf
 #default = [
 #  {
-#    mount_path = "/etc/grafana"
-#    name = "config-main-volume"
+#    map_path = "/etc/grafana"
+#    map_name = "config-main-volume"
 #    config_map_name = "grafana-config-main"
-#    config_map_data = {}
+#    map_data = {}
 #  }
 #]
 }
@@ -122,20 +122,11 @@ variable "config_maps_list" {
 variable "secret_maps_list" {
   description = "list secret maps and volumes"
   type = list(object({
-  mount_path = string
-  name = string
-  secret_name = string
-  secret_data = map(string)
-}))
-## Default is being set in main.tf
-#default = [
-#  {
-#    mount_path = "/etc/grafana/secrets"
-#    name = "config-secret-volume"
-#    secret_name = "grafana-secret"
-#    secret_data = {}
-#  }
-#]
+    map_name = string
+    map_path = string
+    map_data = map(string)
+  }))
+  default = []
 }
 
 variable "expose" {
