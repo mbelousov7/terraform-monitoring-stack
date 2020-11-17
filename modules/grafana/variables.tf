@@ -36,15 +36,22 @@ variable "env" {
   description = "main pod enviroment variables, values provided from outside the module"
   type        = map
   default     = {
-    GF_SECURITY_ADMIN_USER = "admin"
-    GF_SECURITY_ADMIN_PASSWORD = "password"
     GF_PATHS_PROVISIONING = "/etc/grafana/provisioning"
-    GF_PATHS_CONFIG = "/etc/grafana_config/grafana.ini"
-    GF_DATABASE_USER = "admin"
-    GF_DATABASE_PASSWORD = "password"
+    GF_PATHS_CONFIG = "/etc/grafana/grafana.ini"
     GF_DATABASE_HOST = "grafana-db"
     GF_DATABASE_NAME = "grafana"
     GF_DATABASE_TYPE = "sqlite3"
+  }
+}
+
+variable "env_secret" {
+  description = "main pod secret enviroment variables, values provided from outside the module"
+  type        = map
+  default     = {
+    GF_SECURITY_ADMIN_USER = "admin"
+    GF_SECURITY_ADMIN_PASSWORD = "password"
+    GF_DATABASE_USER = "admin"
+    GF_DATABASE_PASSWORD = "password"
   }
 }
 

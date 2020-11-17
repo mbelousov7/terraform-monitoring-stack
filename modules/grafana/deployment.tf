@@ -41,6 +41,12 @@ resource "kubernetes_deployment" "grafana" {
             }
           }
 
+          env_from {
+            secret_ref {
+              name = "${var.name}-env"
+            }
+          }
+
           resources {
             limits {
               cpu    = var.container_resources_limits_cpu
@@ -49,6 +55,15 @@ resource "kubernetes_deployment" "grafana" {
             requests {
               cpu    = var.container_resources_requests_cpu
               memory = var.container_resources_requests_memory
+            }
+          }
+
+          liveness_probe {
+            timeout_seconds = 60
+            period_seconds = 60
+            failure_threshold = 1
+            exec {
+              command = ["curl", "${var.name}.${var.namespace}.svc.cluster.local:3000"]
             }
           }
 

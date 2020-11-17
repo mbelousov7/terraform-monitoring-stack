@@ -9,8 +9,8 @@ locals {
       container_resources_limits_memory = "1024Mi"
       ssl_data = {
         #cert and key for https configuration in nginx-ingress
-        "ssl_certificate.crt" = file("./secrets/nginx.crt")
-        "ssl_certificate_key.key" = file("./secrets/nginx.key")
+        "ssl_certificate.crt" = file("./secrets/prometheus-infra.crt")
+        "ssl_certificate_key.key" = file("./secrets/prometheus-infra.key")
       }
       config_maps_list = [
         {

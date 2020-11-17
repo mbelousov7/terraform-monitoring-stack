@@ -38,6 +38,13 @@ variable "pushgateway_container_port" {
   default     = 9091
 }
 
+variable "grafana_container_image" {
+  description = "image path"
+  type        = string
+}
+
+
+
 # ------------------------------------------------------------------------------
 # OPTIONAL PARAMETERS
 # ------------------------------------------------------------------------------
@@ -63,4 +70,8 @@ variable "route_path_for_config" {
   type        = string
   description = "variable resolver for upstream in server.conf depends on instance of kubernetes cluster "
   default     = ".svc.cluster.local"
+}
+
+variable "grafana_env_secret" {
+  description = "grafana secret enviroment variables"
 }

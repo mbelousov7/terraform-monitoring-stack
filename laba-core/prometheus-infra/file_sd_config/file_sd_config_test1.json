@@ -5,8 +5,7 @@
     },
     "targets": [
       "pushgateway:9091",
-      "prometheus-cdh:9090",
-      "prometheus-sdp:9090"
+      "prometheus-infra:9090",
     ]
   }
 ]

@@ -52,6 +52,15 @@ resource "kubernetes_deployment" "prometheus" {
             }
           }
 
+          liveness_probe {
+            timeout_seconds = 60
+            period_seconds = 60
+            failure_threshold = 1
+            exec {
+              command = ["curl", "${var.name}.${var.namespace}.svc.cluster.local:9090"]
+            }
+          }
+
           volume_mount {
               mount_path = var.dataPath
               name       = "storage-volume"

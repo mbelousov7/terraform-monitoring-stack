@@ -89,7 +89,7 @@ module "grafana" {
   name = each.value.name
   config_maps_list = lookup(each.value, "config_maps_list", [])
   secret_maps_list = lookup(each.value, "secret_maps_list", [])
-  container_image = "grafana/grafana:latest"
+  container_image = var.grafana_container_image
   expose = "ingress"
   service_type = "LoadBalancer"
   container_resources_requests_cpu = lookup(each.value, "container_resources_requests_cpu", "100m")

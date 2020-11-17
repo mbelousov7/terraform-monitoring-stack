@@ -7,17 +7,26 @@ locals {
       container_resources_limits_cpu = "200m"
       container_resources_requests_memory = "128M"
       container_resources_limits_memory = "264M"
+      env = {
+        GF_PATHS_PROVISIONING = "/etc/grafana/provisioning"
+        GF_PATHS_CONFIG = "/etc/grafana/grafana.ini"
+        GF_DATABASE_HOST = "grafana-db"
+        GF_DATABASE_NAME = "grafana"
+        GF_DATABASE_TYPE = "sqlite3"
+      }
+      //grafana_env_secret in secrets/secrets.tfvars
+      env_secret = var.grafana_env_secret
       ssl_data = {
-        "ssl_certificate.crt" = file("./secrets/nginx.crt")
-        "ssl_certificate_key.key" = file("./secrets/nginx.key")
+        "ssl_certificate.crt" = file("./secrets/grafana.crt")
+        "ssl_certificate_key.key" = file("./secrets/grafana.key")
       }
       config_maps_list = [
         {
-          mount_path = "/etc/grafana_provisioning"
-          name = "config-provisioning"
-          config_map_name = "config-provisioning"
+          mount_path = "/etc/grafana/provisioning/datasources1"
+          name = "config-provisioning-datasources1"
+          config_map_name = "config-provisioning-datasources1"
           config_map_data = {
-            "prometheus.yaml" = file("./prometheus-infra/prometheus.yaml")
+            "datasources.yaml" = file("./grafana/datasources.yaml")
           }
         },
         {
@@ -31,11 +40,11 @@ locals {
       ]
       secret_maps_list = [
         {
-          mount_path = "/etc/grafana_secrets"
-          name = "config-secret"
-          secret_name = "config-secret"
+          mount_path = "/etc/grafana/provisioning/datasources"
+          name = "config-provisioning-datasources"
+          secret_name = "config-provisioning-datasources"
           secret_data = {
-            ".password" = var.monitoring_password
+            "datasources.yaml" = file("./grafana/datasources.yaml")
           }
         }
       ]
