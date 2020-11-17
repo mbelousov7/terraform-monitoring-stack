@@ -18,7 +18,7 @@ variable "labels" {
 
 variable "replicas" {
   description = "replicas count"
-  type        = string
+  type        = number
   default     = 1
 }
 
@@ -55,9 +55,23 @@ variable "retentionSize" {
 }
 
 variable "container_port" {
-  type        = string
-  default     = "9090"
+  type        = number
+  default     = 9090
 }
+
+/*
+variable "liveness_probe" {
+  default = {
+    timeout_seconds = 300
+    period_seconds = 300
+    failure_threshold = 10
+    http_get {
+      path = "/targets"
+      port = 9090
+    }
+  }
+}
+*/
 
 variable "container_resources_requests_cpu" {
   type        = string
@@ -79,6 +93,21 @@ variable "container_resources_limits_memory" {
   default     = "0.5Gi"
 }
 
+variable "liveness_probe_timeout_seconds" {
+  type        = number
+  default     = 30
+}
+
+variable "liveness_probe_period_seconds" {
+  type        = number
+  default     = 60
+}
+
+variable "liveness_probe_failure_threshold" {
+  type        = number
+  default     = 2
+}
+
 variable "service_type" {
   type        = string
   default     = "ClusterIP"
@@ -93,40 +122,28 @@ variable "dataVolume" {
 
 variable "config_maps_list" {
   description = "list config maps and volumes"
-  type = list(object({
-  mount_path = string
-  name = string
-  config_map_name = string
-  config_map_data = map(string)
-}))
+  type = list
+#  (object({
+#  mount_path = string
+#  name = string
+#  config_map_name = string
+#  config_map_data = map(string)
+#}))
 ## Default is being set in main.tf
-default = [
-  {
-    mount_path = "/etc/prometheus"
-    name = "config-main-volume"
-    config_map_name = "prometheus-config-main"
-    config_map_data = {}
-  }
-]
+default = []
 }
 
 variable "secret_maps_list" {
   description = "list secret maps and volumes"
-  type = list(object({
-  mount_path = string
-  name = string
-  secret_name = string
-  secret_data = map(string)
-}))
+  type = list
+  #(object({
+  #mount_path = string
+  #name = string
+  #secret_name = string
+  #secret_data = map(string)
+#}))
 ## Default is being set in main.tf
-default = [
-  {
-    mount_path = "/etc/prometheus/secrets"
-    name = "config-secret-volume"
-    secret_name = "prometheus-secret"
-    secret_data = {}
-  }
-]
+default = []
 }
 
 variable "expose" {
@@ -144,6 +161,6 @@ variable "nginx_ingress_service_name" {
 
 variable "nginx_ingress_port" {
   description = "nginx_ingress_port"
-  type        = string
-  #default     = 8080
+  type        = number
+  default     = 8080
 }

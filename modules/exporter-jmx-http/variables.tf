@@ -4,7 +4,7 @@ variable "namespace" {
   default     = "monitoring"
 }
 
-variable "app_name" {
+variable "name" {
   description = "app(deployment) name"
   type        = string
   default     = "exporter-jmx"
@@ -32,11 +32,6 @@ variable "container_image" {
   type        = string
 }
 
-variable "container_name" {
-  description = "exporter-jmx pod name"
-  type        = string
-}
-
 variable "container_port" {
   type        = string
   default     = "5555"
@@ -44,23 +39,39 @@ variable "container_port" {
 
 variable "container_resources_requests_cpu" {
   type        = string
-  default     = "0.02"
+  default     = "50m"
 }
 
 variable "container_resources_requests_memory" {
   type        = string
-  default     = "0.1Gi"
+  default     = "128Mi"
 }
 
 variable "container_resources_limits_cpu" {
   type        = string
-  default     = "0.03"
+  default     = "100m"
 }
 
 variable "container_resources_limits_memory" {
   type        = string
-  default     = "0.2Gi"
+  default     = "254Mi"
 }
+
+variable "liveness_probe_timeout_seconds" {
+  type        = number
+  default     = 30
+}
+
+variable "liveness_probe_period_seconds" {
+  type        = number
+  default     = 60
+}
+
+variable "liveness_probe_failure_threshold" {
+  type        = number
+  default     = 2
+}
+
 
 variable "service_type" {
   type        = string
@@ -69,6 +80,12 @@ variable "service_type" {
 
 #exporter config variables
 
+variable "config_maps_list" {
+  description = "list config maps and volumes"
+  type = list
+  default = []
+}
+
 variable "system" {
   type        = string
 }
@@ -76,5 +93,5 @@ variable "system" {
 variable "env" {
   description = "main pod enviroment variables, values provided from outside the module"
   type        = map
-  default     = {}  
+  default     = {}
 }

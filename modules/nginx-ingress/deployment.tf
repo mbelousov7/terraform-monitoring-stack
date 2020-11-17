@@ -53,6 +53,15 @@ resource "kubernetes_deployment" "nginx-ingress" {
             }
           }
 
+          liveness_probe {
+            timeout_seconds = var.liveness_probe_timeout_seconds
+            period_seconds = var.liveness_probe_period_seconds
+            failure_threshold = var.liveness_probe_failure_threshold
+            exec {
+              command = ["curl", "${var.name}:${var.container_port}"]
+            }
+          }
+
           volume_mount {
             mount_path = "/etc/nginx/conf.d"
             name       = "config-volume"

@@ -17,6 +17,34 @@ variable "namespace" {
   type        = string
 }
 
+variable "prometheus_container_image" {
+  description = "image path"
+  type        = string
+}
+variable "prometheus_container_port" {
+  description = "prometheus port"
+  type        = number
+  default     = 9090
+}
+
+variable "pushgateway_container_image" {
+  description = "image path"
+  type        = string
+}
+
+variable "pushgateway_container_port" {
+  description = "pushgateway port, DO NOT CHANGE"
+  type        = number
+  default     = 9091
+}
+
+variable "grafana_container_image" {
+  description = "image path"
+  type        = string
+}
+
+
+
 # ------------------------------------------------------------------------------
 # OPTIONAL PARAMETERS
 # ------------------------------------------------------------------------------
@@ -32,24 +60,6 @@ variable "monitoring_password" {
   type        = string
 }
 
-variable "nginx_ingress_port" {
-  description = "nginx_ingress_port"
-  type        = string
-  default     = "8080"
-}
-
-variable "prometheus_port" {
-  description = "prometheus_port"
-  type        = string
-  default     = "9090"
-}
-
-variable "pushgateway_port" {
-  description = "pushgateway_port"
-  type        = string
-  default     = "9091"
-}
-
 variable "resolver" {
   type        = string
   description = "variable resolver for nginx"
@@ -60,4 +70,8 @@ variable "route_path_for_config" {
   type        = string
   description = "variable resolver for upstream in server.conf depends on instance of kubernetes cluster "
   default     = ".svc.cluster.local"
+}
+
+variable "grafana_env_secret" {
+  description = "grafana secret enviroment variables"
 }

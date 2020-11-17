@@ -1,12 +1,12 @@
 resource "kubernetes_deployment" "exporter" {
   timeouts {
-    create = "1m"
+    create = "2m"
     delete = "1m"
-    update = "1m"
+    update = "3m"
   }
 
   metadata {
-    name        = local.app_name
+    name        = var.name
     namespace   = var.namespace
     labels      = local.labels
   }
@@ -31,7 +31,7 @@ resource "kubernetes_deployment" "exporter" {
       spec {
         container {
           image = var.container_image
-          name  = local.app_name
+          name  = var.name
           args = [
           ]
 
@@ -53,7 +53,36 @@ resource "kubernetes_deployment" "exporter" {
             }
           }
 
+          liveness_probe {
+            timeout_seconds = var.liveness_probe_timeout_seconds
+            period_seconds = var.liveness_probe_period_seconds
+            failure_threshold = var.liveness_probe_failure_threshold
+            exec {
+              command = ["curl", "${var.name}:${var.container_port}"]
+            }
+          }
+
+          dynamic "volume_mount" {
+            for_each = local.config_maps_list
+            content {
+              mount_path  = volume_mount.value.mount_path
+              name = volume_mount.value.name
+            }
+          }
+
         }
+          dynamic "volume" {
+            for_each = local.config_maps_list
+            content {
+              name = volume.value.name
+              config_map {
+                name = "${var.name}-${volume.value.config_map_name}"
+                default_mode = "0644"
+              }
+            }
+          }
+
+
       }
   }
  }

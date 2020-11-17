@@ -16,7 +16,7 @@ variable "labels" {
 }
 
 variable "replicas" {
-  type        = string
+  type        = number
   default     = 1
 }
 
@@ -31,7 +31,7 @@ variable "container_image" {
 }
 
 variable "container_port" {
-  type        = string
+  type        = number
   default     = 8080
 }
 
@@ -53,6 +53,21 @@ variable "container_resources_limits_cpu" {
 variable "container_resources_limits_memory" {
   type        = string
   default     = "0.1Gi"
+}
+
+variable "liveness_probe_timeout_seconds" {
+  type        = number
+  default     = 30
+}
+
+variable "liveness_probe_period_seconds" {
+  type        = number
+  default     = 60
+}
+
+variable "liveness_probe_failure_threshold" {
+  type        = number
+  default     = 2
 }
 
 variable "service_type" {
@@ -102,7 +117,6 @@ variable "route_path_for_config" {
 }
 
 variable "app_port" {
-  type        = string
   description = "target application port"
 }
 

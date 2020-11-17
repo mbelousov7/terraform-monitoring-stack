@@ -1,7 +1,7 @@
 resource "kubernetes_ingress" "nginx-ingress" {
   count = var.expose == "ingress" ? 1 : 0
   metadata {
-    name = var.name
+    name = "${var.name}-ingress"
     namespace = var.namespace
     labels = local.labels
   }

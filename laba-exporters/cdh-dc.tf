@@ -3,11 +3,27 @@ module "exporter-jmx-cdh-dc" {
   source = "../modules/exporter-jmx-http"
   namespace = var.namespace
   system = each.value.system
-  container_image = "drjetf/exporter-jmx:v1.4.0"
-  container_name = each.key
+  config_maps_list = lookup(each.value, "config_maps_list", [])
+  container_image = var.exporter_jmx_container_image
+  name = each.key
   env = each.value.env
-  container_resources_requests_cpu = lookup(each.value, "container_resources_requests_cpu", "100m")
-  container_resources_limits_cpu = lookup(each.value, "container_resources_limits_cpu", "200m")
-  container_resources_requests_memory = lookup(each.value, "container_resources_requests_memory", "128Mi")
-  container_resources_limits_memory = lookup(each.value, "container_resources_limits_memory", "264Mi")
+  container_resources_requests_cpu = lookup(
+    each.value, "container_resources_requests_cpu",
+    lookup(local.exporter_jmx_roles_resources_map[each.value.env.JMX_ROLE], "container_resources_requests_cpu")
+  )
+  container_resources_limits_cpu = lookup(
+    each.value, "container_resources_limits_cpu",
+    lookup(local.exporter_jmx_roles_resources_map[each.value.env.JMX_ROLE], "container_resources_limits_cpu")
+  )
+
+  container_resources_requests_memory = lookup(
+    each.value, "container_resources_requests_memory",
+    lookup(local.exporter_jmx_roles_resources_map[each.value.env.JMX_ROLE], "container_resources_requests_memory")
+  )
+
+  container_resources_limits_memory = lookup(
+    each.value, "container_resources_limits_memory",
+    lookup(local.exporter_jmx_roles_resources_map[each.value.env.JMX_ROLE], "container_resources_limits_memory")
+  )
+
 }

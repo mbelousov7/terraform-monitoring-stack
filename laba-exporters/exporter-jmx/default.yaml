@@ -1,0 +1,62 @@
+---
+startDelaySeconds: 0
+HOSTPORT
+JMXURL
+SSL
+USERNAME
+PASSWORD
+lowercaseOutputName: true
+lowercaseOutputLabelNames: true
+
+rules:
+#Generic JMX metrics
+- pattern: 'java.lang<type=(Memory)><([a-zA-Z\s]*)>(used|committed|max|init): (\d+)'
+  name: jmx_java_lang_$1_$2_$3
+  type: GAUGE
+  value: $4
+
+- pattern: 'java.lang<type=(Memory|Runtime|Threading)><([a-zA-Z\s]*)>([a-zA-Z\s])<>(used|committed|max|init): (\d+)'
+  name: jmx_java_lang_$1_$2_$3
+  type: GAUGE
+
+- pattern: 'java.lang<type=(OperatingSystem)><>([a-zA-Z\s]*): (\d+)'
+  name: jmx_java_lang_$1_$2
+  type: GAUGE
+
+- pattern: 'java.lang<type=(ClassLoading)><>(UnloadedClassCount|TotalLoadedClassCount|LoadedClassCount): (\d+)'
+  name: jmx_java_lang_$1_$2
+  type: COUNTER
+
+- pattern: 'java.lang<type=(Compilation)><>(TotalCompilationTime|Name): (\d+)'
+  name: jmx_java_lang_$1_$2
+  type: GAUGE
+
+- pattern: 'java.lang<type=(Runtime)><>(VmVersion|VmName|Uptime): (\d+)'
+  name: jmx_java_lang_$1_$2
+  type: GAUGE
+
+- pattern: 'java.lang<type=(Threading)><>(TotalStartedThreadCount|ThreadCount|PeakThreadCount|DaemonThreadCount): (\d+)'
+  name: jmx_java_lang_$1_$2
+  type: GAUGE
+
+- pattern: 'java.lang<type=(GarbageCollector), name=([a-zA-Z\s0-9]*)><>(CollectionTime): (\d+)'
+  name: jmx_java_lang_$1_$3
+  labels:
+    name: $2
+  type: GAUGE
+
+- pattern: 'java.lang<type=(GarbageCollector), name=([a-zA-Z\s0-9]*)><>(CollectionCount): (\d+)'
+  name: jmx_java_lang_$1_$3
+  labels:
+    name: $2
+  type: COUNTER
+
+- pattern: 'java.lang<type=(MemoryPool), name=([a-zA-Z\s]*)><([a-zA-Z\s]*)>(committed|max|used): (\d+)'
+  name: jmx_java_lang_$1_$3_$4
+  labels:
+    name: $2
+  type: GAUGE
+
+- pattern: 'java.lang<type=(Memory)><>(ObjectPendingFinalizationCount): (\d+)'
+  name: jmx_java_lang_$1_$2
+  type: GAUGE

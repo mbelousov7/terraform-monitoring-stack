@@ -16,10 +16,9 @@ variable "labels" {
   default     = {}
 }
 
-
 variable "replicas" {
   description = "replicas count"
-  type        = string
+  type        = number
   default     = 1
 }
 
@@ -36,8 +35,8 @@ variable "strategy" {
 
 variable "container_port" {
   description = "pushgateway port, must not be changed"
-  type        = string
-  default     = "9091"
+  type        = number
+  default     = 9091
 }
 
 variable "container_resources_requests_cpu" {
@@ -60,6 +59,21 @@ variable "container_resources_limits_memory" {
   default     = "0.5Gi"
 }
 
+variable "liveness_probe_timeout_seconds" {
+  type        = number
+  default     = 30
+}
+
+variable "liveness_probe_period_seconds" {
+  type        = number
+  default     = 60
+}
+
+variable "liveness_probe_failure_threshold" {
+  type        = number
+  default     = 2
+}
+
 variable "service_type" {
   type        = string
   default     = "ClusterIP"
@@ -80,6 +94,6 @@ variable "nginx_ingress_service_name" {
 
 variable "nginx_ingress_port" {
   description = "nginx ingress port for application(not a application port)"
-  type        = string
+  type        = number
   default     = 8080
 }

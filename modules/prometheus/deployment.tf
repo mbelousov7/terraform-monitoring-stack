@@ -1,8 +1,8 @@
 resource "kubernetes_deployment" "prometheus" {
   timeouts {
-    create = "5m"
+    create = "2m"
     delete = "2m"
-    update = "5m"
+    update = "3m"
   }
 
   metadata {
@@ -49,6 +49,15 @@ resource "kubernetes_deployment" "prometheus" {
             requests {
               cpu    = var.container_resources_requests_cpu
               memory = var.container_resources_requests_memory
+            }
+          }
+
+          liveness_probe {
+            timeout_seconds = var.liveness_probe_timeout_seconds
+            period_seconds = var.liveness_probe_period_seconds
+            failure_threshold = var.liveness_probe_failure_threshold
+            exec {
+              command = ["curl", "${var.name}:${var.container_port}"]
             }
           }
 

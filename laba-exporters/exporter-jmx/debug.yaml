@@ -1,0 +1,19 @@
+---
+startDelaySeconds: 0
+HOSTPORT
+JMXURL
+SSL
+USERNAME
+PASSWORD
+lowercaseOutputName: true
+lowercaseOutputLabelNames: true
+
+blacklistObjectNames: []
+rules:
+# Debug
+- pattern: '[a-z]*'
+#  attrNameSnakeCase: true
+  name: sentry_debug
+  labels:
+    debug: $0
+  type: GAUGE
