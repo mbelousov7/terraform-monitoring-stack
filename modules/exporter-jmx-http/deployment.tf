@@ -53,6 +53,15 @@ resource "kubernetes_deployment" "exporter" {
             }
           }
 
+          liveness_probe {
+            timeout_seconds = var.liveness_probe_timeout_seconds
+            period_seconds = var.liveness_probe_period_seconds
+            failure_threshold = var.liveness_probe_failure_threshold
+            exec {
+              command = ["curl", "${var.name}:${var.container_port}"]
+            }
+          }
+
           dynamic "volume_mount" {
             for_each = local.config_maps_list
             content {

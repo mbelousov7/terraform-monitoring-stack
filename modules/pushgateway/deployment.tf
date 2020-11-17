@@ -44,6 +44,16 @@ resource "kubernetes_deployment" "prometheus_pushgateway" {
               memory = var.container_resources_requests_memory
             }
           }
+
+          liveness_probe {
+            timeout_seconds = var.liveness_probe_timeout_seconds
+            period_seconds = var.liveness_probe_period_seconds
+            failure_threshold = var.liveness_probe_failure_threshold
+            exec {
+              command = ["curl", "${var.name}:${var.container_port}"]
+            }
+          }
+          
         }
 
       }

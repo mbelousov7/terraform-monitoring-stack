@@ -59,6 +59,21 @@ variable "container_resources_limits_memory" {
   default     = "0.5Gi"
 }
 
+variable "liveness_probe_timeout_seconds" {
+  type        = number
+  default     = 30
+}
+
+variable "liveness_probe_period_seconds" {
+  type        = number
+  default     = 60
+}
+
+variable "liveness_probe_failure_threshold" {
+  type        = number
+  default     = 2
+}
+
 variable "service_type" {
   type        = string
   default     = "ClusterIP"
