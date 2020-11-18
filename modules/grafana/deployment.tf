@@ -63,7 +63,7 @@ resource "kubernetes_deployment" "grafana" {
             period_seconds = var.liveness_probe_period_seconds
             failure_threshold = var.liveness_probe_failure_threshold
             exec {
-              command = ["curl", "https://${var.name}:${var.container_port}"]
+              command = ["curl", "-k", "${var.env.GF_SERVER_PROTOCOL}://${var.name}:${var.container_port}"]
             }
           }
 
