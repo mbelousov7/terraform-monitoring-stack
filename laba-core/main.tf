@@ -87,8 +87,10 @@ module "grafana" {
   depends_on = [ kubernetes_namespace.monitoring ]
   namespace = var.namespace
   name = each.value.name
+  env = each.value.env
   config_maps_list = lookup(each.value, "config_maps_list", [])
   secret_maps_list = lookup(each.value, "secret_maps_list", [])
+  ssl_data = lookup(each.value, "ssl_data", {})
   container_image = var.grafana_container_image
   expose = "ingress"
   service_type = "LoadBalancer"

@@ -1,5 +1,13 @@
 apiVersion: 1
 
 datasources:
-  - name: TestData DB
-    type: testdata
+- name: federation
+  type: prometheus
+  access: proxy
+  orgId: 1
+  url: http://prometheus-infra:9090
+  version: 1
+  isDefault: true
+  editable: false
+  jsonData:
+    timeInterval: '60s'

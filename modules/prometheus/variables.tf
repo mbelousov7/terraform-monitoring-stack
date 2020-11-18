@@ -122,28 +122,31 @@ variable "dataVolume" {
 
 variable "config_maps_list" {
   description = "list config maps and volumes"
-  type = list
-#  (object({
-#  mount_path = string
-#  name = string
-#  config_map_name = string
-#  config_map_data = map(string)
-#}))
+  type = list(object({
+    map_name = string
+    map_path = string
+    map_data = map(string)
+  }))
+  default = []
 ## Default is being set in main.tf
-default = []
+#default = [
+#  {
+#    map_path = "/etc/grafana"
+#    map_name = "config-main-volume"
+#    config_map_name = "grafana-config-main"
+#    map_data = {}
+#  }
+#]
 }
 
 variable "secret_maps_list" {
   description = "list secret maps and volumes"
-  type = list
-  #(object({
-  #mount_path = string
-  #name = string
-  #secret_name = string
-  #secret_data = map(string)
-#}))
-## Default is being set in main.tf
-default = []
+  type = list(object({
+    map_name = string
+    map_path = string
+    map_data = map(string)
+  }))
+  default = []
 }
 
 variable "expose" {

@@ -1,11 +1,11 @@
 [
   {
     "labels": {
-      "job": "namespace"
+      "job": "node"
     },
     "targets": [
-      "pushgateway:9091",
       "prometheus-infra:9090",
+      "pushgateway:9091"
     ]
   }
 ]
