@@ -10,18 +10,28 @@ locals {
       env = {
         GF_PATHS_PROVISIONING = "/etc/grafana/provisioning"
         GF_PATHS_CONFIG = "/etc/grafana/grafana.ini"
-        GF_DATABASE_HOST = "grafana-db"
+        #GF_DATABASE_HOST = "grafana-db"
         GF_DATABASE_NAME = "grafana"
         GF_DATABASE_TYPE = "sqlite3"
+        GF_SERVER_PROTOCOL = "https"
+        GF_SERVER_CERT_FILE = "/etc/grafana/cert/grafana.crt"
+        GF_SERVER_CERT_KEY = "/etc/grafana/cert/grafana.key"
       }
       //grafana_env_secret in secrets/secrets.tfvars
       env_secret = var.grafana_env_secret
       ssl_data = {
-        "ssl_certificate.crt" = file("./secrets/grafana.crt")
-        "ssl_certificate_key.key" = file("./secrets/grafana.key")
+        "grafana.crt" = file("./secrets/grafana.crt")
+        "grafana.key" = file("./secrets/grafana.key")
       }
 
       config_maps_list = [
+        {
+          map_name = "config-provisioning-plugins"
+          map_path = "/etc/grafana/provisioning/plugins"
+          map_data = {
+            "plugins.yaml" = file("./grafana/plugins.yaml")
+          }
+        },
         {
           map_name = "config-provisioning-dashboards"
           map_path = "/etc/grafana/provisioning/dashboards"

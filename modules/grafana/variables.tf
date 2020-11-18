@@ -41,6 +41,9 @@ variable "env" {
     GF_DATABASE_HOST = "grafana-db"
     GF_DATABASE_NAME = "grafana"
     GF_DATABASE_TYPE = "sqlite3"
+    #GF_SERVER_PROTOCOL = "https"
+    #GF_SERVER_CERT_FILE = "/etc/grafana/cert/grafana.crt"
+    #GF_SERVER_KEY_FILE = "/etc/grafana/cert/grafana.key"
   }
 }
 
@@ -128,6 +131,13 @@ variable "secret_maps_list" {
   }))
   default = []
 }
+
+variable "ssl_data" {
+  description = "ssl cert and key"
+  default = {}
+}
+
+
 
 variable "expose" {
   description = "expose resource type(ingress for kubernetes or route for openshift)"

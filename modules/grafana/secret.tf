@@ -19,3 +19,13 @@ resource "kubernetes_secret" "grafana-secret-env" {
 
   #type = "kubernetes.io/basic-auth"
 }
+
+resource "kubernetes_secret" "ssl-secret" {
+  count = var.ssl_data != {} ? 1 : 0
+  metadata {
+    name = "${var.name}-ssl"
+    namespace = var.namespace
+    labels = local.labels
+  }
+  data = var.ssl_data
+}

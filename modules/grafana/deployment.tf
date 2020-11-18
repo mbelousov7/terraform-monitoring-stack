@@ -63,7 +63,7 @@ resource "kubernetes_deployment" "grafana" {
             period_seconds = var.liveness_probe_period_seconds
             failure_threshold = var.liveness_probe_failure_threshold
             exec {
-              command = ["curl", "${var.name}:${var.container_port}"]
+              command = ["curl", "https://${var.name}:${var.container_port}"]
             }
           }
 
@@ -81,6 +81,12 @@ resource "kubernetes_deployment" "grafana" {
               name = volume_mount.value.map_name
             }
           }
+
+          volume_mount {
+              mount_path = "/etc/grafana/cert"
+              name       = "cert-volume"
+          }
+
         }
 
         dynamic "volume" {
@@ -101,6 +107,14 @@ resource "kubernetes_deployment" "grafana" {
               secret_name = "${var.name}-${volume.value.map_name}"
               default_mode = "0644"
             }
+          }
+        }
+
+        volume {
+          name = "cert-volume"
+          secret {
+            secret_name = "${var.name}-ssl"
+            default_mode = "0644"
           }
         }
 
