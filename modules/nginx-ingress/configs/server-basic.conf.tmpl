@@ -11,7 +11,7 @@ server {
  location / {
    auth_basic "Restricted";
    auth_basic_user_file /etc/nginx/password/.htpasswd;
-   set $upstream http://${ server.name }.${ namespace }${ route_path_for_config }:${ app_port };
+   set $upstream http://${ server.name }.${ namespace }${ route_path_for_config }:${ server.app_port };
    proxy_pass $upstream;
  }
 }

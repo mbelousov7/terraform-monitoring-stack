@@ -116,12 +116,6 @@ variable "route_path_for_config" {
   default     = ".svc.cluster.local"
 }
 
-variable "app_port" {
-  description = "target application port"
-}
-
-
-
 variable "user" {
   description = "user"
   type        = string
@@ -131,5 +125,5 @@ variable "user" {
 variable "password" {
   description = "encrypted password"
   type        = string
-  default     = "$apr1$Zd4voubY$3fMVQZZuDbMIKSeCdPS2y."
+  default     = "$apr1$Zd4voubY$3fMVQZZuDbMIKSeCdPS2y." //admin
 }

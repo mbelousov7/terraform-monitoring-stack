@@ -1,8 +1,8 @@
-resource "kubernetes_deployment" "postgresql" {
+resource "kubernetes_deployment" "postgres" {
   timeouts {
-    create = "5m"
-    delete = "2m"
-    update = "5m"
+    create = "2m"
+    delete = "1m"
+    update = "2m"
   }
 
   metadata {

@@ -1,7 +1,6 @@
-.ymllocals {
-  //configs for multiple independed grafana's
-  grafana_list = [
-    {
+locals {
+  //configs for  grafana
+  grafana = {
       name = "grafana"
       container_resources_requests_cpu = "100m"
       container_resources_limits_cpu = "200m"
@@ -10,8 +9,6 @@
       env = {
         GF_PATHS_PROVISIONING = "/etc/grafana/provisioning"
         GF_PATHS_CONFIG = "/etc/grafana/grafana.ini"
-        GF_DATABASE_HOST = "grafana-db"
-        GF_DATABASE_NAME = "grafana"
         GF_DATABASE_TYPE = "postgres"
         GF_SERVER_PROTOCOL = "https"
         GF_SERVER_CERT_FILE = "/etc/grafana/cert/grafana.crt"
@@ -73,6 +70,5 @@
           }
         }
       ]
-    },
-  ]
+    }
 }

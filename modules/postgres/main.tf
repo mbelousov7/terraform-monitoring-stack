@@ -1,7 +1,7 @@
 locals {
   labels = merge (
     { name = var.name },
-    { module = "pushgateway" },
+    { module = "postgres" },
     var.labels
   )
 

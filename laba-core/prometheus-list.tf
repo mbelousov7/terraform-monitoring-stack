@@ -3,6 +3,7 @@ locals {
   prometheus_list = [
     {
       name = "prometheus-infra"
+      app_port = 9090
       container_resources_requests_cpu = "200m"
       container_resources_limits_cpu = "400m"
       container_resources_requests_memory = "512Mi"

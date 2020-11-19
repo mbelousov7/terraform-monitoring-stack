@@ -1,5 +1,5 @@
 variable "namespace" {
-  description = "kubernetes namespace for postgresql"
+  description = "kubernetes namespace for postgres"
   type        = string
   default     = "monitoring"
 }
@@ -7,7 +7,7 @@ variable "namespace" {
 variable "name" {
   description = "application name, using as deoloyment,serivce names, also in lables, als as configmap and secret prefix"
   type        = string
-  default     = "postgresql"
+  default     = "postgres"
 }
 
 variable "labels" {
@@ -23,7 +23,7 @@ variable "replicas" {
 }
 
 variable "container_image" {
-  description = "postgresql image"
+  description = "postgres image"
   type        = string
 #  default     = ""
 }
@@ -34,7 +34,7 @@ variable "strategy" {
 }
 
 variable "container_port" {
-  description = "postgresql port, must not be changed"
+  description = "postgres port, must not be changed"
   type        = number
   default     = 5432
 }
@@ -83,9 +83,8 @@ variable "env_secret" {
   description = "main pod secret enviroment variables, values provided from outside the module"
   type        = map
   default     = {
-    POSTGRESQL_USER = "admin"
-    POSTGRESQL_PASSWORD = "password"
-    POSTGRESQL_DATABASE = "database"
-
+    POSTGRES_USER = "admin"
+    POSTGRES_PASSWORD = "password"
+    POSTGRES_DB = "database"
   }
 }
