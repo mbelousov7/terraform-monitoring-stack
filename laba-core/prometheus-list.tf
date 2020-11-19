@@ -17,7 +17,7 @@ locals {
           map_name = "config-prometheus-volume"
           map_path = "/etc/prometheus"
           map_data = {
-            "prometheus.yaml" = file("./prometheus-infra/prometheus.yaml")
+            "prometheus.yml" = file("./prometheus-infra/prometheus.yml")
           }
         },
         {
@@ -32,7 +32,7 @@ locals {
           map_name = "config-rules-volume"
           map_path = "/etc/prometheus/rules"
           map_data = {
-            "rules.yaml" = file("./prometheus-infra/rules/rules.yaml")
+            "rules.yml" = file("./prometheus-infra/rules/rules.yml")
           }
         }
       ]
