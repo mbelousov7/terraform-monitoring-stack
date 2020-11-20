@@ -64,20 +64,6 @@ variable "cluster_port" {
   default     = 9094
 }
 
-/*
-variable "liveness_probe" {
-  default = {
-    timeout_seconds = 300
-    period_seconds = 300
-    failure_threshold = 10
-    http_get {
-      path = "/targets"
-      port = 9090
-    }
-  }
-}
-*/
-
 variable "container_resources_requests_cpu" {
   type        = string
   default     = "150m"
