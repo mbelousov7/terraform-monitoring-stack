@@ -3,6 +3,7 @@ locals {
   prometheus_list = [
     {
       name = "prometheus-infra"
+      app_port = 9090
       container_resources_requests_cpu = "200m"
       container_resources_limits_cpu = "400m"
       container_resources_requests_memory = "512Mi"
@@ -17,7 +18,7 @@ locals {
           map_name = "config-prometheus-volume"
           map_path = "/etc/prometheus"
           map_data = {
-            "prometheus.yaml" = file("./prometheus-infra/prometheus.yaml")
+            "prometheus.yml" = file("./prometheus-infra/prometheus.yml")
           }
         },
         {
@@ -32,7 +33,7 @@ locals {
           map_name = "config-rules-volume"
           map_path = "/etc/prometheus/rules"
           map_data = {
-            "rules.yaml" = file("./prometheus-infra/rules/rules.yaml")
+            "rules.yml" = file("./prometheus-infra/rules/rules.yml")
           }
         }
       ]

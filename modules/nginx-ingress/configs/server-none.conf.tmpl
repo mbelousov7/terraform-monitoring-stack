@@ -5,7 +5,7 @@ server {
   #resolver ${ resolver } valid=10s;
   include conf.d/ingress.conf;
  location / {
-   set $upstream http://${ server.name }.${ namespace }${ route_path_for_config }:${ app_port };
+   set $upstream http://${ server.name }.${ namespace }${ route_path_for_config }:${ server.app_port };
    proxy_pass $upstream;
  }
 }

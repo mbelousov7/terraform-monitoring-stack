@@ -35,9 +35,9 @@ locals {
       config_maps_list = [
         {
           map_name = "config"
-          map_path = "/opt/exporter-jmx/configs/"      
+          map_path = "/opt/exporter-jmx/configs/"
           map_data = {
-            "default.yaml" = file("./exporter-jmx/default.yaml")
+            "default.yml" = file("./exporter-jmx/default.yml")
           }
         }
       ]

@@ -2,6 +2,7 @@ locals {
   pushgateway_list = [
     {
       name = "pushgateway"
+      app_port = 9091
       container_resources_requests_cpu = "50m"
       container_resources_limits_cpu = "100m"
       container_resources_requests_memory = "54Mi"

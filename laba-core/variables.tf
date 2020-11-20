@@ -21,10 +21,22 @@ variable "prometheus_container_image" {
   description = "image path"
   type        = string
 }
+
 variable "prometheus_container_port" {
   description = "prometheus port"
   type        = number
   default     = 9090
+}
+
+variable "alertmanager_container_image" {
+  description = "image path"
+  type        = string
+}
+
+variable "alertmanager_container_port" {
+  description = "prometheus port"
+  type        = number
+  default     = 9093
 }
 
 variable "pushgateway_container_image" {
@@ -42,6 +54,18 @@ variable "grafana_container_image" {
   description = "image path"
   type        = string
 }
+
+variable "postgres_container_image" {
+  description = "image path"
+  type        = string
+}
+
+variable "nginx_container_image" {
+  description = "image path"
+  type        = string
+}
+
+
 
 
 

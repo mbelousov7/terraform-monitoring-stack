@@ -1,7 +1,6 @@
 locals {
-  //configs for multiple independed prometheuses
-  grafana_list = [
-    {
+  //configs for  grafana
+  grafana = {
       name = "grafana"
       container_resources_requests_cpu = "100m"
       container_resources_limits_cpu = "200m"
@@ -10,15 +9,18 @@ locals {
       env = {
         GF_PATHS_PROVISIONING = "/etc/grafana/provisioning"
         GF_PATHS_CONFIG = "/etc/grafana/grafana.ini"
-        #GF_DATABASE_HOST = "grafana-db"
-        GF_DATABASE_NAME = "grafana"
-        GF_DATABASE_TYPE = "sqlite3"
+        GF_DATABASE_TYPE = "postgres"
         GF_SERVER_PROTOCOL = "https"
         GF_SERVER_CERT_FILE = "/etc/grafana/cert/grafana.crt"
         GF_SERVER_CERT_KEY = "/etc/grafana/cert/grafana.key"
       }
+      //grafana database config
+      database = {
+
+      }
       //grafana_env_secret in secrets/secrets.tfvars
       env_secret = var.grafana_env_secret
+      //grafana cert's files for https
       ssl_data = {
         "grafana.crt" = file("./secrets/grafana.crt")
         "grafana.key" = file("./secrets/grafana.key")
@@ -29,14 +31,14 @@ locals {
           map_name = "config-provisioning-plugins"
           map_path = "/etc/grafana/provisioning/plugins"
           map_data = {
-            "plugins.yaml" = file("./grafana/plugins.yaml")
+            "plugins.yml" = file("./grafana/plugins.yml")
           }
         },
         {
           map_name = "config-provisioning-dashboards"
           map_path = "/etc/grafana/provisioning/dashboards"
           map_data = {
-            "datasources.yaml" = file("./grafana/dashboards.yaml")
+            "datasources.yml" = file("./grafana/dashboards.yml")
           }
         },
         //main dashboards start
@@ -64,10 +66,9 @@ locals {
           map_name = "config-provisioning-datasources"
           map_path = "/etc/grafana/provisioning/datasources"
           map_data = {
-            "datasources.yaml" = file("./grafana/datasources.yaml")
+            "datasources.yml" = file("./grafana/datasources.yml")
           }
         }
       ]
-    },
-  ]
+    }
 }

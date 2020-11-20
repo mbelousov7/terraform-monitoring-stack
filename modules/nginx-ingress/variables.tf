@@ -37,22 +37,22 @@ variable "container_port" {
 
 variable "container_resources_requests_cpu" {
   type        = string
-  default     = "0.05"
+  default     = "100m"
 }
 
 variable "container_resources_requests_memory" {
   type        = string
-  default     = "0.05"
+  default     = "150m"
 }
 
 variable "container_resources_limits_cpu" {
   type        = string
-  default     = "0.1"
+  default     = "128Mi"
 }
 
 variable "container_resources_limits_memory" {
   type        = string
-  default     = "0.1Gi"
+  default     = "200Mi"
 }
 
 variable "liveness_probe_timeout_seconds" {
@@ -116,12 +116,6 @@ variable "route_path_for_config" {
   default     = ".svc.cluster.local"
 }
 
-variable "app_port" {
-  description = "target application port"
-}
-
-
-
 variable "user" {
   description = "user"
   type        = string
@@ -131,5 +125,5 @@ variable "user" {
 variable "password" {
   description = "encrypted password"
   type        = string
-  default     = "$apr1$Zd4voubY$3fMVQZZuDbMIKSeCdPS2y."
+  default     = "$apr1$Zd4voubY$3fMVQZZuDbMIKSeCdPS2y." //admin
 }

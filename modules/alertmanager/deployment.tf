@@ -1,15 +1,9 @@
-resource "kubernetes_deployment" "grafana" {
+resource "kubernetes_deployment" "alertmanager" {
   timeouts {
     create = "2m"
-    delete = "1m"
-    update = "2m"
+    delete = "2m"
+    update = "3m"
   }
-
-  depends_on = [
-    kubernetes_config_map.config,
-  ]
-
-
 
   metadata {
     name        = var.name
@@ -38,21 +32,18 @@ resource "kubernetes_deployment" "grafana" {
         container {
           image = var.container_image
           name  = var.name
-          args = []
-          dynamic "env" {
-            for_each = var.env
-            content {
-              name  = env.key
-              value = env.value
-            }
-          }
-
-          env_from {
-            secret_ref {
-              name = "${var.name}-env"
-            }
-          }
-
+          args = [
+            "--config.file=${var.configPath}/alertmanager.yml",
+            "--storage.path=${var.dataPath}",
+            "--cluster.listen-address=:${var.cluster_port}",
+            "--web.listen-address=:${var.container_port}",
+            "--web.route-prefix=/",
+            "--cluster.peer-timeout=45s",
+            "--cluster.peer=${var.name}:${var.cluster_port}",
+            "--cluster.peer=${var.name_replica}:${var.cluster_port}",
+            "--log.level=info",
+            "--data.retention=${var.retentionTime}"
+          ]
           resources {
             limits {
               cpu    = var.container_resources_limits_cpu
@@ -69,8 +60,13 @@ resource "kubernetes_deployment" "grafana" {
             period_seconds = var.liveness_probe_period_seconds
             failure_threshold = var.liveness_probe_failure_threshold
             exec {
-              command = ["curl", "-k", "${var.env.GF_SERVER_PROTOCOL}://${var.name}:${var.container_port}"]
+              command = ["curl", "${var.name}:${var.container_port}"]
             }
+          }
+
+          volume_mount {
+              mount_path = var.dataPath
+              name       = "storage-volume"
           }
 
           dynamic "volume_mount" {
@@ -87,12 +83,11 @@ resource "kubernetes_deployment" "grafana" {
               name = volume_mount.value.map_name
             }
           }
+        }
 
-          volume_mount {
-              mount_path = "/etc/grafana/cert"
-              name       = "cert-volume"
-          }
-
+        volume {
+          name = "storage-volume"
+          empty_dir {}
         }
 
         dynamic "volume" {
@@ -113,14 +108,6 @@ resource "kubernetes_deployment" "grafana" {
               secret_name = "${var.name}-${volume.value.map_name}"
               default_mode = "0644"
             }
-          }
-        }
-
-        volume {
-          name = "cert-volume"
-          secret {
-            secret_name = "${var.name}-ssl"
-            default_mode = "0644"
           }
         }
 

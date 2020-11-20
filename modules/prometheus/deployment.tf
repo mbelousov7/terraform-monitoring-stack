@@ -35,7 +35,7 @@ resource "kubernetes_deployment" "prometheus" {
           args = [
             "--web.enable-lifecycle",
             "--web.enable-admin-api",
-            "--config.file=${var.configPath}/prometheus.yaml",
+            "--config.file=${var.configPath}/prometheus.yml",
             "--web.listen-address=:${var.container_port}",
             "--storage.tsdb.path=${var.dataPath}",
             "--storage.tsdb.retention.time=${var.retentionTime}",
