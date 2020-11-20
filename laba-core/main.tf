@@ -26,12 +26,12 @@ module "prometheus" {
   container_port = var.prometheus_container_port
   config_maps_list = lookup(each.value, "config_maps_list", [])
   secret_maps_list = lookup(each.value, "secret_maps_list", [])
-  container_resources_requests_cpu = lookup(each.value, "container_resources_requests_cpu", "200m")
-  container_resources_limits_cpu = lookup(each.value, "container_resources_limits_cpu", "400m")
-  container_resources_requests_memory = lookup(each.value, "container_resources_requests_memory", "254Mi")
-  container_resources_limits_memory = lookup(each.value, "container_resources_limits_memory", "512Mi")
+  container_resources_requests_cpu = lookup(each.value, "container_resources_requests_cpu", "1000m")
+  container_resources_limits_cpu = lookup(each.value, "container_resources_limits_cpu", "1500m")
+  container_resources_requests_memory = lookup(each.value, "container_resources_requests_memory", "2Gi")
+  container_resources_limits_memory = lookup(each.value, "container_resources_limits_memory", "3Gi")
   expose = "none"
-  nginx_ingress_service_name = "nginx-ingress-prometheus-list"
+  nginx_ingress_service_name = "nginx-ingress"
 }
 
 module "alertmanager" {
@@ -47,10 +47,10 @@ module "alertmanager" {
   secret_maps_list = lookup(each.value, "secret_maps_list", [])
   container_resources_requests_cpu = "100m"
   container_resources_limits_cpu = "150m"
-  container_resources_requests_memory = "64Mi"
+  container_resources_requests_memory = "100Mi"
   container_resources_limits_memory = "128Mi"
   expose = "none"
-  nginx_ingress_service_name = "nginx-ingress-alertmanager-list"
+  nginx_ingress_service_name = "nginx-ingress"
 }
 
 module "pushgateway" {
@@ -61,12 +61,12 @@ module "pushgateway" {
   name = each.value.name
   container_image = "prom/pushgateway:latest"
   container_port = var.pushgateway_container_port
-  container_resources_requests_cpu = lookup(each.value, "container_resources_requests_cpu", "100m")
-  container_resources_limits_cpu = lookup(each.value, "container_resources_limits_cpu", "200m")
+  container_resources_requests_cpu = lookup(each.value, "container_resources_requests_cpu", "50m")
+  container_resources_limits_cpu = lookup(each.value, "container_resources_limits_cpu", "90m")
   container_resources_requests_memory = lookup(each.value, "container_resources_requests_memory", "64Mi")
-  container_resources_limits_memory = lookup(each.value, "container_resources_limits_memory", "128Mi")
+  container_resources_limits_memory = lookup(each.value, "container_resources_limits_memory", "100Mi")
   expose = "none"
-  nginx_ingress_service_name = "nginx-ingress-pushgateway-list"
+  nginx_ingress_service_name = "nginx-ingress"
 }
 
 module "nginx-ingress" {
@@ -86,6 +86,10 @@ module "nginx-ingress" {
     local.prometheus_list,
     local.pushgateway_list
   )
+  container_resources_requests_cpu = "50m"
+  container_resources_limits_cpu = "90m"
+  container_resources_requests_memory = "150Mi"
+  container_resources_limits_memory = "250Mi"
   auth_type = "basic"
   resolver = var.resolver
   route_path_for_config = var.route_path_for_config

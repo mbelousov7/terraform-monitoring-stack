@@ -68,19 +68,18 @@ variable "container_resources_requests_cpu" {
   default     = "100m"
 }
 
-variable "container_resources_requests_memory" {
-  type        = string
-  default     = "128M"
-}
-
 variable "container_resources_limits_cpu" {
   type        = string
-  default     = "200m"
+  default     = "150m"
 }
 
 variable "container_resources_limits_memory" {
   type        = string
-  default     = "254M"
+  default     = "150Mi"
+}
+variable "container_resources_requests_memory" {
+  type        = string
+  default     = "200Mi"
 }
 
 variable "liveness_probe_timeout_seconds" {

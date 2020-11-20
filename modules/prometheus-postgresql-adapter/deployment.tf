@@ -1,4 +1,4 @@
-resource "kubernetes_deployment" "pushgateway" {
+resource "kubernetes_deployment" "prometheus-postgresql-adapter" {
   timeouts {
     create = "5m"
     delete = "2m"

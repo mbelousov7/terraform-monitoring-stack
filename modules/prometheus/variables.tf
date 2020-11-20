@@ -75,22 +75,21 @@ variable "liveness_probe" {
 
 variable "container_resources_requests_cpu" {
   type        = string
-  default     = "0.2"
-}
-
-variable "container_resources_requests_memory" {
-  type        = string
-  default     = "0.3Gi"
+  default     = "200m"
 }
 
 variable "container_resources_limits_cpu" {
   type        = string
-  default     = "0.3"
+  default     = "300m"
 }
 
 variable "container_resources_limits_memory" {
   type        = string
-  default     = "0.5Gi"
+  default     = "600Mi"
+}
+variable "container_resources_requests_memory" {
+  type        = string
+  default     = "800Mi"
 }
 
 variable "liveness_probe_timeout_seconds" {
@@ -152,7 +151,7 @@ variable "secret_maps_list" {
 variable "expose" {
   description = "expose resource type(ingress for kubernetes or route for openshift)"
   type        = string
-  default     = "ingress"
+  default     = "none"
 }
 
 

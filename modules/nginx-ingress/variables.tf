@@ -37,20 +37,19 @@ variable "container_port" {
 
 variable "container_resources_requests_cpu" {
   type        = string
-  default     = "100m"
-}
-
-variable "container_resources_requests_memory" {
-  type        = string
-  default     = "150m"
+  default     = "50m"
 }
 
 variable "container_resources_limits_cpu" {
   type        = string
-  default     = "128Mi"
+  default     = "90m"
 }
 
 variable "container_resources_limits_memory" {
+  type        = string
+  default     = "160Mi"
+}
+variable "container_resources_requests_memory" {
   type        = string
   default     = "200Mi"
 }
