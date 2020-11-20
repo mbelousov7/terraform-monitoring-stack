@@ -31,7 +31,7 @@ count = var.expose == "route" ? 1 : 0
          },
          "to": {
            "kind": "Service",
-           "name": "${self.triggers.nginx_ingress_service_name}",
+           "name": "${self.triggers.service_name}",
            "weight": 100
          },
          "wildcardPolicy": "None"
