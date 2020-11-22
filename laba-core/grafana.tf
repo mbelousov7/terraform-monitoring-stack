@@ -3,9 +3,9 @@ locals {
   grafana = {
       name = "grafana"
       container_resources_requests_cpu = "100m"
-      container_resources_limits_cpu = "200m"
-      container_resources_requests_memory = "128M"
-      container_resources_limits_memory = "264M"
+      container_resources_limits_cpu = "150m"
+      container_resources_requests_memory = "150M"
+      container_resources_limits_memory = "200M"
       env = {
         GF_PATHS_PROVISIONING = "/etc/grafana/provisioning"
         GF_PATHS_CONFIG = "/etc/grafana/grafana.ini"
