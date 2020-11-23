@@ -22,6 +22,7 @@ module "prometheus" {
   depends_on = [ kubernetes_namespace.monitoring ]
   namespace = var.namespace
   name = each.value.name
+  service_account_name = "default"
   container_image = var.prometheus_container_image
   container_port = var.prometheus_container_port
   config_maps_list = lookup(each.value, "config_maps_list", [])

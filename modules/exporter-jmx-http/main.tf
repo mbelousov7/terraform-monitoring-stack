@@ -2,6 +2,7 @@ locals {
   labels = merge (
     { name = var.name },
     { module = "exporter-jmx" },
+    { system = var.system },
     var.labels
   )
 

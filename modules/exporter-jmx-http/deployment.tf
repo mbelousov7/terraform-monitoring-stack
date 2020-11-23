@@ -1,8 +1,8 @@
 resource "kubernetes_deployment" "exporter" {
   timeouts {
-    create = "2m"
+    create = "5m"
     delete = "1m"
-    update = "3m"
+    update = "5m"
   }
 
   metadata {

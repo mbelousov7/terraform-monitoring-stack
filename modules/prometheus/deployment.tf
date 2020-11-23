@@ -29,6 +29,8 @@ resource "kubernetes_deployment" "prometheus" {
       }
 
       spec {
+        service_account_name = var.service_account_name
+        automount_service_account_token = var.automount_service_account_token
         container {
           image = var.container_image
           name  = var.name

@@ -27,6 +27,16 @@ variable "strategy" {
   default     = "Recreate"
 }
 
+variable "service_account_name" {
+  type        = string
+  default     = "default"
+}
+
+variable "automount_service_account_token" {
+  type        = bool
+  default     = true
+}
+
 variable "container_image" {
   description = "path to prometheus image"
   type        = string

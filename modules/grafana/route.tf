@@ -3,8 +3,8 @@ count = var.expose == "route" ? 1 : 0
   triggers = {
     route_namespace = var.namespace
     route_name = var.name
-    service_name = var.nginx_ingress_service_name
-    service_port = var.nginx_ingress_port
+    service_name = var.name
+    service_port = var.container_port
   }
 
   provisioner "local-exec"  {
