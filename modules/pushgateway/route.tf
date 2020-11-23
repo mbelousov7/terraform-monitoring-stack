@@ -9,7 +9,7 @@ count = var.expose == "route" ? 1 : 0
 
   provisioner "local-exec"  {
     command = <<EOT
-    curl --max-time 30 -k  -X POST "$TF_VAR_kubernetes_host"/apis/route.openshift.io/v1/namespaces/${self.triggers.route_namespace}/routes/ \
+    status_code=$(curl -k -o /dev/null -w "%%{http_code}" --max-time 30 -X POST "$TF_VAR_kubernetes_host"/apis/route.openshift.io/v1/namespaces/${self.triggers.route_namespace}/routes/ \
     -H "Content-Type: application/json" \
     -H "Authorization: Bearer $TF_VAR_kubernetes_token" \
     -d '{
@@ -39,7 +39,15 @@ count = var.expose == "route" ? 1 : 0
        "status": {
          "ingress": null
        }
-    }'
+    }')
+
+echo $status_code
+
+if  [ 201 -ne $status_code ]; then
+   echo "Route was not created." && exit 1
+else
+   echo "Route ${self.triggers.route_name} created." && exit 0
+fi
 EOT
 }
 
