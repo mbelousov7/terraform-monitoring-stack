@@ -1,4 +1,5 @@
 resource "kubernetes_service" "service" {
+  count = var.service == true ? 1 : 0
   metadata {
     name = var.name
     namespace = var.namespace

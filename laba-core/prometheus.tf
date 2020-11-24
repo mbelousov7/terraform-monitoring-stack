@@ -1,13 +1,32 @@
+module "prometheus" {
+  for_each = {for prometheus in local.prometheus_list:  prometheus.name => prometheus}
+  source = "../modules/prometheus"
+  depends_on = [ kubernetes_namespace.monitoring ]
+  namespace = var.namespace
+  name = each.value.name
+  service_account_name = "default"
+  container_image = var.prometheus_container_image
+  container_port = var.prometheus_container_port
+  config_maps_list = lookup(each.value, "config_maps_list", [])
+  secret_maps_list = lookup(each.value, "secret_maps_list", [])
+  container_resources_requests_cpu = lookup(each.value, "container_resources_requests_cpu", "200m")
+  container_resources_limits_cpu = lookup(each.value, "container_resources_limits_cpu", "300m")
+  container_resources_requests_memory = lookup(each.value, "container_resources_requests_memory", "0.5Gi")
+  container_resources_limits_memory = lookup(each.value, "container_resources_limits_memory", "0.6Gi")
+  expose = "none"
+  nginx_ingress_service_name = "nginx-ingress"
+}
+
 locals {
   //configs for multiple independed prometheuses
   prometheus_list = [
     {
       name = "prometheus-infra"
-      app_port = 9090
+      app_port = var.prometheus_container_port
       container_resources_requests_cpu = "200m"
-      container_resources_limits_cpu = "400m"
-      container_resources_requests_memory = "512Mi"
-      container_resources_limits_memory = "1024Mi"
+      container_resources_limits_cpu = "300m"
+      container_resources_requests_memory = "256Mi"
+      container_resources_limits_memory = "300Mi"
       ssl_data = {
         #cert and key for https configuration in nginx-ingress
         "ssl_certificate.crt" = file("./secrets/prometheus-infra.crt")

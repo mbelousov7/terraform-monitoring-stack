@@ -24,7 +24,7 @@ variable "replicas" {
 
 variable "strategy" {
   type        = string
-  default     = "Recreate"
+  default     = "RollingUpdate"
 }
 
 variable "container_image" {
@@ -47,14 +47,16 @@ variable "container_resources_limits_cpu" {
   default     = "90m"
 }
 
-variable "container_resources_limits_memory" {
+variable "container_resources_requests_memory" {
   type        = string
   default     = "150Mi"
 }
-variable "container_resources_requests_memory" {
+
+variable "container_resources_limits_memory" {
   type        = string
   default     = "250Mi"
 }
+
 
 variable "liveness_probe_timeout_seconds" {
   type        = number
@@ -71,6 +73,11 @@ variable "liveness_probe_failure_threshold" {
   default     = 3
 }
 
+
+variable "service" {
+  type        = bool
+  default     = false
+}
 
 variable "service_type" {
   type        = string
