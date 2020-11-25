@@ -34,7 +34,7 @@ scrape_configs:
   relabel_configs:
     - source_labels: [__meta_kubernetes_pod_label_system]
       target_label: system
-    - source_labels: [__meta_kubernetes_pod_label_jmx-role]
+    - source_labels: [__meta_kubernetes_pod_label_jmxrole]
       target_label: jmx-role
     - source_labels: [__meta_kubernetes_pod_label_instance]
       target_label: instance
