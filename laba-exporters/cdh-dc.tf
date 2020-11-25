@@ -5,7 +5,7 @@ module "exporter-jmx-cdh-dc" {
   system = each.value.system
   config_maps_list = lookup(each.value, "config_maps_list", [])
   container_image = var.exporter_jmx_container_image
-  name = each.key
+  name = "exporter-jmx-${each.key}-${each.value.env.HOST}-${each.value.env.JMX_ROLE}"
   env = each.value.env
   container_resources_requests_cpu = lookup(
     each.value, "container_resources_requests_cpu",

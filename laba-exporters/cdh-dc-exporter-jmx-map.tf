@@ -1,8 +1,8 @@
 locals {
   cdh_dc_exporter_jmx_map = {
     //простой пример описания экспортера с минимальным набором параметров
-    exporter-jmx-host1-7777-default = { system = "cdh-dc", env = { JMX_ROLE = "default", HOST = "host1", PORT = "7777"} },
-    exporter-2 = {
+    e1 = { system = "cdh-dc", env = { JMX_ROLE = "default", HOST = "host1", PORT = "7777"} },
+    e2 = {
       system = "cdh-dc"
       env = {
         JMX_ROLE = "debug"
@@ -10,7 +10,7 @@ locals {
         PORT = "7777"
       }
     },
-    exporter-3 = {
+    e3 = {
       system = "cdh-dc"
       env = {
         JMX_ROLE = "default"
