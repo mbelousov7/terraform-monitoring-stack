@@ -35,6 +35,11 @@ resource "kubernetes_deployment" "exporter" {
           args = [
           ]
 
+          port {
+            container_port = var.container_port
+            name = "exporter-jmx"
+          }
+
           dynamic "env" {
             for_each = var.env
             content {
@@ -57,8 +62,9 @@ resource "kubernetes_deployment" "exporter" {
             timeout_seconds = var.liveness_probe_timeout_seconds
             period_seconds = var.liveness_probe_period_seconds
             failure_threshold = var.liveness_probe_failure_threshold
-            exec {
-              command = ["curl", "${var.name}:${var.container_port}"]
+            http_get {
+              path = "/metrics"
+              port = var.container_port
             }
           }
 

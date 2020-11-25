@@ -27,6 +27,19 @@ variable "strategy" {
   default     = "Recreate"
 }
 
+
+variable "sa_create" {
+  description = "flag is it nessesary to create sa"
+  type        = bool
+  default     = false
+}
+
+variable "role_create" {
+  description = "flag is it nessesary to create role"
+  type        = bool
+  default     = false
+}
+
 variable "service_account_name" {
   type        = string
   default     = "default"

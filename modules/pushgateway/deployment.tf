@@ -34,6 +34,11 @@ resource "kubernetes_deployment" "pushgateway" {
           name  = var.name
           args = [ ]
 
+          port {
+            container_port = var.container_port
+            name = "pushgateway"
+          }
+
           resources {
             limits {
               cpu    = var.container_resources_limits_cpu

@@ -41,6 +41,7 @@ resource "kubernetes_deployment" "nginx-ingress" {
           port {
             container_port = var.container_port
             protocol = "TCP"
+            name = "nginx"
           }
           resources {
             limits {

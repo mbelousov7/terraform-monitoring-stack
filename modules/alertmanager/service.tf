@@ -9,13 +9,13 @@ resource "kubernetes_service" "service" {
     selector = local.labels
     type = var.service_type
     port {
-      name        = "alertmanager-peer"
+      name        = "alertmngr-peer"
       port        = var.container_port
       protocol    = "TCP"
       target_port = var.container_port
     }
     port {
-      name        = "alertmanager-cluster"
+      name        = "alertmngr-cl"
       port        = var.cluster_port
       protocol    = "TCP"
       target_port = var.cluster_port

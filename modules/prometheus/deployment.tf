@@ -1,8 +1,9 @@
 resource "kubernetes_deployment" "prometheus" {
+  #depends_on = [kubernetes_service_account.sa]
   timeouts {
-    create = "2m"
+    create = "4m"
     delete = "2m"
-    update = "3m"
+    update = "4m"
   }
 
   metadata {
@@ -43,6 +44,11 @@ resource "kubernetes_deployment" "prometheus" {
             "--storage.tsdb.retention.time=${var.retentionTime}",
             "--storage.tsdb.retention.size=${var.retentionSize}"
           ]
+
+          port {
+            container_port = var.container_port
+            name = "prometheus"
+          }
           resources {
             limits {
               cpu    = var.container_resources_limits_cpu

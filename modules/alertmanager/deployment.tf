@@ -44,6 +44,17 @@ resource "kubernetes_deployment" "alertmanager" {
             "--log.level=info",
             "--data.retention=${var.retentionTime}"
           ]
+
+          port {
+            container_port = var.container_port
+            name = "alertmngr-peer"
+          }
+
+          port {
+            container_port = var.cluster_port
+            name = "alertmngr-cl"
+          }
+
           resources {
             limits {
               cpu    = var.container_resources_limits_cpu

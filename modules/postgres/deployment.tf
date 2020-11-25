@@ -34,6 +34,11 @@ resource "kubernetes_deployment" "postgres" {
           name  = var.name
           args = [ ]
 
+          port {
+            container_port = var.container_port
+            name = "postgres"
+          }
+
           env_from {
             secret_ref {
               name = "${var.name}-env"
