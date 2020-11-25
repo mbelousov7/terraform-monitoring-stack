@@ -1,11 +1,49 @@
+//module for one postgres for one grafana.
+//grafana_list in not supported becouse of module dependensy
+
+module "grafana-postgres" {
+  source = "../modules/postgres"
+  depends_on = [ kubernetes_namespace.monitoring ]
+  namespace = var.namespace
+  name = var.grafana_env_secret.DATABASE_SERVICE
+  env_secret = {
+    POSTGRES_USER = var.grafana_env_secret.GF_DATABASE_USER
+    POSTGRES_PASSWORD = var.grafana_env_secret.GF_DATABASE_PASSWORD
+    POSTGRES_DB = var.grafana_env_secret.GF_DATABASE_NAME
+  }
+  container_image = var.postgres_container_image
+}
+
+//module for one grafana
+
+module "grafana" {
+  source = "../modules/grafana"
+  depends_on = [ kubernetes_namespace.monitoring , module.grafana-postgres.service_name ]
+  namespace = var.namespace
+  replicas = 1
+  name = local.grafana.name
+  env = local.grafana.env
+  env_secret = local.grafana.env_secret
+  config_maps_list = lookup(local.grafana, "config_maps_list", [])
+  secret_maps_list = lookup(local.grafana, "secret_maps_list", [])
+  ssl_data = lookup(local.grafana, "ssl_data", {})
+  container_image = var.grafana_container_image
+  expose = "ingress"
+  service_type = "LoadBalancer"
+  container_resources_requests_cpu = lookup(local.grafana, "container_resources_requests_cpu", "100m")
+  container_resources_limits_cpu = lookup(local.grafana, "container_resources_limits_cpu", "200m")
+  container_resources_requests_memory = lookup(local.grafana, "container_resources_requests_memory", "128M")
+  container_resources_limits_memory = lookup(local.grafana, "container_resources_limits_memory", "256M")
+}
+
 locals {
   //configs for  grafana
   grafana = {
       name = "grafana"
       container_resources_requests_cpu = "100m"
-      container_resources_limits_cpu = "200m"
-      container_resources_requests_memory = "128M"
-      container_resources_limits_memory = "264M"
+      container_resources_limits_cpu = "150m"
+      container_resources_requests_memory = "150M"
+      container_resources_limits_memory = "200M"
       env = {
         GF_PATHS_PROVISIONING = "/etc/grafana/provisioning"
         GF_PATHS_CONFIG = "/etc/grafana/grafana.ini"

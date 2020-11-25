@@ -1,4 +1,4 @@
-resource "kubernetes_deployment" "prometheus_pushgateway" {
+resource "kubernetes_deployment" "pushgateway" {
   timeouts {
     create = "5m"
     delete = "2m"
@@ -53,7 +53,7 @@ resource "kubernetes_deployment" "prometheus_pushgateway" {
               command = ["curl", "${var.name}:${var.container_port}"]
             }
           }
-          
+
         }
 
       }

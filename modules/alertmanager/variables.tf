@@ -64,39 +64,26 @@ variable "cluster_port" {
   default     = 9094
 }
 
-/*
-variable "liveness_probe" {
-  default = {
-    timeout_seconds = 300
-    period_seconds = 300
-    failure_threshold = 10
-    http_get {
-      path = "/targets"
-      port = 9090
-    }
-  }
-}
-*/
-
 variable "container_resources_requests_cpu" {
   type        = string
-  default     = "0.2"
-}
-
-variable "container_resources_requests_memory" {
-  type        = string
-  default     = "0.3Gi"
+  default     = "150m"
 }
 
 variable "container_resources_limits_cpu" {
   type        = string
-  default     = "0.3"
+  default     = "200m"
+}
+
+variable "container_resources_requests_memory" {
+  type        = string
+  default     = "200Mi"
 }
 
 variable "container_resources_limits_memory" {
   type        = string
-  default     = "0.5Gi"
+  default     = "300Mi"
 }
+
 
 variable "liveness_probe_timeout_seconds" {
   type        = number
@@ -157,7 +144,7 @@ variable "secret_maps_list" {
 variable "expose" {
   description = "expose resource type(ingress for kubernetes or route for openshift)"
   type        = string
-  default     = "ingress"
+  default     = "none"
 }
 
 

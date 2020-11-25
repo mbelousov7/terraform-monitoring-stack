@@ -1,7 +1,7 @@
-resource "kubernetes_deployment" "exporter" {
+resource "kubernetes_deployment" "prometheus-postgresql-adapter" {
   timeouts {
     create = "5m"
-    delete = "1m"
+    delete = "2m"
     update = "5m"
   }
 
@@ -32,16 +32,8 @@ resource "kubernetes_deployment" "exporter" {
         container {
           image = var.container_image
           name  = var.name
-          args = [
-          ]
+          args = [ ]
 
-          dynamic "env" {
-            for_each = var.env
-            content {
-              name  = env.key
-              value = env.value
-            }
-          }
           resources {
             limits {
               cpu    = var.container_resources_limits_cpu
@@ -62,28 +54,9 @@ resource "kubernetes_deployment" "exporter" {
             }
           }
 
-          dynamic "volume_mount" {
-            for_each = {for map in local.config_maps_list:  map.map_name => map if can(map.map_name)}
-            content {
-              mount_path  = volume_mount.value.map_path
-              name = volume_mount.value.map_name
-            }
-          }
-
         }
-        dynamic "volume" {
-          for_each = {for map in local.config_maps_list:  map.map_name => map if can(map.map_name)}
-          content {
-            name = volume.value.map_name
-            config_map {
-              name = "${var.name}-${volume.value.map_name}"
-              default_mode = "0644"
-            }
-          }
-        }
-
 
       }
+    }
   }
- }
 }

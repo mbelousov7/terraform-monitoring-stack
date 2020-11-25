@@ -1,5 +1,5 @@
 variable "namespace" {
-  description = "kubernetes namespace for postgres"
+  description = "kubernetes namespace for prometheus pushgateway"
   type        = string
   default     = "monitoring"
 }
@@ -7,7 +7,7 @@ variable "namespace" {
 variable "name" {
   description = "application name, using as deoloyment,serivce names, also in lables, als as configmap and secret prefix"
   type        = string
-  default     = "postgres"
+  default     = "pushgateway"
 }
 
 variable "labels" {
@@ -23,42 +23,42 @@ variable "replicas" {
 }
 
 variable "container_image" {
-  description = "postgres image"
+  description = "prometheus-postgresql-adapter image"
   type        = string
 #  default     = ""
 }
 
 variable "strategy" {
   type        = string
-  default     = "Recreate"
+  default     = "RollingUpdate"
 }
 
 variable "container_port" {
-  description = "postgres port, must not be changed"
+  description = "prometheus-postgresql-adapter port, must not be changed"
   type        = number
-  default     = 5432
+  default     = 9201
 }
 
 variable "container_resources_requests_cpu" {
   type        = string
-  default     = "100m"
+  default     = "200m"
 }
 
 variable "container_resources_limits_cpu" {
   type        = string
-  default     = "150m"
+  default     = "300m"
 }
-
 
 variable "container_resources_requests_memory" {
   type        = string
-  default     = "150Mi"
+  default     = "300Mi"
 }
 
 variable "container_resources_limits_memory" {
   type        = string
-  default     = "200Mi"
+  default     = "400Mi"
 }
+
 
 variable "liveness_probe_timeout_seconds" {
   type        = number
@@ -78,14 +78,4 @@ variable "liveness_probe_failure_threshold" {
 variable "service_type" {
   type        = string
   default     = "ClusterIP"
-}
-
-variable "env_secret" {
-  description = "main pod secret enviroment variables, values provided from outside the module"
-  type        = map
-  default     = {
-    POSTGRES_USER = "admin"
-    POSTGRES_PASSWORD = "password"
-    POSTGRES_DB = "database"
-  }
 }

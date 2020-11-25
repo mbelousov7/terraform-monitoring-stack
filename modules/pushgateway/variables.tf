@@ -41,23 +41,24 @@ variable "container_port" {
 
 variable "container_resources_requests_cpu" {
   type        = string
-  default     = "0.2"
-}
-
-variable "container_resources_requests_memory" {
-  type        = string
-  default     = "0.3Gi"
+  default     = "50m"
 }
 
 variable "container_resources_limits_cpu" {
   type        = string
-  default     = "0.3"
+  default     = "90m"
+}
+
+variable "container_resources_requests_memory" {
+  type        = string
+  default     = "100Mi"
 }
 
 variable "container_resources_limits_memory" {
   type        = string
-  default     = "0.5Gi"
+  default     = "120Mi"
 }
+
 
 variable "liveness_probe_timeout_seconds" {
   type        = number
@@ -82,7 +83,7 @@ variable "service_type" {
 variable "expose" {
   description = "expose resource type(ingress for kubernetes or route for openshift)"
   type        = string
-  default     = "ingress"
+  default     = "none"
 }
 
 

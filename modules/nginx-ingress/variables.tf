@@ -22,7 +22,7 @@ variable "replicas" {
 
 variable "strategy" {
   type        = string
-  default     = "Recreate"
+  default     = "RollingUpdate"
 }
 
 
@@ -37,23 +37,24 @@ variable "container_port" {
 
 variable "container_resources_requests_cpu" {
   type        = string
-  default     = "100m"
-}
-
-variable "container_resources_requests_memory" {
-  type        = string
-  default     = "150m"
+  default     = "50m"
 }
 
 variable "container_resources_limits_cpu" {
   type        = string
-  default     = "128Mi"
+  default     = "90m"
+}
+
+variable "container_resources_requests_memory" {
+  type        = string
+  default     = "160Mi"
 }
 
 variable "container_resources_limits_memory" {
   type        = string
   default     = "200Mi"
 }
+
 
 variable "liveness_probe_timeout_seconds" {
   type        = number
@@ -67,7 +68,7 @@ variable "liveness_probe_period_seconds" {
 
 variable "liveness_probe_failure_threshold" {
   type        = number
-  default     = 2
+  default     = 1
 }
 
 variable "service_type" {
