@@ -6,7 +6,7 @@ module "prometheus" {
   name = each.value.name
   sa_create = true
   role_create = true
-  service_account_name = "promethus"
+  service_account_name = "prometheus"
   container_image = var.prometheus_container_image
   container_port = var.prometheus_container_port
   config_maps_list = lookup(each.value, "config_maps_list", [])

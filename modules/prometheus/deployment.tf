@@ -1,4 +1,5 @@
 resource "kubernetes_deployment" "prometheus" {
+  #depends_on = [kubernetes_service_account.sa]
   timeouts {
     create = "4m"
     delete = "2m"

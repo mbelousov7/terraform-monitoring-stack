@@ -1,36 +1,33 @@
 resource "kubernetes_service_account" "sa" {
-  count = var.sa_create != "" ? 1 : 0
-  depends_on = [kubernetes_secret.sa]
+  count = var.sa_create == true ? 1 : 0
   metadata {
     name = var.service_account_name
     namespace   = var.namespace
-    labels      = local.labels
   }
   secret {
-    name = var.service_account_name
+    name = "${var.service_account_name}-sa-token"
   }
 }
 
 resource "kubernetes_secret" "sa" {
-  count = var.sa_create != "" ? 1 : 0
+  count = var.sa_create == true ? 1 : 0
+  depends_on = [kubernetes_service_account.sa]
   metadata {
-    name = var.service_account_name
+    name = "${var.service_account_name}-sa-token"
     namespace   = var.namespace
-    labels      = local.labels
     annotations = {
       "kubernetes.io/service-account.name": var.service_account_name
     }
+    #labels = local.labels
   }
-
   type = "kubernetes.io/service-account-token"
 }
 
 resource "kubernetes_role" "sa" {
-  count = var.role_create != "" ? 1 : 0
+  count = var.role_create == true ? 1 : 0
   metadata {
     name = var.service_account_name
     namespace   = var.namespace
-    labels = local.labels
   }
 
   rule {
@@ -41,7 +38,7 @@ resource "kubernetes_role" "sa" {
 }
 
 resource "kubernetes_role_binding" "sa" {
-  count = var.sa_create != "" ? 1 : 0
+  count = var.sa_create == true ? 1 : 0
   metadata {
     name = var.service_account_name
     namespace   = var.namespace

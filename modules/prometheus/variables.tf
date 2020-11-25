@@ -30,12 +30,14 @@ variable "strategy" {
 
 variable "sa_create" {
   description = "flag is it nessesary to create sa"
-  default     = ""
+  type        = bool
+  default     = false
 }
 
 variable "role_create" {
   description = "flag is it nessesary to create role"
-  default     = ""
+  type        = bool
+  default     = false
 }
 
 variable "service_account_name" {
