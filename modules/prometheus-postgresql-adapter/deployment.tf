@@ -34,6 +34,11 @@ resource "kubernetes_deployment" "prometheus-postgresql-adapter" {
           name  = var.name
           args = [ ]
 
+          port {
+            container_port = var.container_port
+            name = "prometheus-postgresql-adapter"
+          }
+
           resources {
             limits {
               cpu    = var.container_resources_limits_cpu

@@ -39,6 +39,12 @@ resource "kubernetes_deployment" "grafana" {
           image = var.container_image
           name  = var.name
           args = []
+
+          port {
+            container_port = var.container_port
+            name = "grafana"
+          }
+
           dynamic "env" {
             for_each = var.env
             content {

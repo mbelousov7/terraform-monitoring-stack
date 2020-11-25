@@ -4,6 +4,8 @@ locals {
     { module = "exporter-jmx" },
     { system = var.system },
     { instance = var.env.HOST },
+    { jmx-role = var.env.JMX_ROLE },
+    { jmx-port = var.env.PORT },
     var.labels
   )
 
