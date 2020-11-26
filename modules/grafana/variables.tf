@@ -99,6 +99,11 @@ variable "liveness_probe_failure_threshold" {
   default     = 3
 }
 
+variable "liveness_probe_success_threshold" {
+  type        = number
+  default     = 1
+}
+
 variable "service_type" {
   type        = string
   default     = "ClusterIP"

@@ -1,8 +1,8 @@
 resource "kubernetes_deployment" "exporter" {
   timeouts {
-    create = "5m"
-    delete = "1m"
-    update = "5m"
+    create = "10m"
+    delete = "2m"
+    update = "10m"
   }
 
   metadata {
@@ -57,17 +57,18 @@ resource "kubernetes_deployment" "exporter" {
               memory = var.container_resources_requests_memory
             }
           }
-
+/*
           liveness_probe {
             timeout_seconds = var.liveness_probe_timeout_seconds
             period_seconds = var.liveness_probe_period_seconds
             failure_threshold = var.liveness_probe_failure_threshold
+            success_threshold = var.liveness_probe_success_threshold
             http_get {
               path = "/metrics"
               port = var.container_port
             }
           }
-
+*/
           dynamic "volume_mount" {
             for_each = {for map in local.config_maps_list:  map.map_name => map if can(map.map_name)}
             content {

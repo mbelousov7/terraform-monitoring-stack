@@ -129,8 +129,14 @@ variable "liveness_probe_period_seconds" {
 
 variable "liveness_probe_failure_threshold" {
   type        = number
-  default     = 3
+  default     = 1
 }
+
+variable "liveness_probe_success_threshold" {
+  type        = number
+  default     = 1
+}
+
 
 variable "service_type" {
   type        = string

@@ -1,8 +1,8 @@
-resource "kubernetes_deployment" "pushgateway" {
+resource "kubernetes_deployment" "exporter-sql-select" {
   timeouts {
-    create = "5m"
-    delete = "2m"
-    update = "5m"
+    create = "2m"
+    delete = "1m"
+    update = "3m"
   }
 
   metadata {
@@ -32,13 +32,16 @@ resource "kubernetes_deployment" "pushgateway" {
         container {
           image = var.container_image
           name  = var.name
-          args = [ ]
+          args = [
+          ]
 
-          port {
-            container_port = var.container_port
-            name = "pushgateway"
+          dynamic "env" {
+            for_each = var.env
+            content {
+              name  = env.key
+              value = env.value
+            }
           }
-
           resources {
             limits {
               cpu    = var.container_resources_limits_cpu
@@ -50,19 +53,36 @@ resource "kubernetes_deployment" "pushgateway" {
             }
           }
 
-          liveness_probe {
-            timeout_seconds = var.liveness_probe_timeout_seconds
-            period_seconds = var.liveness_probe_period_seconds
-            failure_threshold = var.liveness_probe_failure_threshold
-            success_threshold = var.liveness_probe_success_threshold
-            exec {
-              command = ["curl", "${var.name}:${var.container_port}"]
-            }
-          }
+		  
+		  volume_mount {
+		    mount_path  = "/exporter-sql/config/"
+			name = "config"
+		  }
+
+		  volume_mount {
+		    mount_path  = "/exporter-sql/rules/"
+			name = "rules"
+		  }
 
         }
-
+		
+		volume {
+            name = "rules"
+            config_map {
+              name = "${var.name}-rules"
+              default_mode = "0644"
+            }			
+		}
+		
+		volume {
+            name = "config"
+            secret {
+              secret_name = "${var.name}-config"
+              default_mode = "0644"
+            }			
+		}
+		
       }
-    }
   }
+ }
 }

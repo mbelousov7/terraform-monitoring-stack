@@ -1,13 +1,12 @@
 variable "namespace" {
-  description = "kubernetes namespace for jmx-exporter"
+  description = "kubernetes namespace for exporter-sql-select"
   type        = string
-  default     = "monitoring"
 }
 
 variable "name" {
   description = "app(deployment) name"
   type        = string
-  default     = "exporter-jmx"
+  default     = "exporter-sql-select"
 }
 
 variable "labels" {
@@ -28,14 +27,15 @@ variable "strategy" {
 }
 
 variable "container_image" {
-  description = "path to jmx-exporter image"
+  description = "path to exporter-sql-select"
   type        = string
 }
 
 variable "container_port" {
   type        = string
-  default     = "5555"
+  default     = "5000"
 }
+
 
 variable "container_resources_requests_cpu" {
   type        = string
@@ -57,52 +57,28 @@ variable "container_resources_limits_memory" {
   default     = "250Mi"
 }
 
-
-variable "liveness_probe_timeout_seconds" {
-  type        = number
-  default     = 30
-}
-
-variable "liveness_probe_period_seconds" {
-  type        = number
-  default     = 600
-}
-
-variable "liveness_probe_failure_threshold" {
-  type        = number
-  default     = 3
-}
-
-variable "liveness_probe_success_threshold" {
-  type        = number
-  default     = 1
-}
-
-
-variable "service" {
-  type        = bool
-  default     = false
-}
-
 variable "service_type" {
   type        = string
   default     = "ClusterIP"
 }
 
-#exporter config variables
-
-variable "config_maps_list" {
-  description = "list config maps and volumes"
-  type = list
-  default = []
-}
-
 variable "system" {
   type        = string
+  default     = "system"
 }
 
 variable "env" {
   description = "main pod enviroment variables, values provided from outside the module"
   type        = map
-  default     = {}
+  default     = {
+     PATH_TO_CONFIG_FILE = "/exporter-sql/config/config.yml"
+	 PATH_TO_RULES_FILE = "/exporter-sql/rules/rules.yml"
+  }
 }
+
+variable "config_data" {
+}
+
+variable "rules_data" {
+}
+

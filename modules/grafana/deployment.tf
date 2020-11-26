@@ -74,6 +74,7 @@ resource "kubernetes_deployment" "grafana" {
             timeout_seconds = var.liveness_probe_timeout_seconds
             period_seconds = var.liveness_probe_period_seconds
             failure_threshold = var.liveness_probe_failure_threshold
+            success_threshold = var.liveness_probe_success_threshold
             exec {
               command = ["curl", "-k", "${var.env.GF_SERVER_PROTOCOL}://${var.name}:${var.container_port}"]
             }
