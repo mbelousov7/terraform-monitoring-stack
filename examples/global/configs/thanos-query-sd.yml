@@ -1,0 +1,6 @@
+- targets:
+%{ for prometheus in prometheus_list ~}
+%{ for i in range(replicas_statefulset) ~}
+  - ${ prometheus }-${ i }.${ prometheus }-sidecar:${ thanos_port_grpc }
+%{ endfor ~}
+%{ endfor ~}

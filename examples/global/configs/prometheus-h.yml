@@ -1,0 +1,88 @@
+global:
+  scrape_interval: 1m
+  scrape_timeout: 30s
+  evaluation_interval: 1m
+  external_labels:
+    prometheus_name: ${ prometheus_name }
+    ${ prometheus_replica_label }: ${ prometheus_replica }
+scrape_configs:
+%{ for cluster in h-clusters ~}
+- job_name: ${cluster}-targets
+  honor_timestamps: true
+  scrape_interval: 1m
+  scrape_timeout: 15s
+  metrics_path: /metrics
+  scheme: http
+  relabel_configs:
+    - source_labels: [__address__]
+      separator: ;
+      regex: ^(.*):\d+$
+      target_label: instance
+      replacement: $1
+      action: replace
+  file_sd_configs:
+    - files:
+        - '/etc/prometheus/file_sd_config_list/${cluster}/${cluster}-targets.json'
+- job_name: ${cluster}-oc-exporters-pods
+  metrics_path: /metrics
+  scrape_interval: 1m
+  scrape_timeout: 55s
+  relabel_configs:
+    - source_labels: [__meta_kubernetes_pod_label_system]
+      target_label: system
+    - source_labels: [__meta_kubernetes_pod_label_service]
+      target_label: service
+    - source_labels: [__meta_kubernetes_pod_label_instance]
+      target_label: instance
+      action: replace
+    - source_labels: [__meta_kubernetes_pod_label_jmxrole]
+      target_label: jmxrole
+  kubernetes_sd_configs:
+    - role: "pod"
+      namespaces:
+        names:
+          - "${ namespace }"
+      selectors:
+        - role: "pod"
+          label: "system=${cluster},sd=pod"
+  bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+- job_name: ${cluster}-oc-exporters-services
+  metrics_path: /metrics
+  scrape_interval: 1m
+  scrape_timeout: 55s
+  relabel_configs:
+    - source_labels: [__meta_kubernetes_service_label_system]
+      target_label: system
+    - source_labels: [__meta_kubernetes_service_label_service]
+      target_label: service
+    - source_labels: [__meta_kubernetes_service_label_instance]
+      target_label: instance
+      action: replace
+    - source_labels: [__meta_kubernetes_service_label_jmxrole]
+      target_label: jmxrole
+  kubernetes_sd_configs:
+    - role: "service"
+      namespaces:
+        names:
+          - "${ namespace }"
+      selectors:
+        - role: "service"
+          label: "system=${cluster},sd=service"
+  bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+
+%{ endfor ~}
+##########################################################################
+##                              ALERTs RULES                            ##
+##########################################################################
+rule_files:
+- "/etc/prometheus/rules/*.yml"
+alerting:
+  alert_relabel_configs:
+  - action: labeldrop
+    regex: '^prometheus_replica$'
+  alertmanagers:
+  - static_configs:
+    - targets:
+%{ for i in range(replicas_statefulset) ~}
+       - ${ alertmanager_name }-${ i }.${ alertmanager_name }:${ alertmanager_container_port }
+%{ endfor ~}

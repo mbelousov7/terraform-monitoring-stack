@@ -1,0 +1,12 @@
+{
+  "locals" : [{
+    "prometheus_h_clusters_map" : {
+      "prometheus-h1" : [
+        "amh-cl"
+      ],
+      "prometheus-h2" : [
+        "clh-cl"
+      ]
+    }
+  }]
+}

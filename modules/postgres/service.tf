@@ -6,6 +6,7 @@ resource "kubernetes_service" "service" {
   }
   spec {
     selector = local.labels
+    session_affinity = var.session_affinity
     type = var.service_type
     port {
       name        = "postgres"

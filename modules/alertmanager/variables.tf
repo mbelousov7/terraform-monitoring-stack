@@ -10,10 +10,10 @@ variable "name" {
   default     = "alertmanager"
 }
 
-variable "name_replica" {
-  description = "second alertmanager peer name"
-  type        = string
-}
+#variable "name_replica" {
+#  description = "second alertmanager peer name"
+#  type        = string
+#}
 
 variable "labels" {
   description = "additional kubernetes labels, values provided from outside the module"
@@ -24,12 +24,22 @@ variable "labels" {
 variable "replicas" {
   description = "replicas count"
   type        = number
-  default     = 1
+  default     = 3
 }
 
-variable "strategy" {
+#variable "strategy" {
+#  type        = string
+#  default     = "Recreate"
+#}
+
+variable "pod_management_policy" {
   type        = string
-  default     = "Recreate"
+  default     = "OrderedReady"
+}
+
+variable "update_strategy" {
+  type        = string
+  default     = "RollingUpdate"
 }
 
 variable "container_image" {
@@ -37,10 +47,30 @@ variable "container_image" {
   type        = string
 }
 
+variable "image_pull_policy" {
+  type        = string
+  default     = "IfNotPresent"#"Always"
+}
+
 variable "configPath" {
   description = "path to configs folder"
   type        = string
   default     = "/etc/alertmanager"
+}
+
+variable "config_data" {
+  description = "alertmanager.yml config map"
+  default = {
+    "alertmanager.yml" = <<EOF
+
+EOF
+  }
+}
+
+variable "dns_path_for_config" {
+  type        = string
+  description = "variable resolver for upstream in server.conf depends on instance of kubernetes cluster "
+  default     = "svc.cluster.local"
 }
 
 variable "dataPath" {
@@ -64,45 +94,41 @@ variable "cluster_port" {
   default     = 9094
 }
 
-variable "container_resources_requests_cpu" {
-  type        = string
-  default     = "150m"
+variable "container_resources" {
+  default = {
+    requests_cpu = "0.05"
+    limits_cpu ="0.05"
+    requests_memory = "50M"
+    limits_memory = "50M"
+  }
 }
 
-variable "container_resources_limits_cpu" {
-  type        = string
-  default     = "200m"
+variable "readiness_probe" {
+  default = {
+    initial_delay_seconds = 5
+    timeout_seconds = 30
+    period_seconds = 60
+    failure_threshold = 3
+  }
 }
 
-variable "container_resources_requests_memory" {
-  type        = string
-  default     = "200Mi"
-}
-
-variable "container_resources_limits_memory" {
-  type        = string
-  default     = "300Mi"
-}
-
-
-variable "liveness_probe_timeout_seconds" {
-  type        = number
-  default     = 30
-}
-
-variable "liveness_probe_period_seconds" {
-  type        = number
-  default     = 60
-}
-
-variable "liveness_probe_failure_threshold" {
-  type        = number
-  default     = 2
+variable "liveness_probe" {
+  default = {
+    initial_delay_seconds = 60
+    timeout_seconds = 30
+    period_seconds = 60
+    failure_threshold = 3
+  }
 }
 
 variable "service_type" {
   type        = string
   default     = "ClusterIP"
+}
+
+variable "session_affinity" {
+  type        = string
+  default     = "ClientIP"
 }
 
 variable "dataVolume" {
@@ -147,6 +173,12 @@ variable "expose" {
   default     = "none"
 }
 
+variable "route_suffix" {
+  description = "route suffix"
+  type        = string
+  default     = "none"
+}
+
 
 variable "nginx_ingress_service_name" {
   description = "nginx_ingress_service_name"
@@ -158,4 +190,22 @@ variable "nginx_ingress_port" {
   description = "nginx_ingress_port"
   type        = number
   default     = 8080
+}
+
+variable "reloader_container_image" {
+  description = "path to configmap-reloader image"
+  type        = string
+}
+
+variable "reloader_sidecar_config" {
+  default     = {
+      name = "reloader"
+      container_port = 9533
+      container_resources = {
+        requests_cpu = "20m"
+        limits_cpu = "20m"
+        requests_memory = "30M"
+        limits_memory = "30M"
+      }
+    }
 }

@@ -4,5 +4,4 @@ locals {
     { module = "pushgateway" },
     var.labels
   )
-
 }

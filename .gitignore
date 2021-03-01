@@ -29,5 +29,4 @@ override.tf.json
 # example: *tfplan*
 
 */secrets/*
-secrets.tfvars
 .DS_Store

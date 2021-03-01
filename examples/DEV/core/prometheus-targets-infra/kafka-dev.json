@@ -1,0 +1,10 @@
+[
+  {
+    "labels": {
+      "service": "kafka",
+      "system": "kafka-dev",
+	    "noderole": "default"
+    },
+    "targets": []
+  }
+]

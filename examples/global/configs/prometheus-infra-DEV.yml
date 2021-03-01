@@ -1,0 +1,123 @@
+global:
+  scrape_interval: 1m
+  scrape_timeout: 30s
+  evaluation_interval: 1m
+  external_labels:
+    prometheus_name: ${ prometheus_name }
+    ${ prometheus_replica_label }: ${ prometheus_replica }
+scrape_configs:
+- job_name: 'blackbox'
+  metrics_path: /probe
+  params:
+    module: [http_2xx_example]
+  static_configs:
+    - targets:
+      - https://grafana.local:3000/login
+      - https://jenkins.local/legacy/login
+      - https://mail.local
+  relabel_configs:
+    - source_labels: [__address__]
+      target_label: __param_target
+    - source_labels: [__param_target]
+      target_label: instance
+    - target_label: __address__
+      replacement: exporter-blackbox:9115  # The blackbox exporter's real hostname:port.
+
+%{ for system in systems ~}
+- job_name: ${system}-targets
+  honor_timestamps: true
+  metrics_path: /metrics
+  scheme: http
+  tls_config:
+    insecure_skip_verify: true
+  relabel_configs:
+    - source_labels: [__address__]
+      separator: ;
+      regex: ^(.*):\d+$
+      target_label: instance
+      replacement: $1
+      action: replace
+  file_sd_configs:
+    - files:
+        - '/etc/prometheus/file_sd_config_list/${system}/${system}-targets.json'
+- job_name: ${system}-oc-exporters-pods
+  metrics_path: /metrics
+  relabel_configs:
+    - source_labels: [__meta_kubernetes_pod_label_system]
+      target_label: system
+    - source_labels: [__meta_kubernetes_pod_label_service]
+      target_label: service
+    - source_labels: [__meta_kubernetes_pod_label_instance]
+      target_label: instance
+      action: replace
+    - source_labels: [__meta_kubernetes_pod_label_jmxrole]
+      target_label: jmxrole
+  kubernetes_sd_configs:
+    - role: "pod"
+      namespaces:
+        names:
+          - "${ namespace }"
+      selectors:
+        - role: "pod"
+          label: "system=${system},sd=pod"
+  bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+- job_name: ${system}-oc-exporters-services
+  metrics_path: /metrics
+  relabel_configs:
+    - source_labels: [__meta_kubernetes_service_label_system]
+      target_label: system
+    - source_labels: [__meta_kubernetes_service_label_service]
+      target_label: service
+    - source_labels: [__meta_kubernetes_service_label_instance]
+      target_label: instance
+      action: replace
+    - source_labels: [__meta_kubernetes_service_label_jmxrole]
+      target_label: jmxrole
+  kubernetes_sd_configs:
+    - role: "service"
+      namespaces:
+        names:
+          - "${ namespace }"
+      selectors:
+        - role: "service"
+          label: "system=${system},sd=service"
+  bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+
+%{ endfor ~}
+- job_name: pushgateway
+  metrics_path: /metrics
+  scrape_interval: 1m
+  scrape_timeout: 55s
+  honor_labels: true
+  #relabel_configs:
+  #  - source_labels: [host]
+  #    target_label: instance
+  #    action: replace
+    #  action: replace
+    #- source_labels: [exported_job]
+    #  target_label: job
+    #  action: replace
+  kubernetes_sd_configs:
+    - role: "service"
+      namespaces:
+        names:
+          - "${ namespace }"
+      selectors:
+        - role: "service"
+          label: "module=pushgateway,name=pushgateway"
+  bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+##########################################################################
+##                              ALERTs RULES                            ##
+##########################################################################
+rule_files:
+- "/etc/prometheus/rules/*.yml"
+alerting:
+  alert_relabel_configs:
+  - action: labeldrop
+    regex: '^prometheus_replica$'
+  alertmanagers:
+  - static_configs:
+    - targets:
+%{ for i in range(replicas_statefulset) ~}
+       - ${ alertmanager_name }-${ i }.${ alertmanager_name }:${ alertmanager_container_port }
+%{ endfor ~}

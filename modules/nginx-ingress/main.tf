@@ -1,12 +1,12 @@
+/*
 resource "random_integer" "config" {
   min     = 1
   max     = 50000
   keepers = {
-    # Generate a new integer each time we switch to a new listener ARN
     listener_arn = var.name
   }
 }
-
+*/
 locals {
   labels = merge (
     #{ redeploy = random_integer.config.result },
@@ -15,8 +15,13 @@ locals {
     var.labels
   )
 
-
-
+  annotations = {
+    config_maps_sha1 = sha1(jsonencode(merge(
+      kubernetes_secret.nginx-config-secret.data,
+      kubernetes_secret.nginx-password-secret.data,
+      var.server_map,
+    )))
+  }
 
   #secret_maps_list =  merge (
   #  var.ssl_maps_list

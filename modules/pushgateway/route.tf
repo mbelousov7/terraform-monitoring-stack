@@ -3,6 +3,7 @@ count = var.expose == "route" ? 1 : 0
   triggers = {
     route_namespace = var.namespace
     route_name = var.name
+    route_suffix = var.route_suffix
     service_name = var.nginx_ingress_service_name
     service_port = var.nginx_ingress_port
   }
@@ -25,15 +26,16 @@ count = var.expose == "route" ? 1 : 0
          "spec": {
            "port": {
              "targetPort": "${self.triggers.service_port}"
-         },
-         "tls": {
-           "termination": "passthrough"
-         },
-         "to": {
-           "kind": "Service",
-           "name": "${self.triggers.service_name}",
-           "weight": 100
-         },
+           },
+           "host": "${self.triggers.route_name}-${self.triggers.route_suffix}",
+           "tls": {
+             "termination": "passthrough"
+           },
+           "to": {
+             "kind": "Service",
+             "name": "${self.triggers.service_name}",
+             "weight": 100
+           },
          "wildcardPolicy": "None"
        },
        "status": {
@@ -43,7 +45,7 @@ count = var.expose == "route" ? 1 : 0
 
 echo $status_code
 
-if  [ 201 -ne $status_code ]; then
+if  [ $status_code -eq 400 ]; then
    echo "Route was not created." && exit 1
 else
    echo "Route ${self.triggers.route_name} created." && exit 0

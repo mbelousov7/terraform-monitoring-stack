@@ -1,6 +1,6 @@
-output "service_name" {
-  description = "app service name"
-  value       = kubernetes_service.service.metadata[0].name
+output "app_name" {
+  description = "app stateful_set name"
+  value       = kubernetes_stateful_set.postgres.metadata[0].name
 }
 
 output "container_port" {

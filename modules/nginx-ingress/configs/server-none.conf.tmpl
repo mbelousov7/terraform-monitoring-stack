@@ -2,11 +2,13 @@
 server {
   server_name ~^${ server.name }*;
   listen ${ container_port } %{ if can(server.ssl_data) }ssl%{ endif };
-  #resolver ${ resolver } valid=10s;
   include conf.d/ingress.conf;
- location / {
-   set $upstream http://${ server.name }.${ namespace }${ route_path_for_config }:${ server.app_port };
-   proxy_pass $upstream;
- }
+  %{ if can(server.ssl_data) }
+  ssl_certificate /etc/nginx/ssl/${ server.name }/ssl_certificate.crt;
+  ssl_certificate_key /etc/nginx/ssl/${ server.name }/ssl_certificate_key.key;
+  %{ endif }
+  location / {
+   proxy_pass http://${ server.name }:${ server.app_port };
+  }
 }
 %{ endfor ~}

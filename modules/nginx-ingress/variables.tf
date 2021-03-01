@@ -6,7 +6,7 @@ variable "namespace" {
 variable "name" {
   description = "application name, using as deoloyment,serivce names, also in lables, als as configmap and secret prefix"
   type        = string
-  default     = "prometheus-app"
+  default     = "nginx-ingress"
 }
 
 variable "labels" {
@@ -25,9 +25,13 @@ variable "strategy" {
   default     = "RollingUpdate"
 }
 
-
 variable "container_image" {
   type        = string
+}
+
+variable "image_pull_policy" {
+  type        = string
+  default     = "IfNotPresent"#"Always"
 }
 
 variable "container_port" {
@@ -35,45 +39,43 @@ variable "container_port" {
   default     = 8080
 }
 
-variable "container_resources_requests_cpu" {
-  type        = string
-  default     = "50m"
+variable "container_resources" {
+  default = {
+    requests_cpu = "0.2"
+    limits_cpu ="0.2"
+    requests_memory = "150M"
+    limits_memory = "150M"
+  }
 }
 
-variable "container_resources_limits_cpu" {
-  type        = string
-  default     = "90m"
+variable "readiness_probe" {
+  default = {
+    initial_delay_seconds = 5
+    timeout_seconds = 5
+    period_seconds = 60
+    failure_threshold = 3
+  }
 }
 
-variable "container_resources_requests_memory" {
-  type        = string
-  default     = "160Mi"
-}
-
-variable "container_resources_limits_memory" {
-  type        = string
-  default     = "200Mi"
-}
-
-
-variable "liveness_probe_timeout_seconds" {
-  type        = number
-  default     = 30
-}
-
-variable "liveness_probe_period_seconds" {
-  type        = number
-  default     = 60
-}
-
-variable "liveness_probe_failure_threshold" {
-  type        = number
-  default     = 1
+variable "liveness_probe" {
+  default = {
+    initial_delay_seconds = 10
+    timeout_seconds = 5
+    period_seconds = 60
+    failure_threshold = 3
+  }
 }
 
 variable "service_type" {
   type        = string
   default     = "ClusterIP"
+}
+
+
+variable "session_affinity" {
+  type        = string
+  #default     = "None"
+  default     = "ClientIP"
 }
 
 variable "configMap_volumes" {
@@ -95,7 +97,7 @@ default = [
 ]
 }
 
-variable "server_list" {
+variable "server_map" {
   description = "server config list"
 }
 
@@ -105,26 +107,22 @@ variable "auth_type" {
   default     = "basic"
 }
 
-variable "resolver" {
-  type        = string
-  description = "variable resolver for nginx"
-  default     = "kube-dns.kube-system.svc.cluster.local"
-}
+//variable "resolver" {
+//  type        = string
+//  description = "variable resolver for nginx"
+//  default     = "kube-dns.kube-system.svc.cluster.local"
+//}
 
-variable "route_path_for_config" {
+variable "dns_path_for_config" {
   type        = string
   description = "variable resolver for upstream in server.conf depends on instance of kubernetes cluster "
-  default     = ".svc.cluster.local"
+  default     = "svc.cluster.local"
 }
 
-variable "user" {
-  description = "user"
-  type        = string
-  default     = "admin"
-}
-
-variable "password" {
-  description = "encrypted password"
-  type        = string
-  default     = "$apr1$Zd4voubY$3fMVQZZuDbMIKSeCdPS2y." //admin
+variable "nginx_users_map" {
+  description = " map user_name = http_encrypted_user_password "
+  default     = {
+    user = "$apr1$A3L4.ORj$xGd9QkfCjDHS8tZWQldOP0" //user
+    admin = "$apr1$GqeZ89R1$.qHQjuvzJIdWaFS413SgA/" //P@ssw0rd
+  }
 }

@@ -22,7 +22,12 @@ variable "replicas" {
   default     = 1
 }
 
-variable "strategy" {
+variable "pod_management_policy" {
+  type        = string
+  default     = "OrderedReady"
+}
+
+variable "update_strategy" {
   type        = string
   default     = "RollingUpdate"
 }
@@ -30,6 +35,11 @@ variable "strategy" {
 variable "container_image" {
   description = "path to grafana image"
   type        = string
+}
+
+variable "image_pull_policy" {
+  type        = string
+  default     = "Always"
 }
 
 variable "env" {
@@ -63,45 +73,59 @@ variable "container_port" {
   default     = 3000
 }
 
-variable "container_resources_requests_cpu" {
-  type        = string
-  default     = "100m"
+variable "container_resources" {
+  default = {
+    requests_cpu = "100m"
+    limits_cpu ="150m"
+    requests_memory = "150Mi"
+    limits_memory = "250Mi"
+  }
 }
 
-variable "container_resources_limits_cpu" {
-  type        = string
-  default     = "150m"
+variable "readiness_probe" {
+  default = {
+    initial_delay_seconds = 60
+    timeout_seconds = 15
+    period_seconds = 60
+    failure_threshold = 5
+  }
 }
 
-variable "container_resources_requests_memory" {
-  type        = string
-  default     = "150Mi"
-}
-
-variable "container_resources_limits_memory" {
-  type        = string
-  default     = "250Mi"
-}
-
-
-variable "liveness_probe_timeout_seconds" {
-  type        = number
-  default     = 30
-}
-
-variable "liveness_probe_period_seconds" {
-  type        = number
-  default     = 60
-}
-
-variable "liveness_probe_failure_threshold" {
-  type        = number
-  default     = 3
+variable "liveness_probe" {
+  default = {
+    initial_delay_seconds = 60
+    timeout_seconds = 5
+    period_seconds = 30
+    failure_threshold = 1
+  }
 }
 
 variable "service_type" {
   type        = string
   default     = "ClusterIP"
+}
+
+variable "session_affinity" {
+  type        = string
+  default     = "ClientIP"
+}
+
+variable "dashboards_map" {
+  description = "dashboards map"
+  //type = map(map(
+  //  folder = string
+  //  json = string
+//  ))
+  default = {
+    system-template-jmx = { folder = "main" }
+    system-template-os = { folder = "main" }
+  }
+}
+
+variable "dashboards_folder" {
+  description = "folder path dashboards .json's "
+  type = string
+  default = "./dashboards"
 }
 
 variable "config_maps_list" {
@@ -143,5 +167,48 @@ variable "ssl_data" {
 variable "expose" {
   description = "expose resource type(ingress for kubernetes or route for openshift)"
   type        = string
-  default     = "ingress"
+  default     = "none"
+}
+
+variable "route_suffix" {
+  description = "route suffix"
+  type        = string
+  default     = "none"
+}
+
+variable "fluentbit_container_image" {
+  description = "path to fluentbit image"
+  type        = string
+}
+
+variable "fluentbit_config" {
+  default     = {
+      name = "fluentbit"
+      container_resources = {
+        requests_cpu = "10m"
+        limits_cpu = "10m"
+        requests_memory = "20M"
+        limits_memory = "20M"
+      }
+    }
+}
+
+variable "fluentbit_config_output" {
+/*  default     = {
+      host = "logs"
+      port = "44442"
+      app_id = "monitor"
+    } */
+}
+
+variable "nginx_ingress_service_name" {
+  description = "nginx_ingress_service_name"
+  type        = string
+  #default     = "nginx-ingress"
+}
+
+variable "nginx_ingress_port" {
+  description = "nginx_ingress_port"
+  type        = number
+  default     = 8080
 }

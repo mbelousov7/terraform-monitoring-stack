@@ -1,0 +1,15 @@
+groups:
+- name: kamon
+  rules:
+#####################################CPU#####################################
+    - alert: ServiceKamonMetricsStatusNull
+      expr: up{ service="kamon"} == 0
+      for: 30m
+      labels:
+        severity: 0
+        severityText: NODATA
+        summary: Service Metrics Scrape Error
+        alertid: "{{ $labels.system }}-{{ $labels.service }}-{{ $labels.instance }}-ServiceKamonMetricsStatusNull"
+      annotations:
+        summary: Service Metrics Scrape Error [{{ $labels.system }}] [{{ $labels.service }}] [{{ $labels.instance }}]
+        description: There are no metrics for service [{{ $labels.service }}] [{{ $labels.instance }}]

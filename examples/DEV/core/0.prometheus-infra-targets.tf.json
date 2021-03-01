@@ -1,0 +1,12 @@
+{
+  "locals" : [{
+    "prometheus_infra_system_map" : {
+     "prometheus-infra" : [
+        "ipa-dev",
+        "kafka-dev",
+        "syskamon-dev",
+        "sysspringboot-dev"
+      ]
+    }
+  }]
+}

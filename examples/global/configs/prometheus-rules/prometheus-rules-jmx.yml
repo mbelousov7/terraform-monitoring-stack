@@ -1,0 +1,25 @@
+groups:
+- name: jmx
+  rules:
+    - alert: JMXExporterMetricsStatusNull
+      expr: up{ jmxrole=~".+"} == 0
+      for: 300m
+      labels:
+        severity: 0
+        severityText: NODATA
+        summary: JMX Exporter Metrics Scrape Error
+        alertid: "{{ $labels.system }}-{{ $labels.service }}-{{ $labels.instance }}-JMXExporterMetricsStatusNull"
+      annotations:
+        summary: JMX Exporter Metrics Scrape Error [{{ $labels.system }}] [{{ $labels.service }}] [{{ $labels.instance }}]
+        description: There are no metrics for jmx-exporter [{{ $labels.service }}] [{{ $labels.instance }}]
+    - alert: JMXJvmMemoryHeapUtilizationHigh
+      expr: (jmx_java_lang_memory_heapmemoryusage_used / jmx_java_lang_memory_heapmemoryusage_committed ) > 0.95
+      for: 10m
+      labels:
+        severity: 2
+        severityText: WARNING
+        summary: JVM Heap Utilization High
+        alertid: "{{ $labels.system }}-{{ $labels.instance }}-JMXJvmMemoryHeapUtilizationHigh"
+      annotations:
+        summary: JVM Heap Utilization High [{{ $labels.system }}] [{{ $labels.instance }}] [{{ $labels.jmxrole }}]
+        description:  JVM Heap Utilization is hight (> 95%) VALUE = {{ $value }}

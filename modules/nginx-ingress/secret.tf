@@ -9,25 +9,23 @@ resource "kubernetes_secret" "nginx-config-secret" {
       container_port = var.container_port
       })
     "server.conf" = templatefile("${path.module}/configs/server-${var.auth_type}.conf.tmpl", {
-      server_list = var.server_list
+      server_map = var.server_map
       container_port = var.container_port
       namespace   = var.namespace
-      resolver = var.resolver
-      route_path_for_config = var.route_path_for_config
-      //app_port = var.app_port
-      })
-    "ingress.conf" = templatefile("${path.module}/configs/ingress.conf.tmpl", {
-      resolver = var.resolver
-      })
+      dns_path_for_config = var.dns_path_for_config
+    })
+    "ingress.conf" = templatefile("${path.module}/configs/ingress.conf.tmpl", {})
+    "ssl.key" = templatefile("${path.module}/configs/sslkey.tmpl", {})
+    "ssl.crt" = templatefile("${path.module}/configs/sslcrt.tmpl", {})
 
   }
   type = "Opaque"
 }
 
 resource "kubernetes_secret" "nginx-ssl-secret" {
-  for_each = {for ssl in var.server_list:  ssl.name => ssl if can(ssl.ssl_data)}
+  for_each = { for server, config in var.server_map : server => config if can(config.ssl_data)}
   metadata {
-    name = "${var.name}-ssl-${each.value.name}"
+    name = "${var.name}-ssl-${each.key}"
     namespace = var.namespace
     labels = local.labels
   }
@@ -42,8 +40,7 @@ resource "kubernetes_secret" "nginx-password-secret" {
   }
   data = {
     ".htpasswd" = templatefile("${path.module}/configs/.htpasswd", {
-      user = var.user
-      password = var.password
+      nginx_users_map = var.nginx_users_map
       })
   }
   type = "Opaque"
