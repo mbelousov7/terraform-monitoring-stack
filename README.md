@@ -38,7 +38,7 @@ terraform destroy -var-file="./secrets/secrets.tfvars" -auto-approve
 ```
 
 ## configure ssl cert
-sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout nginx.key -out nginx.crt
+openssl req -x509 -newkey rsa:2048 -keyout tls.key -out tls.pem -days XXX
 
 ## Offline deploy
 
