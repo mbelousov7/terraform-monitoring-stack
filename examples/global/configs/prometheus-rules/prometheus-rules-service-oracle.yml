@@ -1,0 +1,27 @@
+groups:
+- name: oracle
+  rules:
+#####################################CPU#####################################
+    - alert: ServiceOracleMetricsStatusNull
+      expr: up{ service="oracle"} == 0
+      for: 30m
+      labels:
+        severity: 0
+        severityText: NODATA
+        summary: Service Metrics Scrape Error
+        alertid: "{{ $labels.system }}-{{ $labels.service }}-{{ $labels.instance }}-ServiceOracleMetricsStatusNull"
+      annotations:
+        summary: Service Metrics Scrape Error [{{ $labels.system }}] [{{ $labels.service }}] [{{ $labels.instance }}]
+        description: There are no metrics for service [{{ $labels.service }}] [{{ $labels.instance }}]
+
+    - alert: OracleConnectionError
+      expr: oracle_exporter_connection_status{ service="oracle"} == 0
+      for: 30m
+      labels:
+        severity: 0
+        severityText: NODATA
+        summary: Oracle DB connection error
+        alertid: "{{ $labels.system }}-{{ $labels.service }}-{{ $labels.instance }}-OracleConnectionError"
+      annotations:
+        summary: Oracle DB connection error [{{ $labels.system }}] [{{ $labels.service }}] [{{ $labels.instance }}]
+        description: Oracle DB connection error, there are no metrics for service [{{ $labels.service }}] [{{ $labels.instance }}]

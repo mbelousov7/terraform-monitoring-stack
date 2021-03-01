@@ -1,0 +1,23 @@
+[
+  {
+    "labels": {
+      "service": "ldap",
+      "system": "ipa-dev"
+    },
+    "targets": [
+      "ipa1.local:9095",
+      "ipa2.local:9095"
+    ]
+  },
+  {
+    "labels": {
+      "service": "ldap",
+      "system": "ipa-dev",
+	    "noderole": "default"
+    },
+    "targets": [
+      "ipa1.local:9100",
+      "ipa2.local:9100"
+    ]
+  }
+]

@@ -8,6 +8,17 @@ resource "kubernetes_secret" "secret" {
   data = each.value.map_data
 }
 
+resource "kubernetes_secret" "config" {
+  metadata {
+    name = "${var.name}-config"
+    namespace = var.namespace
+    labels = local.labels
+  }
+
+  data = var.config_data
+
+}
+
 /*resource "kubernetes_secret" "prometheus-secret" {
   metadata {
     name      = var.app_name

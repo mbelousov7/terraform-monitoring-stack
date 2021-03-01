@@ -1,0 +1,2008 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      },
+      {
+        "datasource": "$ds",
+        "enable": true,
+        "expr": "(max (ALERTS_FOR_STATE{system=~\"$system\", service=~\"$service\", instance=~\"$instance\", alertname=~ \"$alertname\", severity=~\"3\"})  by (system,service,instance,alertname,summary,alertstate)  / max(ALERTS{alertstate=\"firing\",system=~\"$system\", service=~\"$service\", alertname=~ \"$alertname\", severity=~\"3\"})  by (system,service,instance,alertname,summary) ) * 1000",
+        "hide": false,
+        "iconColor": "rgba(255, 96, 96, 1)",
+        "name": "crit",
+        "showIn": 0,
+        "step": "60s",
+        "tagKeys": "system,service,instance,alertname",
+        "textFormat": "{{ summary }}",
+        "titleFormat": "{{ alertname}}",
+        "useValueForTime": true
+      },
+      {
+        "datasource": "$ds",
+        "enable": false,
+        "expr": "(max (ALERTS_FOR_STATE{system=~\"$system\", service=~\"$service\", instance=~\"$instance\", alertname=~ \"$alertname\", severity=~\"2\"})  by (system,service,instance,alertname,summary,alertstate)  / max(ALERTS{alertstate=\"firing\",system=~\"$system\", service=~\"$service\", alertname=~ \"$alertname\", severity=~\"2\"})  by (system,service,instance,alertname,summary) ) * 1000",
+        "hide": false,
+        "iconColor": "#FF9830",
+        "name": "warn",
+        "showIn": 0,
+        "tagKeys": "system,service,instance,alertname",
+        "textFormat": "{{ summary }}",
+        "titleFormat": "{{ alertname}}",
+        "useValueForTime": true
+      },
+      {
+        "datasource": "$ds",
+        "enable": false,
+        "expr": "(max (ALERTS_FOR_STATE{system=~\"$system\", service=~\"$service\", instance=~\"$instance\", alertname=~ \"$alertname\", severity=~\"1\"})  by (system,service,instance,alertname,summary,alertstate)  / max(ALERTS{alertstate=\"firing\",system=~\"$system\", service=~\"$service\", alertname=~ \"$alertname\", severity=~\"1\"})  by (system,service,instance,alertname,summary) ) * 1000",
+        "hide": false,
+        "iconColor": "#3274D9",
+        "name": "info",
+        "showIn": 0,
+        "step": "60s",
+        "tagKeys": "system,service,instance,alertname",
+        "textFormat": "{{ summary }}",
+        "titleFormat": "{{ alertname}}",
+        "useValueForTime": true
+      },
+      {
+        "datasource": "$ds",
+        "enable": false,
+        "expr": "(max (ALERTS_FOR_STATE{system=~\"$system\", service=~\"$service\", instance=~\"$instance\", alertname=~ \"$alertname\", severity=~\"0\"})  by (system,service,instance,alertname,summary,alertstate)  / max(ALERTS{alertstate=\"firing\",system=~\"$system\", service=~\"$service\", alertname=~ \"$alertname\", severity=\"0\"})  by (system,service,instance,alertname,summary) ) * 1000",
+        "hide": false,
+        "iconColor": "#8F3BB8",
+        "name": "nodata",
+        "showIn": 0,
+        "tagKeys": "system,service,instance,alertname",
+        "textFormat": "{{ summary }}",
+        "titleFormat": "{{ alertname}}",
+        "useValueForTime": true
+      }
+    ]
+  },
+  "description": "Dashboard for yarn l2",
+  "editable": false,
+  "gnetId": 3457,
+  "graphTooltip": 0,
+  "id": 35,
+  "iteration": 1612185752166,
+  "links": [
+    {
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "yarn",
+        "queue"
+      ],
+      "type": "dashboards"
+    }
+  ],
+  "panels": [
+    {
+      "collapsed": false,
+      "datasource": "mcap-prometheus",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 917,
+      "panels": [],
+      "title": "Level2: Table",
+      "type": "row"
+    },
+    {
+      "columns": [],
+      "datasource": "$ds",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 771,
+      "links": [],
+      "pageSize": 10,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 4,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "",
+          "align": "auto",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Time",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "instance",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "vcores fair",
+          "align": "auto",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "Value #A",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "allocated",
+          "align": "auto",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "Value #B",
+          "thresholds": [],
+          "type": "number",
+          "unit": "none"
+        },
+        {
+          "alias": "mem fair",
+          "align": "auto",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "Value #C",
+          "thresholds": [],
+          "type": "number",
+          "unit": "decmbytes"
+        },
+        {
+          "alias": "mem allocated",
+          "align": "auto",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "Value #D",
+          "thresholds": [],
+          "type": "number",
+          "unit": "decmbytes"
+        },
+        {
+          "alias": "apps_running",
+          "align": "auto",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "Value #E",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "apps_pending",
+          "align": "auto",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "Value #F",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": true,
+          "linkTargetBlank": true,
+          "linkTooltip": "service-yarn-l2 $__cell ",
+          "linkUrl": "dashboard/db/service-yarn-l2?var-ds=$ds&var-system=$system&var-q1=$__cell",
+          "mappingType": 1,
+          "pattern": "q1",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": true,
+          "linkTargetBlank": true,
+          "linkTooltip": "service-yarn-l3 $__cell_3 . $__cell ",
+          "linkUrl": "dashboard/db/service-yarn-l3?var-ds=$ds&var-system=$system&var-q1=$__cell_3&var-q2=$__cell",
+          "mappingType": 1,
+          "pattern": "q2",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "q3",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "q3 count",
+          "align": "auto",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Value #G",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "expr": "sort(quantile_over_time($quantile,max(hadoop_yarn_jmx_fair_share_vcores{system=~\"$system\",service=~\"$service\",instance=~\"$instance\",roletype=~\"$roletype\",name=\"QueueMetrics\",\nq0=\"$q0\",q1=~\"$q1\",q2=~\"$q2\",q3=\"null\",q4=\"null\" })by (instance,q0,q1,q2) [$__range:]))",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "intervalFactor": 10,
+          "legendFormat": "",
+          "refId": "A"
+        },
+        {
+          "expr": "sort(quantile_over_time($quantile,max(hadoop_yarn_jmx_allocated_vcores{system=~\"$system\",service=~\"$service\",instance=~\"$instance\",roletype=~\"$roletype\",name=\"QueueMetrics\",\nq0=\"$q0\",q1=~\"$q1\",q2=~\"$q2\",q3=\"null\",q4=\"null\" })by (instance,q0,q1,q2) [$__range:]))",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "intervalFactor": 10,
+          "legendFormat": "",
+          "refId": "B"
+        },
+        {
+          "expr": "sort(quantile_over_time($quantile,max(hadoop_yarn_jmx_steady_fair_share_mb{system=~\"$system\",service=~\"$service\",instance=~\"$instance\",roletype=~\"$roletype\",name=\"QueueMetrics\",\nq0=\"$q0\",q1=~\"$q1\",q2=~\"$q2\",q3=\"null\",q4=\"null\" })by (instance,q0,q1,q2) [$__range:]))",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "intervalFactor": 10,
+          "legendFormat": "",
+          "refId": "C"
+        },
+        {
+          "expr": "sort(quantile_over_time($quantile,max(hadoop_yarn_jmx_allocated_mb{system=~\"$system\",service=~\"$service\",instance=~\"$instance\",roletype=~\"$roletype\",name=\"QueueMetrics\",\nq0=\"$q0\",q1=~\"$q1\",q2=~\"$q2\",q3=\"null\",q4=\"null\" })by (instance,q0,q1,q2) [$__range:]))",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "intervalFactor": 10,
+          "legendFormat": "",
+          "refId": "D"
+        },
+        {
+          "expr": "sort(quantile_over_time($quantile,max(hadoop_yarn_jmx_apps_running{system=~\"$system\",service=~\"$service\",instance=~\"$instance\",roletype=~\"$roletype\",name=\"QueueMetrics\",\nq0=\"$q0\",q1=~\"$q1\",q2=~\"$q2\",q3=\"null\",q4=\"null\" })by (instance,q0,q1,q2) [$__range:]))",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "intervalFactor": 1,
+          "refId": "E"
+        },
+        {
+          "expr": "sort(quantile_over_time($quantile,max(hadoop_yarn_jmx_apps_pending{system=~\"$system\",service=~\"$service\",instance=~\"$instance\",roletype=~\"$roletype\",name=\"QueueMetrics\",\nq0=\"$q0\",q1=~\"$q1\",q2=~\"$q2\",q3=\"null\",q4=\"null\" })by (instance,q0,q1,q2) [$__range:]))",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "intervalFactor": 1,
+          "refId": "F"
+        },
+        {
+          "expr": "count by (q2) (count by (q1,q2,q3) (max(hadoop_yarn_jmx_apps_pending{system=~\"$system\",service=~\"$service\",instance=~\"$instance\",roletype=~\"$roletype\",name=\"QueueMetrics\",\nq0=\"$q0\",q1=~\"$q1\",q2=~\"$q2\",q4=\"null\" } ) by (instance,q0,q1,q2,q3)))  - 1",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "intervalFactor": 1,
+          "refId": "G"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Статистика $instance quantile=$quantile",
+      "transform": "table",
+      "type": "table-old"
+    },
+    {
+      "collapsed": false,
+      "datasource": "mcap-prometheus",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 13
+      },
+      "id": 924,
+      "panels": [],
+      "repeat": "q1",
+      "scopedVars": {
+        "q1": {
+          "selected": true,
+          "text": "basic_dm",
+          "value": "basic_dm"
+        }
+      },
+      "title": "Level2:$q1 YARN CPU&Mem summary",
+      "type": "row"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "$ds",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
+      "hiddenSeries": false,
+      "id": 790,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
+        "sort": "current",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.3",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "repeat": null,
+      "repeatDirection": "h",
+      "scopedVars": {
+        "q1": {
+          "selected": true,
+          "text": "basic_dm",
+          "value": "basic_dm"
+        }
+      },
+      "seriesOverrides": [
+        {
+          "alias": "/q1=/",
+          "fill": 0,
+          "lines": true,
+          "pointradius": 1,
+          "points": true
+        },
+        {
+          "alias": "/q2=/",
+          "fill": 4,
+          "stack": "A"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sort(max (hadoop_yarn_jmx_fair_share_vcores{system=~\"$system\",service=~\"$service\",roletype=~\"$roletype\",instance=~\"$instance\",name=\"QueueMetrics\",\nq0=\"$q0\",q1=~\"$q1\",q2=\"null\",q3=\"null\",q4=\"null\"}) by (instance,q0,q1))",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 10,
+          "legendFormat": "q1={{q1}} null fair_share_vcores",
+          "refId": "A"
+        },
+        {
+          "expr": "sort(max(hadoop_yarn_jmx_allocated_vcores{system=~\"$system\",service=~\"$service\",roletype=~\"$roletype\",instance=~\"$instance\",name=\"QueueMetrics\"\n,q0=\"$q0\",q1=~\"$q1\",q2=\"null\",q3=\"null\",q4=\"null\"})by (instance,q0,q1))",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 10,
+          "legendFormat": "q1={{q1}} allocated vcores",
+          "refId": "B"
+        },
+        {
+          "expr": "sort(max (hadoop_yarn_jmx_allocated_vcores{system=~\"$system\",service=~\"$service\",roletype=~\"$roletype\",instance=~\"$instance\",name=\"QueueMetrics\",\nq0=\"$q0\",q1=~\"$q1\",q2=~\"$q2\",q2!=\"null\",q3=\"null\",q4=\"null\" }) by (instance,q0,q1,q2))",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "intervalFactor": 10,
+          "legendFormat": "q2={{q2}} share vcores",
+          "refId": "C"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "q1=$q1 q2=variables  hadoop_yarn_jmx_allocated_vcores",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "$ds",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 22
+      },
+      "hiddenSeries": false,
+      "id": 774,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
+        "sort": "current",
+        "sortDesc": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.3",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "scopedVars": {
+        "q1": {
+          "selected": true,
+          "text": "basic_dm",
+          "value": "basic_dm"
+        }
+      },
+      "seriesOverrides": [
+        {
+          "alias": "/q1=/",
+          "fill": 0,
+          "lines": true,
+          "pointradius": 2,
+          "points": true
+        },
+        {
+          "alias": "/q2=/",
+          "fill": 4,
+          "stack": "A"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sort(max(hadoop_yarn_jmx_steady_fair_share_mb{system=~\"$system\",service=~\"$service\",roletype=~\"$roletype\",instance=~\"$instance\",name=\"QueueMetrics\",\nq0=~\"$q0\",q1=~\"$q1\",q2=\"null\",q3=\"null\",q4=\"null\"}) by (instance,q0,q1,q2))",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 10,
+          "legendFormat": "q1={{q1}}  null  fair_share_mb",
+          "refId": "A"
+        },
+        {
+          "expr": "sort(max (hadoop_yarn_jmx_allocated_mb{system=~\"$system\",service=~\"$service\",roletype=~\"$roletype\",instance=~\"$instance\",name=\"QueueMetrics\",\nq0=~\"$q0\",q1=~\"$q1\",q2=\"null\",q3=\"null\",q4=\"null\" }) by (instance,q0,q1,q2))",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 10,
+          "legendFormat": "q1={{q1}} allocated mb",
+          "refId": "B"
+        },
+        {
+          "expr": "sort(max (hadoop_yarn_jmx_allocated_mb{system=~\"$system\",service=~\"$service\",roletype=~\"$roletype\",instance=~\"$instance\",name=\"QueueMetrics\",\nq0=~\"$q0\",q1=~\"$q1\",q2=~\"$q2\",q2!=\"null\",q3=\"null\",q4=\"null\" }) by (instance,q0,q1,q2))",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 10,
+          "legendFormat": "q2={{q2}} allocated mb",
+          "refId": "C"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "q1=$q1 q2=variables hadoop_yarn_jmx_allocated_mb",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "decmbytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "collapsed": true,
+      "datasource": "mcap-prometheus",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 32
+      },
+      "id": 922,
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$ds",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 15
+          },
+          "id": 786,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "max": true,
+            "min": true,
+            "rightSide": true,
+            "show": true,
+            "sort": "current",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "scopedVars": {
+            "q1": {
+              "selected": true,
+              "text": "basic_dm",
+              "value": "basic_dm"
+            }
+          },
+          "seriesOverrides": [
+            {
+              "alias": "/q1=/",
+              "fill": 0,
+              "lines": true,
+              "pointradius": 1,
+              "points": true
+            },
+            {
+              "alias": "/q2=/",
+              "fill": 4,
+              "stack": "A"
+            }
+          ],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sort(max(hadoop_yarn_jmx_apps_running{system=~\"$system\",service=~\"$service\",roletype=~\"$roletype\",instance=~\"$instance\",name=\"QueueMetrics\"\n,q0=\"$q0\",q1=~\"$q1\",q2=\"null\",q3=\"null\",q4=\"null\"})by (instance,q0,q1))",
+              "format": "time_series",
+              "hide": false,
+              "intervalFactor": 10,
+              "legendFormat": "q1={{q1}} apps_running",
+              "refId": "B"
+            },
+            {
+              "expr": "sort(max (hadoop_yarn_jmx_apps_running{system=~\"$system\",service=~\"$service\",roletype=~\"$roletype\",instance=~\"$instance\",name=\"QueueMetrics\",\nq0=\"$q0\",q1=~\"$q1\",q2=~\"$q2\",q2!=\"null\",q3=\"null\",q4=\"null\" } > 0 ) by (instance,q0,q1,q2))",
+              "format": "time_series",
+              "hide": false,
+              "instant": false,
+              "intervalFactor": 10,
+              "legendFormat": "q2={{q2}} apps_running",
+              "refId": "C"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "apps_running",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$ds",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 25
+          },
+          "id": 787,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "max": true,
+            "min": true,
+            "rightSide": true,
+            "show": true,
+            "sort": "current",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null as zero",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "scopedVars": {
+            "q1": {
+              "selected": true,
+              "text": "basic_dm",
+              "value": "basic_dm"
+            }
+          },
+          "seriesOverrides": [
+            {
+              "alias": "/q1=/",
+              "fill": 0,
+              "lines": true,
+              "pointradius": 1,
+              "points": true
+            },
+            {
+              "alias": "/q2=/",
+              "fill": 4,
+              "stack": "A"
+            }
+          ],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sort(max(hadoop_yarn_jmx_apps_pending{system=~\"$system\",service=~\"$service\",roletype=~\"$roletype\",instance=~\"$instance\",name=\"QueueMetrics\"\n,q0=\"$q0\",q1=~\"$q1\",q2=\"null\",q3=\"null\",q4=\"null\"})by (instance,q0,q1))",
+              "format": "time_series",
+              "hide": false,
+              "intervalFactor": 10,
+              "legendFormat": "q1={{q1}} apps_pending ",
+              "refId": "B"
+            },
+            {
+              "expr": "sort(max (hadoop_yarn_jmx_apps_pending{system=~\"$system\",service=~\"$service\",roletype=~\"$roletype\",instance=~\"$instance\",name=\"QueueMetrics\",\nq0=\"$q0\",q1=~\"$q1\",q2=~\"$q2\",q2!=\"null\",q3=\"null\",q4=\"null\" } > 0 ) by (instance,q0,q1,q2))",
+              "format": "time_series",
+              "hide": false,
+              "instant": false,
+              "intervalFactor": 10,
+              "legendFormat": "q2={{q2}} apps_pending",
+              "refId": "C"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "apps_pending",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "repeat": "q1",
+      "scopedVars": {
+        "q1": {
+          "selected": true,
+          "text": "basic_dm",
+          "value": "basic_dm"
+        }
+      },
+      "title": "Level2:$q1 YARN App summary",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "datasource": "mcap-prometheus",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 33
+      },
+      "id": 920,
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$ds",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 6,
+            "x": 0,
+            "y": 16
+          },
+          "id": 783,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "sort": "current",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "maxPerRow": 4,
+          "nullPointMode": "null as zero",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "repeat": "q2",
+          "repeatDirection": "h",
+          "scopedVars": {
+            "q1": {
+              "selected": true,
+              "text": "basic_dm",
+              "value": "basic_dm"
+            },
+            "q2": {
+              "selected": false,
+              "text": "g_dc_y_custom_rb",
+              "value": "g_dc_y_custom_rb"
+            }
+          },
+          "seriesOverrides": [
+            {
+              "alias": "/mb/",
+              "yaxis": 2
+            },
+            {
+              "alias": "/vcores/",
+              "fill": 0,
+              "points": true
+            }
+          ],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sort(max (hadoop_yarn_jmx_allocated_vcores{system=~\"$system\",service=~\"$service\",roletype=~\"$roletype\",instance=~\"$instance\",name=\"QueueMetrics\",\nq0=\"$q0\",q1=~\"$q1\",q2=~\"$q2\",q2!=\"null\",q3=\"null\",q4=\"null\" }) by (instance,q0,q1,q2))",
+              "format": "time_series",
+              "hide": false,
+              "intervalFactor": 10,
+              "legendFormat": "q2={{q2}} share vcores",
+              "refId": "A"
+            },
+            {
+              "expr": "sort(max (hadoop_yarn_jmx_allocated_mb{system=~\"$system\",service=~\"$service\",roletype=~\"$roletype\",instance=~\"$instance\",name=\"QueueMetrics\",\nq0=~\"$q0\",q1=~\"$q1\",q2=~\"$q2\",q2!=\"null\",q3=\"null\",q4=\"null\" }) by (instance,q0,q1,q2))",
+              "format": "time_series",
+              "hide": false,
+              "instant": false,
+              "intervalFactor": 10,
+              "legendFormat": "q2={{q2}} allocated mb",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "q1=$q1 q2=$q2",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "decmbytes",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$ds",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 6,
+            "x": 6,
+            "y": 16
+          },
+          "id": 925,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "sort": "current",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "maxPerRow": 4,
+          "nullPointMode": "null as zero",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "repeat": null,
+          "repeatDirection": "h",
+          "repeatIteration": 1599750515144,
+          "repeatPanelId": 783,
+          "scopedVars": {
+            "q1": {
+              "selected": true,
+              "text": "basic_dm",
+              "value": "basic_dm"
+            },
+            "q2": {
+              "selected": false,
+              "text": "g_dc_y_custom_risk_erm",
+              "value": "g_dc_y_custom_risk_erm"
+            }
+          },
+          "seriesOverrides": [
+            {
+              "alias": "/mb/",
+              "yaxis": 2
+            },
+            {
+              "alias": "/vcores/",
+              "fill": 0,
+              "points": true
+            }
+          ],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sort(max (hadoop_yarn_jmx_allocated_vcores{system=~\"$system\",service=~\"$service\",roletype=~\"$roletype\",instance=~\"$instance\",name=\"QueueMetrics\",\nq0=\"$q0\",q1=~\"$q1\",q2=~\"$q2\",q2!=\"null\",q3=\"null\",q4=\"null\" }) by (instance,q0,q1,q2))",
+              "format": "time_series",
+              "hide": false,
+              "intervalFactor": 10,
+              "legendFormat": "q2={{q2}} share vcores",
+              "refId": "A"
+            },
+            {
+              "expr": "sort(max (hadoop_yarn_jmx_allocated_mb{system=~\"$system\",service=~\"$service\",roletype=~\"$roletype\",instance=~\"$instance\",name=\"QueueMetrics\",\nq0=~\"$q0\",q1=~\"$q1\",q2=~\"$q2\",q2!=\"null\",q3=\"null\",q4=\"null\" }) by (instance,q0,q1,q2))",
+              "format": "time_series",
+              "hide": false,
+              "instant": false,
+              "intervalFactor": 10,
+              "legendFormat": "q2={{q2}} allocated mb",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "q1=$q1 q2=$q2",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "decmbytes",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$ds",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 6,
+            "x": 12,
+            "y": 16
+          },
+          "id": 926,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "sort": "current",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "maxPerRow": 4,
+          "nullPointMode": "null as zero",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "repeat": null,
+          "repeatDirection": "h",
+          "repeatIteration": 1599750515144,
+          "repeatPanelId": 783,
+          "scopedVars": {
+            "q1": {
+              "selected": true,
+              "text": "basic_dm",
+              "value": "basic_dm"
+            },
+            "q2": {
+              "selected": false,
+              "text": "g_dc_y_custom_risk_kfl",
+              "value": "g_dc_y_custom_risk_kfl"
+            }
+          },
+          "seriesOverrides": [
+            {
+              "alias": "/mb/",
+              "yaxis": 2
+            },
+            {
+              "alias": "/vcores/",
+              "fill": 0,
+              "points": true
+            }
+          ],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sort(max (hadoop_yarn_jmx_allocated_vcores{system=~\"$system\",service=~\"$service\",roletype=~\"$roletype\",instance=~\"$instance\",name=\"QueueMetrics\",\nq0=\"$q0\",q1=~\"$q1\",q2=~\"$q2\",q2!=\"null\",q3=\"null\",q4=\"null\" }) by (instance,q0,q1,q2))",
+              "format": "time_series",
+              "hide": false,
+              "intervalFactor": 10,
+              "legendFormat": "q2={{q2}} share vcores",
+              "refId": "A"
+            },
+            {
+              "expr": "sort(max (hadoop_yarn_jmx_allocated_mb{system=~\"$system\",service=~\"$service\",roletype=~\"$roletype\",instance=~\"$instance\",name=\"QueueMetrics\",\nq0=~\"$q0\",q1=~\"$q1\",q2=~\"$q2\",q2!=\"null\",q3=\"null\",q4=\"null\" }) by (instance,q0,q1,q2))",
+              "format": "time_series",
+              "hide": false,
+              "instant": false,
+              "intervalFactor": 10,
+              "legendFormat": "q2={{q2}} allocated mb",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "q1=$q1 q2=$q2",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "decmbytes",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$ds",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 6,
+            "x": 18,
+            "y": 16
+          },
+          "id": 927,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "sort": "current",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "maxPerRow": 4,
+          "nullPointMode": "null as zero",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "repeat": null,
+          "repeatDirection": "h",
+          "repeatIteration": 1599750515144,
+          "repeatPanelId": 783,
+          "scopedVars": {
+            "q1": {
+              "selected": true,
+              "text": "basic_dm",
+              "value": "basic_dm"
+            },
+            "q2": {
+              "selected": false,
+              "text": "null",
+              "value": "null"
+            }
+          },
+          "seriesOverrides": [
+            {
+              "alias": "/mb/",
+              "yaxis": 2
+            },
+            {
+              "alias": "/vcores/",
+              "fill": 0,
+              "points": true
+            }
+          ],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sort(max (hadoop_yarn_jmx_allocated_vcores{system=~\"$system\",service=~\"$service\",roletype=~\"$roletype\",instance=~\"$instance\",name=\"QueueMetrics\",\nq0=\"$q0\",q1=~\"$q1\",q2=~\"$q2\",q2!=\"null\",q3=\"null\",q4=\"null\" }) by (instance,q0,q1,q2))",
+              "format": "time_series",
+              "hide": false,
+              "intervalFactor": 10,
+              "legendFormat": "q2={{q2}} share vcores",
+              "refId": "A"
+            },
+            {
+              "expr": "sort(max (hadoop_yarn_jmx_allocated_mb{system=~\"$system\",service=~\"$service\",roletype=~\"$roletype\",instance=~\"$instance\",name=\"QueueMetrics\",\nq0=~\"$q0\",q1=~\"$q1\",q2=~\"$q2\",q2!=\"null\",q3=\"null\",q4=\"null\" }) by (instance,q0,q1,q2))",
+              "format": "time_series",
+              "hide": false,
+              "instant": false,
+              "intervalFactor": 10,
+              "legendFormat": "q2={{q2}} allocated mb",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "q1=$q1 q2=$q2",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "decmbytes",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "repeat": "q1",
+      "scopedVars": {
+        "q1": {
+          "selected": true,
+          "text": "basic_dm",
+          "value": "basic_dm"
+        }
+      },
+      "title": "Level2:$q1 YARN $instance CPU&Mem details",
+      "type": "row"
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 26,
+  "style": "dark",
+  "tags": [
+    "cdh ",
+    "sdp",
+    "yarn",
+    "queue"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "default",
+          "value": "default"
+        },
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "ds",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "auto": true,
+        "auto_count": 30,
+        "auto_min": "10s",
+        "current": {
+          "selected": false,
+          "text": "5m",
+          "value": "5m"
+        },
+        "error": null,
+        "hide": 0,
+        "label": null,
+        "name": "interval",
+        "options": [
+          {
+            "selected": false,
+            "text": "auto",
+            "value": "$__auto_interval_interval"
+          },
+          {
+            "selected": false,
+            "text": "10s",
+            "value": "10s"
+          },
+          {
+            "selected": false,
+            "text": "20s",
+            "value": "20s"
+          },
+          {
+            "selected": false,
+            "text": "30s",
+            "value": "30s"
+          },
+          {
+            "selected": false,
+            "text": "1m",
+            "value": "1m"
+          },
+          {
+            "selected": true,
+            "text": "5m",
+            "value": "5m"
+          },
+          {
+            "selected": false,
+            "text": "10m",
+            "value": "10m"
+          },
+          {
+            "selected": false,
+            "text": "30m",
+            "value": "30m"
+          },
+          {
+            "selected": false,
+            "text": "1h",
+            "value": "1h"
+          },
+          {
+            "selected": false,
+            "text": "6h",
+            "value": "6h"
+          },
+          {
+            "selected": false,
+            "text": "12h",
+            "value": "12h"
+          },
+          {
+            "selected": false,
+            "text": "1d",
+            "value": "1d"
+          }
+        ],
+        "query": "10s,20s,30s,1m,5m,10m,30m,1h,6h,12h,1d",
+        "queryValue": "",
+        "refresh": 2,
+        "skipUrlSync": false,
+        "type": "interval"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "cdh-dc",
+          "value": "cdh-dc"
+        },
+        "datasource": "$ds",
+        "definition": "label_values(up{service=~\"$service\"},system)",
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "system",
+        "options": [],
+        "query": "label_values(up{service=~\"$service\"},system)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "",
+        "current": {
+          "selected": false,
+          "text": "yarn",
+          "value": "yarn"
+        },
+        "datasource": "$ds",
+        "definition": "label_values(service)",
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "",
+        "multi": false,
+        "name": "service",
+        "options": [],
+        "query": "label_values(service)",
+        "refresh": 1,
+        "regex": "/yarn/",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "$ds",
+        "definition": "label_values(jmx_exporter_build_info{system=~\"$system\",service=~\"$service\"},roletype)",
+        "error": null,
+        "hide": 2,
+        "includeAll": true,
+        "label": "",
+        "multi": true,
+        "name": "roletype",
+        "options": [],
+        "query": "label_values(jmx_exporter_build_info{system=~\"$system\",service=~\"$service\"},roletype)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "",
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "$ds",
+        "definition": "label_values(up{system=~\"$system\",service=~\"$service\"},instance)",
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": "",
+        "multi": true,
+        "name": "instance",
+        "options": [],
+        "query": "label_values(up{system=~\"$system\",service=~\"$service\"},instance)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "",
+        "current": {
+          "selected": false,
+          "text": "root",
+          "value": "root"
+        },
+        "datasource": "$ds",
+        "definition": "label_values(hadoop_yarn_jmx_allocated_vcores{roletype=~\"$roletype\",instance=~\"$instance\",},q0)",
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "",
+        "multi": false,
+        "name": "q0",
+        "options": [],
+        "query": "label_values(hadoop_yarn_jmx_allocated_vcores{roletype=~\"$roletype\",instance=~\"$instance\",},q0)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "",
+        "current": {
+          "selected": false,
+          "text": "basic_dm",
+          "value": "basic_dm"
+        },
+        "datasource": "$ds",
+        "definition": "label_values(hadoop_yarn_jmx_allocated_vcores{roletype=~\"$roletype\",instance=~\"$instance\",q0=~\"$q0\",q1!=\"null\"},q1)",
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "",
+        "multi": false,
+        "name": "q1",
+        "options": [],
+        "query": "label_values(hadoop_yarn_jmx_allocated_vcores{roletype=~\"$roletype\",instance=~\"$instance\",q0=~\"$q0\",q1!=\"null\"},q1)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "",
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "$ds",
+        "definition": "label_values(hadoop_yarn_jmx_allocated_vcores{roletype=~\"$roletype\",instance=~\"$instance\",q0=~\"$q0\",q1=~\"$q1\",},q2)",
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": "",
+        "multi": true,
+        "name": "q2",
+        "options": [],
+        "query": "label_values(hadoop_yarn_jmx_allocated_vcores{roletype=~\"$roletype\",instance=~\"$instance\",q0=~\"$q0\",q1=~\"$q1\",},q2)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "",
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "$ds",
+        "definition": "label_values(hadoop_yarn_jmx_allocated_vcores{roletype=~\"$roletype\",instance=~\"$instance\",q0=~\"$q0\",q1=~\"$q1\",q2=~\"$q2\"},q3)",
+        "error": null,
+        "hide": 2,
+        "includeAll": true,
+        "label": "",
+        "multi": true,
+        "name": "q3",
+        "options": [],
+        "query": "label_values(hadoop_yarn_jmx_allocated_vcores{roletype=~\"$roletype\",instance=~\"$instance\",q0=~\"$q0\",q1=~\"$q1\",q2=~\"$q2\"},q3)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "",
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "$ds",
+        "definition": "label_values(hadoop_yarn_jmx_allocated_vcores{roletype=~\"$roletype\",instance=~\"$instance\",q0=~\"$q0\",q1=~\"$q1\",q2=~\"$q2\",q3=~\"$q3\"},q4)",
+        "error": null,
+        "hide": 2,
+        "includeAll": true,
+        "label": "",
+        "multi": true,
+        "name": "q4",
+        "options": [],
+        "query": "label_values(hadoop_yarn_jmx_allocated_vcores{roletype=~\"$roletype\",instance=~\"$instance\",q0=~\"$q0\",q1=~\"$q1\",q2=~\"$q2\",q3=~\"$q3\"},q4)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "hadoop_yarn_app_allocatedmb",
+          "value": "hadoop_yarn_app_allocatedmb"
+        },
+        "datasource": "$ds",
+        "definition": "metrics(^hadoop_yarn)",
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "metrics",
+        "options": [],
+        "query": "metrics(^hadoop_yarn)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": "0.95",
+          "value": "0.95"
+        },
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "quantile",
+        "options": [
+          {
+            "selected": false,
+            "text": "0.5",
+            "value": "0.5"
+          },
+          {
+            "selected": false,
+            "text": "0.6",
+            "value": "0.6"
+          },
+          {
+            "selected": false,
+            "text": "0.7",
+            "value": "0.7"
+          },
+          {
+            "selected": false,
+            "text": "0.8",
+            "value": "0.8"
+          },
+          {
+            "selected": false,
+            "text": "0.9",
+            "value": "0.9"
+          },
+          {
+            "selected": true,
+            "text": "0.95",
+            "value": "0.95"
+          }
+        ],
+        "query": "0.5,0.6,0.7,0.8,0.9,0.95",
+        "skipUrlSync": false,
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "",
+  "title": "[SERVICE] YARN L2",
+  "uid": "Nm9xcx1Zk"
+}

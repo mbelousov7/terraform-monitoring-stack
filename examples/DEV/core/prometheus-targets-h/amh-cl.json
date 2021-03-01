@@ -1,0 +1,20 @@
+[
+  {
+    "labels": {
+      "system": "amh-cl",
+	    "noderole": "default"
+    },
+    "targets": [
+      "ambari001.dev.local:9100",
+      "ambari002.dev.local:9100",
+      "ambari003.dev.local:9100",
+      "ambari004.dev.local:9100",
+      "ambari005.dev.local:9100",
+      "ambari006.dev.local:9100",
+      "ambari007.dev.local:9100",
+      "ambari008.dev.local:9100",
+      "ambari009.dev.local:9100",
+      "ambari010.dev.local:9100"
+    ]
+  }
+]

@@ -1,0 +1,33 @@
+[
+  {
+    "labels": {
+      "system": "clh-cl",
+      "service": "yarn",
+      "jmxrole": "yarn-rm-all"
+    },
+    "targets": [
+      "cloudera002.dev.local:59011"
+    ]
+  },
+  {
+    "labels": {
+      "system": "clh-cl",
+	    "noderole": "default"
+    },
+    "targets": [
+      "cloudera001.dev.local:9100",
+      "cloudera002.dev.local:9100",
+      "cloudera003.dev.local:9100",
+      "cloudera004.dev.local:9100",
+      "cloudera005.dev.local:9100",
+      "cloudera006.dev.local:9100",
+      "cloudera007.dev.local:9100",
+      "cloudera008.dev.local:9100",
+      "cloudera009.dev.local:9100",
+      "cloudera010.dev.local:9100"
+    ]
+  }
+
+
+
+]

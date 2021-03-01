@@ -1,0 +1,35 @@
+global:
+  smtp_smarthost: ${ alertmanager_smtp_smarthost }
+  smtp_from: ${ alertmanager_smtp_from }
+  smtp_auth_username: ${ alertmanager_smtp_auth_username }
+  smtp_auth_password: ${ alertmanager_smtp_auth_password }
+  smtp_require_tls: True
+route:
+  receiver: default
+  group_wait: 5m
+  group_interval: 10m
+  repeat_interval: 7d
+  group_by: [system,alertname]
+  routes:
+  - receiver: 'kafka'
+    group_wait: 3m
+    group_interval: 3m
+    group_by: [system,alertname,topic]
+    match_re:
+      system: kafka.*
+receivers:
+  - name: default
+    email_configs:
+      - send_resolved: true
+        to: '${alertmanager_receivers_email.default}'
+        headers:
+          subject: "[{{ .Status | toUpper }}]-[{{ .CommonLabels.severityText }}]-[{{ .CommonLabels.system }}]-[{{ .CommonLabels.summary }}]-[{{ .CommonLabels.instance }}]"
+        #html: |
+        #  Hi
+        #  Hi {{ .CommonAnnotations.description }}
+  - name: kafka
+    email_configs:
+      - send_resolved: true
+        to: '${alertmanager_receivers_email.kafka}'
+        headers:
+          subject: "[{{ .Status | toUpper }}]-[{{ .CommonLabels.severityText }}]-[{{ .CommonLabels.topic }}]-[{{ .CommonLabels.summary }}]-[{{ .CommonLabels.instance }}]"

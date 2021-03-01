@@ -1,0 +1,24 @@
+[
+  {
+    "labels": {
+      "system": "syskamon-dev",
+      "service": "ctl",
+      "noderole": "default"
+    },
+    "targets": [
+      "syskamon01.local:9100",
+      "syskamon02.local:9100"
+    ]
+  },
+  {
+  "labels": {
+      "system": "syskamon-dev",
+      "service": "kamon",
+      "kamonrole": "default"
+  },
+  "targets": [
+      "syskamon01.local:19087",
+      "syskamon02.local:19087"
+    ]
+  }
+]

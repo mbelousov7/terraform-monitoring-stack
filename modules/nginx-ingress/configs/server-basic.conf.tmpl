@@ -1,18 +1,17 @@
-%{ for server in server_list ~}
+%{ for server_key, server_value in server_map ~}
 server {
-  server_name ~^${ server.name }*;
-  listen ${ container_port } %{ if can(server.ssl_data) }ssl%{ endif };
-  #resolver ${ resolver } valid=10s;
+  server_name ~^${ server_key }-*;
+  listen ${ container_port } %{ if can(server_value.ssl_data) }ssl%{ endif };
   include conf.d/ingress.conf;
-  %{ if can(server.ssl_data) }
-  ssl_certificate /etc/nginx/ssl/${ server.name }/ssl_certificate.crt;
-  ssl_certificate_key /etc/nginx/ssl/${ server.name }/ssl_certificate_key.key;
+  %{ if can(server_value.ssl_data) }
+  ssl_certificate /etc/nginx/ssl/${ server_key }/ssl_certificate.pem;
+  ssl_certificate_key /etc/nginx/ssl/${ server_key }/ssl_certificate_key.key;
   %{ endif }
  location / {
    auth_basic "Restricted";
    auth_basic_user_file /etc/nginx/password/.htpasswd;
-   set $upstream http://${ server.name }.${ namespace }${ route_path_for_config }:${ server.app_port };
-   proxy_pass $upstream;
+   proxy_pass http://${ server_key }:${ server_value.app_port };
+   #proxy_pass http://${ server_key }.${ dns_path_for_config }:${ server_value.app_port };
  }
 }
 %{ endfor ~}

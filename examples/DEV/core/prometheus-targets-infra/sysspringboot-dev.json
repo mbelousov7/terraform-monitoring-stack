@@ -1,0 +1,22 @@
+[
+  {
+    "labels": {
+      "service": "springboot",
+      "system": "sysspringboot-dev",
+      "__metrics_path__": "/actuator/prometheus"
+    },
+    "targets": [
+      "sysspringboot01.local:8081"
+    ]
+  },
+  {
+    "labels": {
+      "service": "springboot",
+      "system": "sysspringboot-dev",
+	    "noderole": "default"
+    },
+    "targets": [
+      "sysspringboot01.local:9100"
+    ]
+  }
+]

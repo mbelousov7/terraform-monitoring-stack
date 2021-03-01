@@ -1,0 +1,52 @@
+#########################################################################
+##                       PROMETHEUS-PG CONFIG                          ##
+#########################################################################
+global:
+  scrape_interval: 300s
+  scrape_timeout: 30s
+  evaluation_interval: 1m
+# external_labels for remote read currently is not supported
+#  external_labels:
+#    prometheuspg_name: ${ prometheus_name }
+#    test: ${ prometheus_replica }
+scrape_configs:
+#- job_name: prometheus-infa
+#  honor_labels: true
+#  honor_timestamps: true
+#  params:
+#    match[]:
+#    - '{scrape_job=~".*"}'
+#  metrics_path: /federate
+#  scheme: http
+#  basic_auth:
+#    username: admin
+#    password: <secret>
+#  static_configs:
+#  - targets:
+#    - prometheus-infra:9090
+
+- job_name: prometheus-federate
+  honor_labels: true
+  honor_timestamps: true
+  params:
+    match[]:
+    - '{scrape_job=~".*"}'
+  metrics_path: /federate
+  scheme: http
+  metric_relabel_configs:
+    - action: labeldrop
+      regex: '^prometheus_replica$'
+  kubernetes_sd_configs:
+    - role: "service"
+      namespaces:
+        names:
+          - "${ namespace }"
+      selectors:
+        - role: "service"
+          label: "module=prometheus,name!=${ prometheus_name }"
+  bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+remote_write:
+  - url: "http://localhost:9201/write"
+remote_read:
+  - url: "http://localhost:9201/read"
+    read_recent: false

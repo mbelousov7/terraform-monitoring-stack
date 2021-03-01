@@ -22,15 +22,20 @@ variable "replicas" {
   default     = 1
 }
 
+variable "strategy" {
+  type        = string
+  default     = "RollingUpdate" #"Recreate"
+}
+
 variable "container_image" {
   description = "pushgateway image"
   type        = string
 #  default     = ""
 }
 
-variable "strategy" {
+variable "image_pull_policy" {
   type        = string
-  default     = "Recreate"
+  default     = "IfNotPresent" #"Always"
 }
 
 variable "container_port" {
@@ -39,45 +44,31 @@ variable "container_port" {
   default     = 9091
 }
 
-variable "container_resources_requests_cpu" {
-  type        = string
-  default     = "50m"
+variable "container_resources" {
+  default = {
+    requests_cpu = "0.05"
+    limits_cpu ="0.05"
+    requests_memory = "100M"
+    limits_memory = "110M"
+  }
 }
 
-variable "container_resources_limits_cpu" {
-  type        = string
-  default     = "90m"
+variable "readiness_probe" {
+  default = {
+    initial_delay_seconds = 5
+    timeout_seconds = 5
+    period_seconds = 60
+    failure_threshold = 3
+  }
 }
 
-variable "container_resources_requests_memory" {
-  type        = string
-  default     = "100Mi"
-}
-
-variable "container_resources_limits_memory" {
-  type        = string
-  default     = "120Mi"
-}
-
-
-variable "liveness_probe_timeout_seconds" {
-  type        = number
-  default     = 30
-}
-
-variable "liveness_probe_period_seconds" {
-  type        = number
-  default     = 60
-}
-
-variable "liveness_probe_failure_threshold" {
-  type        = number
-  default     = 2
-}
-
-variable "liveness_probe_success_threshold" {
-  type        = number
-  default     = 1
+variable "liveness_probe" {
+  default = {
+    initial_delay_seconds = 10
+    timeout_seconds = 5
+    period_seconds = 60
+    failure_threshold = 3
+  }
 }
 
 variable "service_type" {
@@ -91,6 +82,11 @@ variable "expose" {
   default     = "none"
 }
 
+variable "route_suffix" {
+  description = "route suffix"
+  type        = string
+  default     = "none"
+}
 
 variable "nginx_ingress_service_name" {
   description = "nginx_ingress_service_name"

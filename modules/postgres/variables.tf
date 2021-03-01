@@ -28,9 +28,19 @@ variable "container_image" {
 #  default     = ""
 }
 
-variable "strategy" {
+variable "image_pull_policy" {
   type        = string
-  default     = "Recreate"
+  default     = "Always"
+}
+
+variable "pod_management_policy" {
+  type        = string
+  default     = "OrderedReady"
+}
+
+variable "update_strategy" {
+  type        = string
+  default     = "RollingUpdate"
 }
 
 variable "container_port" {
@@ -39,50 +49,41 @@ variable "container_port" {
   default     = 5432
 }
 
-variable "container_resources_requests_cpu" {
-  type        = string
-  default     = "100m"
+variable "container_resources" {
+  default = {
+    requests_cpu = "110m"
+    limits_cpu ="140m"
+    requests_memory = "150Mi"
+    limits_memory = "180Mi"
+  }
 }
 
-variable "container_resources_limits_cpu" {
-  type        = string
-  default     = "150m"
+variable "readiness_probe" {
+  default = {
+    initial_delay_seconds = 15
+    timeout_seconds = 5
+    period_seconds = 60
+    failure_threshold = 10
+  }
 }
 
-
-variable "container_resources_requests_memory" {
-  type        = string
-  default     = "150Mi"
-}
-
-variable "container_resources_limits_memory" {
-  type        = string
-  default     = "200Mi"
-}
-
-variable "liveness_probe_timeout_seconds" {
-  type        = number
-  default     = 30
-}
-
-variable "liveness_probe_period_seconds" {
-  type        = number
-  default     = 60
-}
-
-variable "liveness_probe_failure_threshold" {
-  type        = number
-  default     = 2
-}
-
-variable "liveness_probe_success_threshold" {
-  type        = number
-  default     = 1
+variable "liveness_probe" {
+  default = {
+    initial_delay_seconds = 60
+    timeout_seconds = 5
+    period_seconds = 60
+    failure_threshold = 10
+  }
 }
 
 variable "service_type" {
   type        = string
   default     = "ClusterIP"
+}
+
+variable "session_affinity" {
+  type        = string
+  default     = "ClientIP"
 }
 
 variable "env_secret" {
