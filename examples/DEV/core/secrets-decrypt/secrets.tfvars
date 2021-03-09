@@ -23,8 +23,8 @@ grafana_ldap_bind_password = "P@ssw0rd"
 grafana_ldap_bind_suffix = "dc=dev,dc=local"
 
 
-alertmanager_smtp_smarthost = "smtpas.exchtest.local:25"
-alertmanager_smtp_from = "monitoring-admin@exchtest.local"
+alertmanager_smtp_smarthost = "email.local:25"
+alertmanager_smtp_from = "monitoring-admin@email.local"
 alertmanager_smtp_auth_username = "monitoring-admin"
 alertmanager_smtp_auth_password = "P@ssw0rd"
 
@@ -36,10 +36,10 @@ config_s3 = {
     bucket: "thanos-metrics-dev"
     endpoint: "s3.local:443"
     region: ""
-    access_key: "5JEIfUWUtjHVFVuwKh"
+    access_key: "asdasdasdadasdasdasdadasdasd"
     insecure: false
     signature_version2: false
-    secret_key: "OZbUWUtjHVFVuwKhfhq5JEIfohKiWM9HjpwX7fpA"
+    secret_key: "asdadsadasdasdasdasdadasdasd"
     put_user_metadata: {}
     http_config:
       idle_conn_timeout: 1m30s
