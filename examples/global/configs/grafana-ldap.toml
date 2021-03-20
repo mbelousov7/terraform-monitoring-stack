@@ -3,14 +3,14 @@ host = "${ grafana_ldap_host }"
 port = 636
 use_ssl = true
 start_tls = false
+ssl_skip_verify = true
 client_cert = "/etc/grafana/ldap/u_grafana.pem"
 client_key = "/etc/grafana/ldap/u_grafana.key"
-root_ca_cert= "/etc/grafana/ldap/ipa.pem"
+#root_ca_cert= ""
 bind_dn = "uid=u_grafana,cn=users,cn=accounts,${ grafana_ldap_bind_suffix }"
 bind_password = "${ grafana_ldap_bind_password }"
 search_filter = "(uid=%s)"
 search_base_dns = ["cn=users,cn=accounts,${ grafana_ldap_bind_suffix }"]
-ssl_skip_verify = true
 
 [servers.attributes]
 name = "givenName"

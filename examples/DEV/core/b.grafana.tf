@@ -148,7 +148,6 @@ locals {
           map_data = {
 		        "u_grafana.pem" = file("${var.path_secrets}/u_grafana.pem")
 		        "u_grafana.key" = file("${var.path_secrets}/u_grafana.key")
-		        "ipa.pem" = file("${var.path_secrets}/ipa.pem")
             "ldap.toml" = templatefile("${var.path_configs}/grafana-ldap.toml",{
               grafana_ldap_host = var.grafana_ldap_host
               grafana_ldap_bind_user = var.grafana_ldap_bind_user
