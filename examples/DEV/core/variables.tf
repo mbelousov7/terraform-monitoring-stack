@@ -86,37 +86,37 @@ variable "prometheus_replica_label" {
 
 
 variable "thanos_query_frontend_name" {
-  type        = string
-  default     = "thanos-query-frontend"
+  type    = string
+  default = "thanos-query-frontend"
 }
 
 variable "thanos_store_name" {
-  type        = string
-  default     = "thanos-store"
+  type    = string
+  default = "thanos-store"
 }
 
 variable "thanos_compact_name" {
-  type        = string
-  default     = "thanos-compact"
+  type    = string
+  default = "thanos-compact"
 }
 
 variable "thanos_container_image" {
-  type        = string
+  type = string
 }
 
 variable "thanos_port_grpc" {
-  type        = number
-  default     = 10901
+  type    = number
+  default = 10901
 }
 
 variable "thanos_sidecar_port_http" {
-  type        = number
-  default     = 10092
+  type    = number
+  default = 10092
 }
 
 variable "config_s3" {
   description = "s3 config if exist"
-  default = {}
+  default     = {}
 }
 
 variable "prometheus_pg_adapter_container_image" {
@@ -143,7 +143,7 @@ variable "exporter_blackbox_container_image" {
 variable "alertmanager_name" {
   description = "alertmanager statefullset name, using also in prometheus configs"
   type        = string
-  default = "alertmanager"
+  default     = "alertmanager"
 }
 
 variable "alertmanager_container_image" {
@@ -207,7 +207,7 @@ variable "monitoring_password" {
 
 variable "nginx_users_map" {
   description = " map user_name = http_encrypted_user_password "
-  default     = {
+  default = {
     user = "$apr1$A3L4.ORj$xGd9QkfCjDHS8tZWQldOP0" //user
   }
 }

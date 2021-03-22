@@ -1,12 +1,12 @@
 resource "kubernetes_service" "service" {
   metadata {
-    name = var.name
+    name      = var.name
     namespace = var.namespace
-    labels = local.labels
+    labels    = local.labels
   }
   spec {
     selector = local.labels
-    type = var.service_type
+    type     = var.service_type
     port {
       name        = "http"
       port        = var.container_port

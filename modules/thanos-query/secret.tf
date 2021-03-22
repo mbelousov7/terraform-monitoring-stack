@@ -1,8 +1,8 @@
 resource "kubernetes_secret" "secret-env" {
   metadata {
-    name = "${var.name}-env"
+    name      = "${var.name}-env"
     namespace = var.namespace
-    labels = local.labels
+    labels    = local.labels
   }
 
   data = var.env_secret

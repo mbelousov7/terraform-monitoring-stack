@@ -9,13 +9,13 @@ resource "kubernetes_deployment" "thanos_store" {
     kubernetes_config_map.config,
   ]
   metadata {
-    name        = var.name
-    namespace   = var.namespace
-    labels      = local.labels
+    name      = var.name
+    namespace = var.namespace
+    labels    = local.labels
   }
 
   spec {
-    replicas = var.replicas
+    replicas                  = var.replicas
     progress_deadline_seconds = 600
 
     strategy {
@@ -29,7 +29,7 @@ resource "kubernetes_deployment" "thanos_store" {
 
     template {
       metadata {
-        labels = local.labels
+        labels      = local.labels
         annotations = local.annotations
       }
 
@@ -41,9 +41,9 @@ resource "kubernetes_deployment" "thanos_store" {
               topology_key = "kubernetes.io/hostname"
               label_selector {
                 match_expressions {
-                  key = "name"
+                  key      = "name"
                   operator = "In"
-                  values = [ var.name ]
+                  values   = [var.name]
                 }
               }
             }
@@ -51,9 +51,9 @@ resource "kubernetes_deployment" "thanos_store" {
         }
 
         container {
-          image = var.container_image
+          image             = var.container_image
           image_pull_policy = var.image_pull_policy
-          name  = var.name
+          name              = var.name
           args = concat([
             "store",
             "--grpc-address=0.0.0.0:${var.container_port_grpc}",
@@ -62,18 +62,18 @@ resource "kubernetes_deployment" "thanos_store" {
             "--index-cache.config-file=${var.config_path}/cache.yml",
             "--chunk-pool-size=${var.container_resources.thanos_chunk_pool_size}",
             "--data-dir=${var.dataDir}"
-          ],
-          var.container_args
-         )
+            ],
+            var.container_args
+          )
 
           port {
             container_port = var.container_port
-            name = "http"
+            name           = "http"
           }
 
           port {
             container_port = var.container_port_grpc
-            name = "grpc"
+            name           = "grpc"
           }
           resources {
             limits {
@@ -87,43 +87,43 @@ resource "kubernetes_deployment" "thanos_store" {
           }
           liveness_probe {
             initial_delay_seconds = var.liveness_probe.initial_delay_seconds
-            timeout_seconds = var.liveness_probe.timeout_seconds
-            period_seconds = var.liveness_probe.period_seconds
-            failure_threshold = var.liveness_probe.failure_threshold
+            timeout_seconds       = var.liveness_probe.timeout_seconds
+            period_seconds        = var.liveness_probe.period_seconds
+            failure_threshold     = var.liveness_probe.failure_threshold
             http_get {
-              path = "/-/healthy"
+              path   = "/-/healthy"
               scheme = "HTTP"
-              port = var.container_port
+              port   = var.container_port
             }
           }
 
           readiness_probe {
             initial_delay_seconds = var.readiness_probe.initial_delay_seconds
-            timeout_seconds = var.readiness_probe.timeout_seconds
-            period_seconds = var.readiness_probe.period_seconds
-            failure_threshold = var.readiness_probe.failure_threshold
+            timeout_seconds       = var.readiness_probe.timeout_seconds
+            period_seconds        = var.readiness_probe.period_seconds
+            failure_threshold     = var.readiness_probe.failure_threshold
             http_get {
-              path = "/-/ready"
+              path   = "/-/ready"
               scheme = "HTTP"
-              port = var.container_port
+              port   = var.container_port
             }
           }
 
           volume_mount {
-              mount_path = var.dataDir
-              name       = "data-dir"
+            mount_path = var.dataDir
+            name       = "data-dir"
           }
 
           volume_mount {
-              mount_path = var.config_path
-              name       = "config"
-              read_only = true
+            mount_path = var.config_path
+            name       = "config"
+            read_only  = true
           }
 
           volume_mount {
-              mount_path = var.config_path_s3
-              name       = "config-s3"
-              read_only = true
+            mount_path = var.config_path_s3
+            name       = "config-s3"
+            read_only  = true
           }
 
         }
@@ -135,16 +135,16 @@ resource "kubernetes_deployment" "thanos_store" {
 
         volume {
           name = "config"
-            config_map {
-              name = "${var.name}-config"
-              default_mode = "0644"
-            }
+          config_map {
+            name         = "${var.name}-config"
+            default_mode = "0644"
+          }
         }
 
         volume {
           name = "config-s3"
           secret {
-            secret_name = "${var.name}-config-s3"
+            secret_name  = "${var.name}-config-s3"
             default_mode = "0644"
           }
         }

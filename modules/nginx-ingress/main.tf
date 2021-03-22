@@ -8,10 +8,10 @@ resource "random_integer" "config" {
 }
 */
 locals {
-  labels = merge (
+  labels = merge(
     #{ redeploy = random_integer.config.result },
     { name = var.name },
-    { module = "nginx-ingress"},
+    { module = "nginx-ingress" },
     var.labels
   )
 

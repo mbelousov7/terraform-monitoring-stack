@@ -8,13 +8,13 @@ resource "kubernetes_deployment" "thanos_tools_bucket_web" {
     kubernetes_secret.config-s3,
   ]
   metadata {
-    name        = var.name
-    namespace   = var.namespace
-    labels      = local.labels
+    name      = var.name
+    namespace = var.namespace
+    labels    = local.labels
   }
 
   spec {
-    replicas = var.replicas
+    replicas                  = var.replicas
     progress_deadline_seconds = 600
 
     strategy {
@@ -28,7 +28,7 @@ resource "kubernetes_deployment" "thanos_tools_bucket_web" {
 
     template {
       metadata {
-        labels = local.labels
+        labels      = local.labels
         annotations = local.annotations
       }
 
@@ -40,9 +40,9 @@ resource "kubernetes_deployment" "thanos_tools_bucket_web" {
               topology_key = "kubernetes.io/hostname"
               label_selector {
                 match_expressions {
-                  key = "name"
+                  key      = "name"
                   operator = "In"
-                  values = [ var.name ]
+                  values   = [var.name]
                 }
               }
             }
@@ -50,22 +50,22 @@ resource "kubernetes_deployment" "thanos_tools_bucket_web" {
         }
 
         container {
-          image = var.container_image
+          image             = var.container_image
           image_pull_policy = var.image_pull_policy
-          name  = var.name
+          name              = var.name
           args = concat([
             "tools",
             "bucket",
             "web",
             "--http-address=0.0.0.0:${var.container_port}",
             "--objstore.config-file=${var.config_path_s3}/config-s3.yml",
-          ],
-          var.container_args
-         )
+            ],
+            var.container_args
+          )
 
           port {
             container_port = var.container_port
-            name = "http"
+            name           = "http"
           }
 
           resources {
@@ -80,32 +80,32 @@ resource "kubernetes_deployment" "thanos_tools_bucket_web" {
           }
           liveness_probe {
             initial_delay_seconds = var.liveness_probe.initial_delay_seconds
-            timeout_seconds = var.liveness_probe.timeout_seconds
-            period_seconds = var.liveness_probe.period_seconds
-            failure_threshold = var.liveness_probe.failure_threshold
+            timeout_seconds       = var.liveness_probe.timeout_seconds
+            period_seconds        = var.liveness_probe.period_seconds
+            failure_threshold     = var.liveness_probe.failure_threshold
             http_get {
-              path = "/-/healthy"
+              path   = "/-/healthy"
               scheme = "HTTP"
-              port = var.container_port
+              port   = var.container_port
             }
           }
 
           readiness_probe {
             initial_delay_seconds = var.readiness_probe.initial_delay_seconds
-            timeout_seconds = var.readiness_probe.timeout_seconds
-            period_seconds = var.readiness_probe.period_seconds
-            failure_threshold = var.readiness_probe.failure_threshold
+            timeout_seconds       = var.readiness_probe.timeout_seconds
+            period_seconds        = var.readiness_probe.period_seconds
+            failure_threshold     = var.readiness_probe.failure_threshold
             http_get {
-              path = "/-/ready"
+              path   = "/-/ready"
               scheme = "HTTP"
-              port = var.container_port
+              port   = var.container_port
             }
           }
 
           volume_mount {
-              mount_path = var.config_path_s3
-              name       = "config-s3"
-              read_only = true
+            mount_path = var.config_path_s3
+            name       = "config-s3"
+            read_only  = true
           }
 
         }
@@ -113,7 +113,7 @@ resource "kubernetes_deployment" "thanos_tools_bucket_web" {
         volume {
           name = "config-s3"
           secret {
-            secret_name = "${var.name}-config-s3"
+            secret_name  = "${var.name}-config-s3"
             default_mode = "0644"
           }
         }

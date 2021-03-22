@@ -25,22 +25,22 @@ variable "replicas" {
 variable "container_image" {
   description = "postgres image"
   type        = string
-#  default     = ""
+  #  default     = ""
 }
 
 variable "image_pull_policy" {
-  type        = string
-  default     = "Always"
+  type    = string
+  default = "Always"
 }
 
 variable "pod_management_policy" {
-  type        = string
-  default     = "OrderedReady"
+  type    = string
+  default = "OrderedReady"
 }
 
 variable "update_strategy" {
-  type        = string
-  default     = "RollingUpdate"
+  type    = string
+  default = "RollingUpdate"
 }
 
 variable "container_port" {
@@ -51,47 +51,47 @@ variable "container_port" {
 
 variable "container_resources" {
   default = {
-    requests_cpu = "110m"
-    limits_cpu ="140m"
+    requests_cpu    = "110m"
+    limits_cpu      = "140m"
     requests_memory = "150Mi"
-    limits_memory = "180Mi"
+    limits_memory   = "180Mi"
   }
 }
 
 variable "readiness_probe" {
   default = {
     initial_delay_seconds = 15
-    timeout_seconds = 5
-    period_seconds = 60
-    failure_threshold = 10
+    timeout_seconds       = 5
+    period_seconds        = 60
+    failure_threshold     = 10
   }
 }
 
 variable "liveness_probe" {
   default = {
     initial_delay_seconds = 60
-    timeout_seconds = 5
-    period_seconds = 60
-    failure_threshold = 10
+    timeout_seconds       = 5
+    period_seconds        = 60
+    failure_threshold     = 10
   }
 }
 
 variable "service_type" {
-  type        = string
-  default     = "ClusterIP"
+  type    = string
+  default = "ClusterIP"
 }
 
 variable "session_affinity" {
-  type        = string
-  default     = "ClientIP"
+  type    = string
+  default = "ClientIP"
 }
 
 variable "env_secret" {
   description = "main pod secret enviroment variables, values provided from outside the module"
-  type        = map
-  default     = {
-    POSTGRES_USER = "admin"
+  type        = map(any)
+  default = {
+    POSTGRES_USER     = "admin"
     POSTGRES_PASSWORD = "password"
-    POSTGRES_DB = "database"
+    POSTGRES_DB       = "database"
   }
 }

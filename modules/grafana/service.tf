@@ -1,13 +1,13 @@
 resource "kubernetes_service" "service" {
   metadata {
-    name = var.name
+    name      = var.name
     namespace = var.namespace
-    labels = local.labels
+    labels    = local.labels
   }
   spec {
-    selector = local.labels
+    selector         = local.labels
     session_affinity = var.session_affinity
-    type = var.service_type
+    type             = var.service_type
     port {
       name        = "grafana"
       port        = var.container_port

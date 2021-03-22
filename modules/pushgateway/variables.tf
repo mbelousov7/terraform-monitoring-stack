@@ -23,19 +23,19 @@ variable "replicas" {
 }
 
 variable "strategy" {
-  type        = string
-  default     = "RollingUpdate" #"Recreate"
+  type    = string
+  default = "RollingUpdate" #"Recreate"
 }
 
 variable "container_image" {
   description = "pushgateway image"
   type        = string
-#  default     = ""
+  #  default     = ""
 }
 
 variable "image_pull_policy" {
-  type        = string
-  default     = "IfNotPresent" #"Always"
+  type    = string
+  default = "IfNotPresent" #"Always"
 }
 
 variable "container_port" {
@@ -46,34 +46,34 @@ variable "container_port" {
 
 variable "container_resources" {
   default = {
-    requests_cpu = "0.05"
-    limits_cpu ="0.05"
+    requests_cpu    = "0.05"
+    limits_cpu      = "0.05"
     requests_memory = "100M"
-    limits_memory = "110M"
+    limits_memory   = "110M"
   }
 }
 
 variable "readiness_probe" {
   default = {
     initial_delay_seconds = 5
-    timeout_seconds = 5
-    period_seconds = 60
-    failure_threshold = 3
+    timeout_seconds       = 5
+    period_seconds        = 60
+    failure_threshold     = 3
   }
 }
 
 variable "liveness_probe" {
   default = {
     initial_delay_seconds = 10
-    timeout_seconds = 5
-    period_seconds = 60
-    failure_threshold = 3
+    timeout_seconds       = 5
+    period_seconds        = 60
+    failure_threshold     = 3
   }
 }
 
 variable "service_type" {
-  type        = string
-  default     = "ClusterIP"
+  type    = string
+  default = "ClusterIP"
 }
 
 variable "expose" {

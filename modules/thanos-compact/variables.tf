@@ -19,12 +19,12 @@ variable "labels" {
 variable "container_image" {
   description = "image path"
   type        = string
-#  default     = ""
+  #  default     = ""
 }
 
 variable "image_pull_policy" {
-  type        = string
-  default     = "IfNotPresent" #"Always"
+  type    = string
+  default = "IfNotPresent" #"Always"
 }
 
 variable "container_port" {
@@ -35,39 +35,39 @@ variable "container_port" {
 
 variable "container_resources" {
   default = {
-    requests_cpu = "0.2"
-    limits_cpu ="0.2"
+    requests_cpu    = "0.2"
+    limits_cpu      = "0.2"
     requests_memory = "250M"
-    limits_memory = "260M"
+    limits_memory   = "260M"
   }
 }
 
 variable "readiness_probe" {
   default = {
     initial_delay_seconds = 5
-    timeout_seconds = 5
-    period_seconds = 60
-    failure_threshold = 3
+    timeout_seconds       = 5
+    period_seconds        = 60
+    failure_threshold     = 3
   }
 }
 
 variable "liveness_probe" {
   default = {
     initial_delay_seconds = 10
-    timeout_seconds = 5
-    period_seconds = 60
-    failure_threshold = 3
+    timeout_seconds       = 5
+    period_seconds        = 60
+    failure_threshold     = 3
   }
 }
 
 variable "service_type" {
-  type        = string
-  default     = "ClusterIP"
+  type    = string
+  default = "ClusterIP"
 }
 
 variable "session_affinity" {
-  type        = string
-  default     = "None"
+  type    = string
+  default = "None"
   #default     = "ClientIP"
 }
 
@@ -79,7 +79,7 @@ variable "dataDir" {
 
 variable "container_args" {
   description = "additional container args"
-  default     = [
+  default = [
     "--log.level=warn",
     "--delete-delay=0",
   ]
@@ -87,10 +87,10 @@ variable "container_args" {
 
 variable "retention" {
   description = "path data dir"
-  default     = {
-   resolution_raw = "7d"
-   resolution_5m = "30d"
-   resolution_1h = "90d"
+  default = {
+    resolution_raw = "7d"
+    resolution_5m  = "30d"
+    resolution_1h  = "90d"
   }
 }
 
@@ -107,7 +107,7 @@ variable "config_path_s3" {
 }
 
 variable "config_s3" {
-  default     = {}
+  default = {}
 }
 
 variable "expose" {

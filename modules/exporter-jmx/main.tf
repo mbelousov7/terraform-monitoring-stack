@@ -1,5 +1,5 @@
 locals {
-  labels = merge (
+  labels = merge(
     { name = var.name },
     { module = "exporter-jmx" },
     { sd = "pod" },
@@ -11,5 +11,5 @@ locals {
     var.labels
   )
 
-  config_maps_list = concat ( var.config_maps_list )
+  config_maps_list = concat(var.config_maps_list)
 }
