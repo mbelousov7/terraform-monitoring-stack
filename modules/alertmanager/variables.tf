@@ -33,13 +33,13 @@ variable "replicas" {
 #}
 
 variable "pod_management_policy" {
-  type        = string
-  default     = "OrderedReady"
+  type    = string
+  default = "OrderedReady"
 }
 
 variable "update_strategy" {
-  type        = string
-  default     = "RollingUpdate"
+  type    = string
+  default = "RollingUpdate"
 }
 
 variable "container_image" {
@@ -48,8 +48,8 @@ variable "container_image" {
 }
 
 variable "image_pull_policy" {
-  type        = string
-  default     = "IfNotPresent"#"Always"
+  type    = string
+  default = "IfNotPresent" #"Always"
 }
 
 variable "configPath" {
@@ -80,60 +80,60 @@ variable "dataPath" {
 }
 
 variable "retentionTime" {
-  type        = string
-  default     = "170h"
+  type    = string
+  default = "170h"
 }
 
 variable "container_port" {
-  type        = number
-  default     = 9093
+  type    = number
+  default = 9093
 }
 
 variable "cluster_port" {
-  type        = number
-  default     = 9094
+  type    = number
+  default = 9094
 }
 
 variable "container_resources" {
   default = {
-    requests_cpu = "0.05"
-    limits_cpu ="0.05"
+    requests_cpu    = "0.05"
+    limits_cpu      = "0.05"
     requests_memory = "50M"
-    limits_memory = "50M"
+    limits_memory   = "50M"
   }
 }
 
 variable "readiness_probe" {
   default = {
     initial_delay_seconds = 5
-    timeout_seconds = 30
-    period_seconds = 60
-    failure_threshold = 3
+    timeout_seconds       = 30
+    period_seconds        = 60
+    failure_threshold     = 3
   }
 }
 
 variable "liveness_probe" {
   default = {
     initial_delay_seconds = 60
-    timeout_seconds = 30
-    period_seconds = 60
-    failure_threshold = 3
+    timeout_seconds       = 30
+    period_seconds        = 60
+    failure_threshold     = 3
   }
 }
 
 variable "service_type" {
-  type        = string
-  default     = "ClusterIP"
+  type    = string
+  default = "ClusterIP"
 }
 
 variable "session_affinity" {
-  type        = string
-  default     = "ClientIP"
+  type    = string
+  default = "ClientIP"
 }
 
 variable "dataVolume" {
   default = {
-    name = "storage-volume"
+    name      = "storage-volume"
     empty_dir = {}
   }
 }
@@ -146,15 +146,15 @@ variable "config_maps_list" {
     map_data = map(string)
   }))
   default = []
-## Default is being set in main.tf
-#default = [
-#  {
-#    map_path = "/etc/grafana"
-#    map_name = "config-main-volume"
-#    config_map_name = "grafana-config-main"
-#    map_data = {}
-#  }
-#]
+  ## Default is being set in main.tf
+  #default = [
+  #  {
+  #    map_path = "/etc/grafana"
+  #    map_name = "config-main-volume"
+  #    config_map_name = "grafana-config-main"
+  #    map_data = {}
+  #  }
+  #]
 }
 
 variable "secret_maps_list" {
@@ -198,14 +198,14 @@ variable "reloader_container_image" {
 }
 
 variable "reloader_sidecar_config" {
-  default     = {
-      name = "reloader"
-      container_port = 9533
-      container_resources = {
-        requests_cpu = "20m"
-        limits_cpu = "20m"
-        requests_memory = "30M"
-        limits_memory = "30M"
-      }
+  default = {
+    name           = "reloader"
+    container_port = 9533
+    container_resources = {
+      requests_cpu    = "20m"
+      limits_cpu      = "20m"
+      requests_memory = "30M"
+      limits_memory   = "30M"
     }
+  }
 }

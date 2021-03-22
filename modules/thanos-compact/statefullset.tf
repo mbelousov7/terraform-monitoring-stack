@@ -3,16 +3,16 @@ resource "kubernetes_stateful_set" "thanos_compact" {
     kubernetes_secret.config-s3,
   ]
   metadata {
-    name        = var.name
-    namespace   = var.namespace
-    labels      = local.labels
+    name      = var.name
+    namespace = var.namespace
+    labels    = local.labels
   }
 
   spec {
     //!!!!!replicas count must be 1 for thanos-compact
     pod_management_policy = "OrderedReady"
-    replicas = 1
-    service_name = var.name
+    replicas              = 1
+    service_name          = var.name
 
     update_strategy {
       type = "RollingUpdate"
@@ -24,7 +24,7 @@ resource "kubernetes_stateful_set" "thanos_compact" {
 
     template {
       metadata {
-        labels = local.labels
+        labels      = local.labels
         annotations = local.annotations
       }
 
@@ -36,9 +36,9 @@ resource "kubernetes_stateful_set" "thanos_compact" {
               topology_key = "kubernetes.io/hostname"
               label_selector {
                 match_expressions {
-                  key = "name"
+                  key      = "name"
                   operator = "In"
-                  values = [ var.name ]
+                  values   = [var.name]
                 }
               }
             }
@@ -46,9 +46,9 @@ resource "kubernetes_stateful_set" "thanos_compact" {
         }
 
         container {
-          image = var.container_image
+          image             = var.container_image
           image_pull_policy = var.image_pull_policy
-          name  = var.name
+          name              = var.name
           args = concat([
             "compact",
             "--wait",
@@ -60,12 +60,12 @@ resource "kubernetes_stateful_set" "thanos_compact" {
             "--retention.resolution-raw=${var.retention.resolution_raw}",
             "--retention.resolution-5m=${var.retention.resolution_5m}",
             "--retention.resolution-1h=${var.retention.resolution_1h}",
-           ],
-           var.container_args
+            ],
+            var.container_args
           )
           port {
             container_port = var.container_port
-            name = "http"
+            name           = "http"
           }
 
           resources {
@@ -80,37 +80,37 @@ resource "kubernetes_stateful_set" "thanos_compact" {
           }
           liveness_probe {
             initial_delay_seconds = var.liveness_probe.initial_delay_seconds
-            timeout_seconds = var.liveness_probe.timeout_seconds
-            period_seconds = var.liveness_probe.period_seconds
-            failure_threshold = var.liveness_probe.failure_threshold
+            timeout_seconds       = var.liveness_probe.timeout_seconds
+            period_seconds        = var.liveness_probe.period_seconds
+            failure_threshold     = var.liveness_probe.failure_threshold
             http_get {
-              path = "/-/healthy"
+              path   = "/-/healthy"
               scheme = "HTTP"
-              port = var.container_port
+              port   = var.container_port
             }
           }
 
           readiness_probe {
             initial_delay_seconds = var.readiness_probe.initial_delay_seconds
-            timeout_seconds = var.readiness_probe.timeout_seconds
-            period_seconds = var.readiness_probe.period_seconds
-            failure_threshold = var.readiness_probe.failure_threshold
+            timeout_seconds       = var.readiness_probe.timeout_seconds
+            period_seconds        = var.readiness_probe.period_seconds
+            failure_threshold     = var.readiness_probe.failure_threshold
             http_get {
-              path = "/-/ready"
+              path   = "/-/ready"
               scheme = "HTTP"
-              port = var.container_port
+              port   = var.container_port
             }
           }
 
           volume_mount {
-              mount_path = var.dataDir
-              name       = "data-dir"
+            mount_path = var.dataDir
+            name       = "data-dir"
           }
 
           volume_mount {
-              mount_path = var.config_path_s3
-              name       = "config-s3"
-              read_only = true
+            mount_path = var.config_path_s3
+            name       = "config-s3"
+            read_only  = true
           }
 
         }
@@ -123,7 +123,7 @@ resource "kubernetes_stateful_set" "thanos_compact" {
         volume {
           name = "config-s3"
           secret {
-            secret_name = "${var.name}-config-s3"
+            secret_name  = "${var.name}-config-s3"
             default_mode = "0644"
           }
         }

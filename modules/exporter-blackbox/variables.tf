@@ -23,13 +23,13 @@ variable "replicas" {
 }
 
 variable "strategy" {
-  type        = string
-  default     = "RollingUpdate" #"Recreate"
+  type    = string
+  default = "RollingUpdate" #"Recreate"
 }
 
 variable "image_pull_policy" {
-  type        = string
-  default     = "IfNotPresent" #"Always"
+  type    = string
+  default = "IfNotPresent" #"Always"
 }
 
 variable "container_image" {
@@ -38,49 +38,49 @@ variable "container_image" {
 }
 
 variable "container_port" {
-  type        = string
-  default     = "9115"
+  type    = string
+  default = "9115"
 }
 
 variable "container_resources" {
   default = {
-    requests_cpu = "0.05"
-    limits_cpu ="0.05"
+    requests_cpu    = "0.05"
+    limits_cpu      = "0.05"
     requests_memory = "150M"
-    limits_memory = "150M"
+    limits_memory   = "150M"
   }
 }
 
 variable "readiness_probe" {
   default = {
     initial_delay_seconds = 30
-    timeout_seconds = 55
-    period_seconds = 120
-    failure_threshold = 3
+    timeout_seconds       = 55
+    period_seconds        = 120
+    failure_threshold     = 3
   }
 }
 
 variable "liveness_probe" {
   default = {
     initial_delay_seconds = 15
-    timeout_seconds = 55
-    period_seconds = 60
-    failure_threshold = 3
+    timeout_seconds       = 55
+    period_seconds        = 60
+    failure_threshold     = 3
   }
 }
 
 variable "service" {
-  type        = bool
-  default     = false
+  type    = bool
+  default = false
 }
 
 variable "service_type" {
-  type        = string
-  default     = "ClusterIP"
+  type    = string
+  default = "ClusterIP"
 }
 
 variable "session_affinity" {
-  type        = string
-  default     = "None"
+  type    = string
+  default = "None"
   #default     = "ClientIP"
 }

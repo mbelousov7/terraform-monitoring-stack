@@ -1,13 +1,13 @@
 resource "kubernetes_service" "service" {
   metadata {
-    name = var.name
+    name      = var.name
     namespace = var.namespace
-    labels = local.labels
+    labels    = local.labels
   }
   spec {
-    selector = local.labels
+    selector         = local.labels
     session_affinity = var.session_affinity
-    type = var.service_type
+    type             = var.service_type
     port {
       name        = "prometheus"
       port        = var.container_port
@@ -19,17 +19,17 @@ resource "kubernetes_service" "service" {
 
 resource "kubernetes_service" "service-sidecar" {
   metadata {
-    name = "${var.name}-sidecar"
+    name      = "${var.name}-sidecar"
     namespace = var.namespace
     labels = {
-      name = var.name
+      name   = var.name
       module = "sidecar"
-     }
+    }
   }
   spec {
-    selector = local.labels
+    selector         = local.labels
     session_affinity = var.session_affinity
-    type = var.service_type
+    type             = var.service_type
     port {
       name        = "grpc"
       port        = 10091

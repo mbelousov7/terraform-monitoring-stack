@@ -1,14 +1,14 @@
 resource "null_resource" "oc_route" {
-count = var.expose == "route" ? 1 : 0
+  count = var.expose == "route" ? 1 : 0
   triggers = {
     route_namespace = var.namespace
-    route_name = var.name
-    route_suffix = var.route_suffix
-    service_name = var.name
-    service_port = var.container_port
+    route_name      = var.name
+    route_suffix    = var.route_suffix
+    service_name    = var.name
+    service_port    = var.container_port
   }
 
-  provisioner "local-exec"  {
+  provisioner "local-exec" {
     command = <<EOT
     status_code=$(curl -k -o /dev/null -w "%%{http_code}" --max-time 30 -X POST "$TF_VAR_kubernetes_host"/apis/route.openshift.io/v1/namespaces/${self.triggers.route_namespace}/routes/ \
     -H "Content-Type: application/json" \
@@ -51,15 +51,15 @@ else
    echo "Route ${self.triggers.route_name} created." && exit 0
 fi
 EOT
-}
+  }
 
- provisioner "local-exec" {
+  provisioner "local-exec" {
 
- when = destroy
+    when = destroy
 
- command = <<EOT
+    command = <<EOT
     curl --max-time 30 -k -H "Authorization: Bearer $TF_VAR_kubernetes_token"  -X DELETE "$TF_VAR_kubernetes_host"/apis/route.openshift.io/v1/namespaces/${self.triggers.route_namespace}/routes/${self.triggers.route_name}
 EOT
- }
+  }
 
 }

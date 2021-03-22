@@ -1,5 +1,5 @@
 locals {
-  labels = merge (
+  labels = merge(
     { name = var.name },
     { module = "exporter-blackbox" },
     { sd = "service" },

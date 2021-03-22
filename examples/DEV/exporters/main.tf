@@ -8,8 +8,8 @@ terraform {
 }
 
 provider "kubernetes" {
-  load_config_file       = false
-  insecure               = true
-  host                   = var.kubernetes_host
-  token                  = var.kubernetes_token
+  load_config_file = false
+  insecure         = true
+  host             = var.kubernetes_host
+  token            = var.kubernetes_token
 }

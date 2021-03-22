@@ -6,13 +6,13 @@ resource "kubernetes_deployment" "thanos_query_frontend" {
   }
 
   metadata {
-    name        = var.name
-    namespace   = var.namespace
-    labels      = local.labels
+    name      = var.name
+    namespace = var.namespace
+    labels    = local.labels
   }
 
   spec {
-    replicas = var.replicas
+    replicas                  = var.replicas
     progress_deadline_seconds = 600
 
     strategy {
@@ -25,7 +25,7 @@ resource "kubernetes_deployment" "thanos_query_frontend" {
 
     template {
       metadata {
-        labels = local.labels
+        labels      = local.labels
         annotations = local.annotations
       }
 
@@ -37,14 +37,14 @@ resource "kubernetes_deployment" "thanos_query_frontend" {
               topology_key = "kubernetes.io/hostname"
               label_selector {
                 match_expressions {
-                  key = "name"
+                  key      = "name"
                   operator = "In"
-                  values = [ var.name ]
+                  values   = [var.name]
                 }
               }
             }
           }
-/*
+          /*
           dynamic "pod_affinity" {
             for_each = tostring(var.replicas) != "1" ? [1] : []
             content {
@@ -64,22 +64,22 @@ resource "kubernetes_deployment" "thanos_query_frontend" {
         }
 
         container {
-          image = var.container_image
+          image             = var.container_image
           image_pull_policy = var.image_pull_policy
-          name  = var.name
-          args =  concat([
+          name              = var.name
+          args = concat([
             "query-frontend",
             "--http-address=0.0.0.0:${var.container_port}",
             "--query-frontend.downstream-url=http://${var.name_thanos_query}:${var.container_port}",
             "--query-range.response-cache-config-file=${var.config_path}/cache.yml",
             "--labels.response-cache-config-file=${var.config_path}/cache.yml",
-          ],
-          var.container_args
-         )
+            ],
+            var.container_args
+          )
 
           port {
             container_port = var.container_port
-            name = "http"
+            name           = "http"
           }
 
           resources {
@@ -95,42 +95,42 @@ resource "kubernetes_deployment" "thanos_query_frontend" {
 
           liveness_probe {
             initial_delay_seconds = var.liveness_probe.initial_delay_seconds
-            timeout_seconds = var.liveness_probe.timeout_seconds
-            period_seconds = var.liveness_probe.period_seconds
-            failure_threshold = var.liveness_probe.failure_threshold
+            timeout_seconds       = var.liveness_probe.timeout_seconds
+            period_seconds        = var.liveness_probe.period_seconds
+            failure_threshold     = var.liveness_probe.failure_threshold
             http_get {
-              path = "/-/healthy"
+              path   = "/-/healthy"
               scheme = "HTTP"
-              port = var.container_port
+              port   = var.container_port
             }
           }
 
           readiness_probe {
             initial_delay_seconds = var.readiness_probe.initial_delay_seconds
-            timeout_seconds = var.readiness_probe.timeout_seconds
-            period_seconds = var.readiness_probe.period_seconds
-            failure_threshold = var.readiness_probe.failure_threshold
+            timeout_seconds       = var.readiness_probe.timeout_seconds
+            period_seconds        = var.readiness_probe.period_seconds
+            failure_threshold     = var.readiness_probe.failure_threshold
             http_get {
-              path = "/-/ready"
+              path   = "/-/ready"
               scheme = "HTTP"
-              port = var.container_port
+              port   = var.container_port
             }
           }
 
           volume_mount {
-              mount_path = var.config_path
-              name       = "config"
-              read_only = true
+            mount_path = var.config_path
+            name       = "config"
+            read_only  = true
           }
 
         }
 
         volume {
           name = "config"
-            config_map {
-              name = "${var.name}-config"
-              default_mode = "0644"
-            }
+          config_map {
+            name         = "${var.name}-config"
+            default_mode = "0644"
+          }
         }
 
       }
