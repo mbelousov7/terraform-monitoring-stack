@@ -31,7 +31,7 @@ variable "container_image" {
 
 variable "image_pull_policy" {
   type    = string
-  default = "IfNotPresent" #"Always"
+  default = "Always" #"IfNotPresent"#
 }
 
 variable "container_port" {
@@ -99,24 +99,36 @@ variable "configMap_volumes" {
 
 variable "server_map" {
   description = "server config list"
+  type = map(object({
+    name          = optional(string)
+    app_port      = optional(number)
+    auth_locations     = optional(map(list(string)))
+    proxy_pass    = optional(map(string))
+    ssl_data      = optional(map(string))
+  }))
+
+  validation {
+    condition     = length(setintersection(["none", "basic", "kerberos", "mtls"], keys(try(var.server_map.auth_locations, {"none" = null})))) > 0
+    error_message = "Attribute auth_type should be in [none|basic|kerberos|mtls]."
+  }
 }
 
-variable "auth_type" {
+variable "ca_certificate" {
   type        = string
-  description = "access to location auth type can be one of [none|basic|ldap]"
-  default     = "basic"
+  description = "Root Ca Cert for mTLS"
+  default     = ""
 }
-
-//variable "resolver" {
-//  type        = string
-//  description = "variable resolver for nginx"
-//  default     = "kube-dns.kube-system.svc.cluster.local"
-//}
 
 variable "dns_path_for_config" {
   type        = string
   description = "variable resolver for upstream in server.conf depends on instance of kubernetes cluster "
   default     = "svc.cluster.local"
+}
+
+variable "route_suffix" {
+  type        = string
+  description = "variable for nginx ingress postfix"
+  default     = "apps.cluster.local"
 }
 
 variable "nginx_users_map" {
@@ -125,4 +137,24 @@ variable "nginx_users_map" {
     user  = "$apr1$A3L4.ORj$xGd9QkfCjDHS8tZWQldOP0" //user
     admin = "$apr1$GqeZ89R1$.qHQjuvzJIdWaFS413SgA/" //P@ssw0rd
   }
+}
+
+variable "secret_maps_list" {
+  description = "list secret maps and volumes"
+  type = list(object({
+    map_name = string
+    map_path = string
+    map_data = map(string)
+  }))
+  default = []
+}
+
+variable "kerberos_config" {
+  description = "kerberos config"
+  default     = {}
+}
+
+variable "kerberos_keytab" {
+  description = "kerberos keytab"
+  default     = []
 }

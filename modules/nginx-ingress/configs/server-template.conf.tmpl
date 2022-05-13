@@ -1,0 +1,62 @@
+server {
+  error_log /var/log/nginx/${ server_name }_error.log info;
+  access_log /var/log/nginx/${ server_name }_access.log main;
+  server_name ~^${ server_name }-${ route_suffix };
+  listen ${ container_port } %{ if can(server.ssl_data) }ssl%{ endif };
+  include conf.d/ingress.conf;
+  resolver dns-default.openshift-dns.svc.cluster.local;
+  %{ if can(server.ssl_data) }
+  ssl_certificate /etc/nginx/ssl/${ server_name }/ssl_certificate.pem;
+  ssl_certificate_key /etc/nginx/ssl/${ server_name }/ssl_certificate_key.key;
+  %{~ if contains(keys(server.auth_locations), "mtls") ~}
+  ssl_client_certificate /etc/nginx/ssl/${ server_name }/ssl_ca.pem;
+  ssl_verify_client optional;
+  ssl_verify_depth 2;
+  %{~ endif ~}
+  %{~ endif ~}
+
+  %{~ for mtls_location in lookup(server.auth_locations, "mtls", []) ~}
+  location ${ mtls_location } {
+    if ($ssl_client_verify != "SUCCESS") { return 403; }
+    proxy_pass http://${lookup(server.proxy_pass, mtls_location, "${ server_name }:${ server.app_port }")};
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $host;
+  }
+  %{~ endfor ~}
+  %{~ for kerberos_location in lookup(server.auth_locations, "kerberos" , []) ~}
+  location ${ kerberos_location } {
+    proxy_pass http://${lookup(server.proxy_pass, kerberos_location, "${ server_name }:${ server.app_port }")};
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $host;
+
+    auth_gss on;
+    auth_gss_realm  ${ kerberos_config[0].realm };
+    auth_gss_keytab /etc/krbconf/ipa.ca;
+    auth_gss_allow_basic_fallback on;
+    proxy_set_header Authorization "";
+    auth_gss_force_realm on;
+ }
+  %{~ endfor ~}
+
+  %{~ for basic_location in lookup(server.auth_locations, "basic", []) ~}
+  location ${basic_location} {
+    auth_basic "Restricted";
+    auth_basic_user_file /etc/nginx/password/.htpasswd;
+    proxy_pass http://${lookup(server.proxy_pass, basic_location, "${ server_name }:${ server.app_port }")};
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $host;
+  }
+  %{~ endfor ~}
+
+  %{~ for location in lookup(server.auth_locations, "none", []) ~}
+  location ${location} {
+    proxy_pass http://${lookup(server.proxy_pass, location, "${ server_name }:${ server.app_port }")};
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $host;
+  }
+  %{~ endfor ~}
+}
