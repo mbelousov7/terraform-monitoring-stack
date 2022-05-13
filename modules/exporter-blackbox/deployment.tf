@@ -30,6 +30,24 @@ resource "kubernetes_deployment" "exporter-blackbox" {
       }
 
       spec {
+
+        affinity {
+          pod_anti_affinity {
+            required_during_scheduling_ignored_during_execution {
+              topology_key = "kubernetes.io/hostname"
+              label_selector {
+                match_expressions {
+                  key      = "name"
+                  operator = "In"
+                  values   = [var.name]
+                }
+              }
+            }
+          }
+        }
+
+        automount_service_account_token  = false
+
         container {
           image             = var.container_image
           image_pull_policy = var.image_pull_policy
@@ -38,17 +56,21 @@ resource "kubernetes_deployment" "exporter-blackbox" {
             "--config.file=/etc/blackbox_exporter/config.yml"
           ]
 
+          security_context {
+            read_only_root_filesystem = true
+          }
+
           port {
             container_port = var.container_port
             name           = "http"
           }
 
           resources {
-            limits {
+            limits = {
               cpu    = var.container_resources.limits_cpu
               memory = var.container_resources.limits_memory
             }
-            requests {
+            requests = {
               cpu    = var.container_resources.requests_cpu
               memory = var.container_resources.requests_memory
             }
@@ -90,7 +112,7 @@ resource "kubernetes_deployment" "exporter-blackbox" {
           name = "config"
           config_map {
             name         = "${var.name}-config"
-            default_mode = "0644"
+            default_mode = "0400"
           }
         }
 
