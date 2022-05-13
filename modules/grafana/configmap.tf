@@ -1,7 +1,7 @@
 resource "kubernetes_config_map" "dashboards" {
   for_each = var.dashboards_map
   metadata {
-    name      = "${var.name}-dashboard-${each.value.folder}-${each.key}"
+    name      = "${var.name}-${each.value.folder}-${each.key}"
     namespace = var.namespace
     labels    = local.labels
   }
