@@ -29,11 +29,33 @@ resource "kubernetes_deployment" "exporter" {
       }
 
       spec {
+
+        affinity {
+          pod_anti_affinity {
+            required_during_scheduling_ignored_during_execution {
+              topology_key = "kubernetes.io/hostname"
+              label_selector {
+                match_expressions {
+                  key      = "name"
+                  operator = "In"
+                  values   = [var.name]
+                }
+              }
+            }
+          }
+        }
+
+        automount_service_account_token  = false
+
         container {
           image             = var.container_image
           image_pull_policy = var.image_pull_policy
           name              = var.name
           args              = []
+
+          security_context {
+            read_only_root_filesystem = true
+          }
 
           port {
             container_port = var.container_port
@@ -48,40 +70,40 @@ resource "kubernetes_deployment" "exporter" {
             }
           }
           resources {
-            limits {
+            limits = {
               cpu    = var.container_resources.limits_cpu
               memory = var.container_resources.limits_memory
             }
-            requests {
+            requests = {
               cpu    = var.container_resources.requests_cpu
               memory = var.container_resources.requests_memory
             }
           }
-
+          /*
           liveness_probe {
             initial_delay_seconds = var.liveness_probe.initial_delay_seconds
-            timeout_seconds       = var.liveness_probe.timeout_seconds
-            period_seconds        = var.liveness_probe.period_seconds
-            failure_threshold     = var.liveness_probe.failure_threshold
+            timeout_seconds = var.liveness_probe.timeout_seconds
+            period_seconds = var.liveness_probe.period_seconds
+            failure_threshold = var.liveness_probe.failure_threshold
             http_get {
-              path   = "/-/healthy"
+              path = "/-/healthy"
               scheme = "HTTP"
-              port   = var.container_port
+              port = var.container_port
             }
           }
 
           readiness_probe {
             initial_delay_seconds = var.readiness_probe.initial_delay_seconds
-            timeout_seconds       = var.readiness_probe.timeout_seconds
-            period_seconds        = var.readiness_probe.period_seconds
-            failure_threshold     = var.readiness_probe.failure_threshold
+            timeout_seconds = var.readiness_probe.timeout_seconds
+            period_seconds = var.readiness_probe.period_seconds
+            failure_threshold = var.readiness_probe.failure_threshold
             http_get {
-              path   = "/-/healthy"
+              path = "/-/healthy"
               scheme = "HTTP"
-              port   = var.container_port
+              port = var.container_port
             }
           }
-
+*/
           dynamic "volume_mount" {
             for_each = { for map in local.config_maps_list : map.map_name => map if can(map.map_name) }
             content {
@@ -91,19 +113,27 @@ resource "kubernetes_deployment" "exporter" {
             }
           }
 
+          volume_mount {
+            mount_path = var.cachePath
+            name       = "cache-volume"
+          }
         }
+
+        volume {
+          name = "cache-volume"
+          empty_dir{}
+        }
+
         dynamic "volume" {
           for_each = { for map in local.config_maps_list : map.map_name => map if can(map.map_name) }
           content {
             name = volume.value.map_name
             config_map {
               name         = "${var.name}-${volume.value.map_name}"
-              default_mode = "0644"
+              default_mode = "0400"
             }
           }
         }
-
-
       }
     }
   }
