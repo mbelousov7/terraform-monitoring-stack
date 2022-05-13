@@ -39,7 +39,7 @@ variable "container_image" {
 
 variable "image_pull_policy" {
   type    = string
-  default = "Always"
+  default = "Always" #"IfNotPresent"#
 }
 
 variable "env" {
@@ -94,9 +94,9 @@ variable "readiness_probe" {
 variable "liveness_probe" {
   default = {
     initial_delay_seconds = 60
-    timeout_seconds       = 5
-    period_seconds        = 30
-    failure_threshold     = 1
+    timeout_seconds       = 15
+    period_seconds        = 60
+    failure_threshold     = 5
   }
 }
 
@@ -162,8 +162,6 @@ variable "ssl_data" {
   default     = {}
 }
 
-
-
 variable "expose" {
   description = "expose resource type(ingress for kubernetes or route for openshift)"
   type        = string
@@ -172,6 +170,18 @@ variable "expose" {
 
 variable "route_suffix" {
   description = "route suffix"
+  type        = string
+  default     = "none"
+}
+
+variable "geo_route" {
+  description = "Enable geo route"
+  type        = bool
+  default     = false
+}
+
+variable "geo_route_suffix" {
+  description = "Geo route suffix"
   type        = string
   default     = "none"
 }
@@ -194,11 +204,12 @@ variable "fluentbit_config" {
 }
 
 variable "fluentbit_config_output" {
-  /*  default     = {
-      host = "logs"
-      port = "44442"
-      app_id = "monitor"
-    } */
+  description = "FluentBit config for output host, port and app id"
+  type = object({
+    host   = string
+    port   = string
+    app_id = string
+  })
 }
 
 variable "nginx_ingress_service_name" {
@@ -211,4 +222,9 @@ variable "nginx_ingress_port" {
   description = "nginx_ingress_port"
   type        = number
   default     = 8080
+}
+
+
+variable "thanos_query_frontend" {
+  default = "false"
 }

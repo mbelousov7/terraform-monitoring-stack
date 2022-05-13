@@ -1,9 +1,20 @@
 output "service_name" {
-  description = "app service name"
+  description = "application name, using as deoloyment,serivce names, also in lables, als as configmap and secret prefix"
   value       = kubernetes_service.service.metadata[0].name
 }
+
+output "service_name_headless" {
+  description = "application name, using as deoloyment,serivce names, also in lables, als as configmap and secret prefix"
+  value       = kubernetes_service.service-headless.metadata[0].name
+}
+
 
 output "container_port" {
   description = "app port"
   value       = var.container_port
+}
+
+output "replicas" {
+  description = "replicas number"
+  value       = var.replicas
 }

@@ -29,7 +29,7 @@ variable "strategy" {
 
 variable "image_pull_policy" {
   type    = string
-  default = "IfNotPresent" #"Always"
+  default = "Always" #"IfNotPresent"#
 }
 
 variable "container_image" {
@@ -46,8 +46,8 @@ variable "container_resources" {
   default = {
     requests_cpu    = "0.05"
     limits_cpu      = "0.05"
-    requests_memory = "150M"
-    limits_memory   = "150M"
+    requests_memory = "200M"
+    limits_memory   = "200M"
   }
 }
 
@@ -100,4 +100,10 @@ variable "env" {
   description = "main pod enviroment variables, values provided from outside the module"
   type        = map(any)
   default     = {}
+}
+
+variable "cachePath" {
+  description = "path to cache folder"
+  type        = string
+  default     = "/opt/exporter_jmx_cache"
 }

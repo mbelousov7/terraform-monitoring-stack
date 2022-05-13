@@ -33,15 +33,21 @@ resource "kubernetes_stateful_set" "prometheus" {
         service_account_name            = var.service_account_name
         automount_service_account_token = var.automount_service_account_token
 
+
         affinity {
           pod_anti_affinity {
             required_during_scheduling_ignored_during_execution {
               topology_key = "kubernetes.io/hostname"
               label_selector {
+                //  match_expressions {
+                //    key      = "name"
+                //    operator = "In"
+                //    values   = [var.name]
+                //  }
                 match_expressions {
-                  key      = "name"
+                  key      = "module"
                   operator = "In"
-                  values   = [var.name]
+                  values   = ["prometheus"]
                 }
               }
             }
@@ -56,22 +62,28 @@ resource "kubernetes_stateful_set" "prometheus" {
           command = ["/bin/sh"]
           args = [
             "-c",
-            "exec /bin/prometheus --config.file=${var.configPath}/prometheus-$${HOSTNAME##*-}.yml --storage.tsdb.max-block-duration=${var.blockDuration} --storage.tsdb.min-block-duration=${var.blockDuration} --web.listen-address=:${var.container_port} --storage.tsdb.path=${var.dataPath} --storage.tsdb.retention.time=${var.retentionTime} --storage.tsdb.retention.size=${var.retentionSize} --web.enable-lifecycle --web.enable-admin-api",
+            "exec /bin/prometheus --config.file=${var.configPath}/prometheus-$${HOSTNAME##*-}.yml --storage.tsdb.max-block-duration=${var.blockDuration} --storage.tsdb.min-block-duration=${var.blockDuration} --web.listen-address=:${var.container_port} --storage.tsdb.path=${var.dataPath} --storage.tsdb.retention.time=${var.retentionTime} --storage.tsdb.retention.size=${var.retentionSize} --web.enable-lifecycle --web.enable-admin-api  --log.level=${var.container_args.log_level}",
           ]
 
           port {
             container_port = var.container_port
-            name           = "prometheus"
+            name           = "http"
+          }
+
+          security_context {
+            read_only_root_filesystem = true
           }
 
           resources {
-            limits {
-              cpu    = var.container_resources.limits_cpu
-              memory = var.container_resources.limits_memory
+            limits = {
+              cpu               = var.container_resources.limits_cpu
+              memory            = var.container_resources.limits_memory
+              ephemeral-storage = var.container_resources.limits_ephemeral_storage
             }
-            requests {
-              cpu    = var.container_resources.requests_cpu
-              memory = var.container_resources.requests_memory
+            requests = {
+              cpu               = var.container_resources.requests_cpu
+              memory            = var.container_resources.requests_memory
+              ephemeral-storage = var.container_resources.requests_ephemeral_storage
             }
           }
 
@@ -108,6 +120,12 @@ resource "kubernetes_stateful_set" "prometheus" {
           }
 
           volume_mount {
+            mount_path = "/var/run/secrets/kubernetes.io/serviceaccount"
+            name       = "serviceaccount"
+            read_only  = true
+          }
+
+          volume_mount {
             mount_path = var.configPath
             name       = "prometheus-config"
             read_only  = true
@@ -118,7 +136,6 @@ resource "kubernetes_stateful_set" "prometheus" {
             name       = "prometheus-rules"
             read_only  = true
           }
-
 
           dynamic "volume_mount" {
             for_each = toset(var.targets_list)
@@ -150,8 +167,9 @@ resource "kubernetes_stateful_set" "prometheus" {
         dynamic "container" {
           for_each = var.thanos_sidecar_config
           content {
-            image = container.value.container_image
-            name  = container.value.name
+            image             = container.value.container_image
+            name              = container.value.name
+            image_pull_policy = var.thanos_sidecar_image_pull_policy
             args = concat([
               "sidecar",
               "--tsdb.path=${var.dataPath}",
@@ -164,6 +182,9 @@ resource "kubernetes_stateful_set" "prometheus" {
               container.value.container_args
             )
 
+            security_context {
+              read_only_root_filesystem = true
+            }
 
             port {
               container_port = container.value.container_port_grpc
@@ -175,13 +196,15 @@ resource "kubernetes_stateful_set" "prometheus" {
             }
 
             resources {
-              limits {
-                cpu    = container.value.container_resources.limits_cpu
-                memory = container.value.container_resources.limits_memory
+              limits = {
+                cpu               = container.value.container_resources.limits_cpu
+                memory            = container.value.container_resources.limits_memory
+                ephemeral-storage = container.value.container_resources.limits_ephemeral_storage
               }
-              requests {
-                cpu    = container.value.container_resources.requests_cpu
-                memory = container.value.container_resources.requests_memory
+              requests = {
+                cpu               = container.value.container_resources.requests_cpu
+                memory            = container.value.container_resources.requests_memory
+                ephemeral-storage = container.value.container_resources.limits_ephemeral_storage
               }
             }
 
@@ -239,7 +262,30 @@ resource "kubernetes_stateful_set" "prometheus" {
 
         volume {
           name = "storage-volume"
-          empty_dir {}
+          empty_dir {
+            size_limit = var.container_resources.size_limit
+          }
+        }
+        /*
+        volume {
+          name = "serviceaccount"
+          projected {
+            sources  {
+			  service_account_token {
+			    path = "token"
+			  }
+			}
+            default_mode = "0400"
+          }
+        }
+*/
+
+        volume {
+          name = "serviceaccount"
+          secret {
+            secret_name  = var.service_account_token_name
+            default_mode = "0400"
+          }
         }
 
         dynamic "volume" {
@@ -248,7 +294,7 @@ resource "kubernetes_stateful_set" "prometheus" {
             name = "config-s3"
             secret {
               secret_name  = "${var.name}-config-s3"
-              default_mode = "0644"
+              default_mode = "0400"
             }
           }
         }
@@ -257,7 +303,7 @@ resource "kubernetes_stateful_set" "prometheus" {
           name = "prometheus-config"
           config_map {
             name         = "${var.name}-config"
-            default_mode = "0644"
+            default_mode = "0400"
           }
         }
 
@@ -265,7 +311,7 @@ resource "kubernetes_stateful_set" "prometheus" {
           name = "prometheus-rules"
           config_map {
             name         = "${var.name}-rules"
-            default_mode = "0644"
+            default_mode = "0400"
           }
         }
 
@@ -275,7 +321,7 @@ resource "kubernetes_stateful_set" "prometheus" {
             name = "${volume.key}-targets"
             config_map {
               name         = "${var.name}-${volume.key}-targets"
-              default_mode = "0644"
+              default_mode = "0400"
             }
           }
         }
@@ -286,7 +332,7 @@ resource "kubernetes_stateful_set" "prometheus" {
             name = volume.value.map_name
             config_map {
               name         = "${var.name}-${volume.value.map_name}"
-              default_mode = "0644"
+              default_mode = "0400"
             }
           }
         }
@@ -297,14 +343,11 @@ resource "kubernetes_stateful_set" "prometheus" {
             name = volume.value.map_name
             secret {
               secret_name  = "${var.name}-${volume.value.map_name}"
-              default_mode = "0644"
+              default_mode = "0400"
             }
           }
         }
-
-      } //spec
-
-
+      }
     }
   }
 }

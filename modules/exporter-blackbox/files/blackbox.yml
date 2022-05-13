@@ -3,10 +3,22 @@ modules:
     prober: http
     timeout: 5s
     http:
+      valid_status_codes: [200, 400, 401, 402, 301, 302, 307, 308]
       fail_if_ssl: false
       fail_if_not_ssl: false
+      follow_redirects: false
       tls_config:
         insecure_skip_verify: false
+  http_2xx_ssl_skip:
+    prober: http
+    timeout: 5s
+    http:
+      valid_status_codes: [200, 400, 401, 402, 301, 302, 307, 308]
+      fail_if_ssl: false
+      fail_if_not_ssl: false
+      follow_redirects: false
+      tls_config:
+        insecure_skip_verify: true
   http_2xx:
     prober: http
   http_post_2xx:
@@ -39,3 +51,19 @@ modules:
       - expect: "^:[^ ]+ 001"
   icmp:
     prober: icmp
+  http_basic_auth:
+    prober: http
+    timeout: 5s
+    http:
+      method: POST
+      headers:
+        Host: "login.example.com"
+      basic_auth:
+        username: "username"
+        password: "mysecret"
+      valid_status_codes: [200, 400, 401, 402, 301, 302, 307, 308]
+      fail_if_ssl: false
+      fail_if_not_ssl: false
+      follow_redirects: true
+      tls_config:
+        insecure_skip_verify: true

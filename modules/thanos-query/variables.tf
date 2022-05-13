@@ -35,7 +35,7 @@ variable "container_image" {
 
 variable "image_pull_policy" {
   type    = string
-  default = "IfNotPresent" #"Always"
+  default = "Always" #"IfNotPresent"#
 }
 
 
@@ -50,6 +50,20 @@ variable "container_port_grpc" {
   type        = number
   default     = 10901
 }
+
+variable "service_sidecars" {
+  default = {
+    name = "sidecars"
+    selector = {
+      module = "prometheus"
+    }
+    session_affinity = "None"
+    type             = "ClusterIP"
+    cluster_ip       = "None"
+  }
+}
+
+
 
 variable "container_resources" {
   default = {
@@ -153,4 +167,19 @@ variable "nginx_ingress_port" {
   description = "nginx_ingress_port"
   type        = number
   default     = 8080
+}
+
+variable "service_account_name" {
+  type    = string
+  default = "default"
+}
+
+variable "automount_service_account_token" {
+  type    = bool
+  default = false
+}
+
+variable "service_account_token_name" {
+  default = "default"
+  type    = string
 }

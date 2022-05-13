@@ -35,7 +35,7 @@ variable "container_image" {
 
 variable "image_pull_policy" {
   type    = string
-  default = "IfNotPresent" #"Always"
+  default = "Always" #"IfNotPresent"#
 }
 
 variable "container_port" {
@@ -98,4 +98,21 @@ variable "nginx_ingress_port" {
   description = "nginx ingress port for application(not a application port)"
   type        = number
   default     = 8080
+}
+
+variable "pushgateway_cleaner_container_image" {
+  description = "path to configmap-reloader image"
+  type        = string
+}
+
+variable "cleaner_sidecar_config" {
+  default = {
+    name = "cleaner"
+    container_resources = {
+      requests_cpu    = "10m"
+      limits_cpu      = "10m"
+      requests_memory = "20M"
+      limits_memory   = "25M"
+    }
+  }
 }

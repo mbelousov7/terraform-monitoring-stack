@@ -30,7 +30,7 @@ variable "container_image" {
 
 variable "image_pull_policy" {
   type    = string
-  default = "Always"
+  default = "Always" #"IfNotPresent"#
 }
 
 variable "pod_management_policy" {
@@ -57,6 +57,17 @@ variable "container_resources" {
     limits_memory   = "180Mi"
   }
 }
+
+variable "container_args" {
+  description = "additional container args"
+  default     = []
+}
+
+variable "read_only_root_filesystem" {
+  default = true
+}
+
+
 
 variable "readiness_probe" {
   default = {

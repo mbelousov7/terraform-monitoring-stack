@@ -1,5 +1,11 @@
 resource "kubernetes_stateful_set" "alertmanager" {
 
+  timeouts {
+    create = "15m"
+    delete = "5m"
+    update = "15m"
+  }
+
   metadata {
     name      = var.name
     namespace = var.namespace
@@ -9,7 +15,7 @@ resource "kubernetes_stateful_set" "alertmanager" {
   spec {
     pod_management_policy = var.pod_management_policy
     replicas              = var.replicas
-    service_name          = var.name
+    service_name          = "${var.name}-headless"
 
     selector {
       match_labels = local.labels
@@ -41,26 +47,55 @@ resource "kubernetes_stateful_set" "alertmanager" {
           }
         }
 
+        automount_service_account_token = false
+
         container {
           name              = var.name
           image             = var.container_image
           image_pull_policy = var.image_pull_policy
 
-          args = concat([
+          env {
+            name = "POD_IP"
+            value_from {
+              field_ref {
+                api_version = "v1"
+                field_path  = "status.podIP"
+              }
+            }
+          }
+
+          env {
+            name = "POD_NAME"
+            value_from {
+              field_ref {
+                api_version = "v1"
+                field_path  = "metadata.name"
+              }
+            }
+          }
+          security_context {
+            read_only_root_filesystem = true
+          }
+          args = compact(concat([
             "--config.file=${var.configPath}/alertmanager.yml",
             "--storage.path=${var.dataPath}",
             "--cluster.listen-address=0.0.0.0:${var.cluster_port}",
+            "--cluster.advertise-address=$(POD_IP):${var.cluster_port}",
             "--web.listen-address=0.0.0.0:${var.container_port}",
             "--web.route-prefix=/",
-            "--cluster.peer-timeout=45s",
-            #"--cluster.peer=${var.name}-0.${var.name}-cluster.${var.namespace}.${var.dns_path_for_config}:${var.cluster_port}",
-            #"--cluster.peer=${var.name}-1.${var.name}-cluster.${var.namespace}.${var.dns_path_for_config}:${var.cluster_port}",
-            #"--cluster.peer=${var.name}-2.${var.name}-cluster.${var.namespace}.${var.dns_path_for_config}:${var.cluster_port}",
+            "--cluster.peer-timeout=2m",
+            "--cluster.gossip-interval=1000ms",
+            "--cluster.pushpull-interval=1m0s",
+            "--cluster.settle-timeout=1m",
+            "--cluster.probe-timeout=5s",
+            "--cluster.probe-interval=15s",
             "--log.level=info",
             "--data.retention=${var.retentionTime}"
             ],
-            local.arg_list
-          )
+            [for i in range(var.replicas) : format("--cluster.peer=${var.name}-%s.${var.name}-headless.${var.namespace}.svc.cluster.local:${var.cluster_port}", i)],
+            var.cluster_peer_add_list,
+            var.container_extra_args
+          ))
           port {
             container_port = var.container_port
             name           = "http"
@@ -72,11 +107,11 @@ resource "kubernetes_stateful_set" "alertmanager" {
           }
 
           resources {
-            limits {
+            limits = {
               cpu    = var.container_resources.limits_cpu
               memory = var.container_resources.limits_memory
             }
-            requests {
+            requests = {
               cpu    = var.container_resources.requests_cpu
               memory = var.container_resources.requests_memory
             }
@@ -148,13 +183,15 @@ resource "kubernetes_stateful_set" "alertmanager" {
             "--webhook-retries=3",
             "--webhook-url=http://localhost:${var.container_port}/-/reload",
           ]
-
+          security_context {
+            read_only_root_filesystem = true
+          }
           resources {
-            limits {
+            limits = {
               cpu    = var.reloader_sidecar_config.container_resources.limits_cpu
               memory = var.reloader_sidecar_config.container_resources.limits_memory
             }
-            requests {
+            requests = {
               cpu    = var.reloader_sidecar_config.container_resources.requests_cpu
               memory = var.reloader_sidecar_config.container_resources.requests_memory
             }
@@ -194,14 +231,16 @@ resource "kubernetes_stateful_set" "alertmanager" {
 
         volume {
           name = "storage-volume"
-          empty_dir {}
+          empty_dir {
+            size_limit = var.container_resources.size_limit
+          }
         }
 
         volume {
           name = "alertmanager-config"
           secret {
             secret_name  = "${var.name}-config"
-            default_mode = "0644"
+            default_mode = "0400"
           }
         }
 
@@ -211,7 +250,7 @@ resource "kubernetes_stateful_set" "alertmanager" {
             name = volume.value.map_name
             config_map {
               name         = "${var.name}-${volume.value.map_name}"
-              default_mode = "0644"
+              default_mode = "0400"
             }
           }
         }
@@ -221,7 +260,7 @@ resource "kubernetes_stateful_set" "alertmanager" {
             name = volume.value.map_name
             secret {
               secret_name  = "${var.name}-${volume.value.map_name}"
-              default_mode = "0644"
+              default_mode = "0400"
             }
           }
         }

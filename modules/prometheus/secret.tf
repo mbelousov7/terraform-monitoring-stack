@@ -33,3 +33,4 @@ resource "kubernetes_secret" "s3-config" {
   type = "Opaque"
 }
 */
+

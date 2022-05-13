@@ -9,7 +9,7 @@ resource "kubernetes_service" "service" {
     session_affinity = var.session_affinity
     type             = var.service_type
     port {
-      name        = "prometheus"
+      name        = "http"
       port        = var.container_port
       protocol    = "TCP"
       target_port = var.container_port
@@ -31,13 +31,13 @@ resource "kubernetes_service" "service-sidecar" {
     session_affinity = var.session_affinity
     type             = var.service_type
     port {
-      name        = "grpc"
-      port        = 10091
+      name        = "sidecar-grpc"
+      port        = var.container_port_grpc
       protocol    = "TCP"
-      target_port = 10091
+      target_port = var.container_port_grpc
     }
     port {
-      name        = "http"
+      name        = "sidecar-http"
       port        = 10092
       protocol    = "TCP"
       target_port = 10092

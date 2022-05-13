@@ -11,7 +11,7 @@ resource "kubernetes_stateful_set" "thanos_compact" {
   spec {
     //!!!!!replicas count must be 1 for thanos-compact
     pod_management_policy = "OrderedReady"
-    replicas              = 1
+    replicas              = var.replicas
     service_name          = var.name
 
     update_strategy {
@@ -45,6 +45,8 @@ resource "kubernetes_stateful_set" "thanos_compact" {
           }
         }
 
+        automount_service_account_token = false
+
         container {
           image             = var.container_image
           image_pull_policy = var.image_pull_policy
@@ -63,19 +65,26 @@ resource "kubernetes_stateful_set" "thanos_compact" {
             ],
             var.container_args
           )
+
+          security_context {
+            read_only_root_filesystem = true
+          }
+
           port {
             container_port = var.container_port
             name           = "http"
           }
 
           resources {
-            limits {
-              cpu    = var.container_resources.limits_cpu
-              memory = var.container_resources.limits_memory
+            limits = {
+              cpu               = var.container_resources.limits_cpu
+              memory            = var.container_resources.limits_memory
+              ephemeral-storage = var.container_resources.limits_ephemeral_storage
             }
-            requests {
-              cpu    = var.container_resources.requests_cpu
-              memory = var.container_resources.requests_memory
+            requests = {
+              cpu               = var.container_resources.requests_cpu
+              memory            = var.container_resources.requests_memory
+              ephemeral-storage = var.container_resources.requests_ephemeral_storage
             }
           }
           liveness_probe {
@@ -117,14 +126,16 @@ resource "kubernetes_stateful_set" "thanos_compact" {
 
         volume {
           name = "data-dir"
-          empty_dir {}
+          empty_dir {
+            size_limit = var.container_resources.size_limit
+          }
         }
 
         volume {
           name = "config-s3"
           secret {
             secret_name  = "${var.name}-config-s3"
-            default_mode = "0644"
+            default_mode = "0400"
           }
         }
 

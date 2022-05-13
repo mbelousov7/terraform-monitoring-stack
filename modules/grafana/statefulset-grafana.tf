@@ -1,4 +1,9 @@
 resource "kubernetes_stateful_set" "grafana" {
+  timeouts {
+    create = "8m"
+    delete = "1m"
+    update = "8m"
+  }
 
   depends_on = [
     kubernetes_config_map.config-map-list,
@@ -32,6 +37,23 @@ resource "kubernetes_stateful_set" "grafana" {
       }
 
       spec {
+        affinity {
+          pod_anti_affinity {
+            required_during_scheduling_ignored_during_execution {
+              topology_key = "kubernetes.io/hostname"
+              label_selector {
+                match_expressions {
+                  key      = "name"
+                  operator = "In"
+                  values   = [var.name]
+                }
+              }
+            }
+          }
+        }
+
+        automount_service_account_token = false
+
         container {
           image             = var.container_image
           image_pull_policy = var.image_pull_policy
@@ -53,11 +75,11 @@ resource "kubernetes_stateful_set" "grafana" {
           }
 
           resources {
-            limits {
+            limits = {
               cpu    = var.container_resources.limits_cpu
               memory = var.container_resources.limits_memory
             }
-            requests {
+            requests = {
               cpu    = var.container_resources.requests_cpu
               memory = var.container_resources.requests_memory
             }
@@ -65,7 +87,11 @@ resource "kubernetes_stateful_set" "grafana" {
 
           port {
             container_port = var.container_port
-            name           = "http"
+            name           = "https"
+          }
+
+          security_context {
+            read_only_root_filesystem = true
           }
 
           liveness_probe {
@@ -134,6 +160,11 @@ resource "kubernetes_stateful_set" "grafana" {
             name       = "grafana-logs"
           }
 
+          volume_mount {
+            mount_path = "/var/lib/grafana"
+            name       = "grafana-tmp"
+          }
+
         }
 
         container {
@@ -143,13 +174,15 @@ resource "kubernetes_stateful_set" "grafana" {
 
           args = [
           ]
-
+          security_context {
+            read_only_root_filesystem = true
+          }
           resources {
-            limits {
+            limits = {
               cpu    = var.fluentbit_config.container_resources.limits_cpu
               memory = var.fluentbit_config.container_resources.limits_memory
             }
-            requests {
+            requests = {
               cpu    = var.fluentbit_config.container_resources.requests_cpu
               memory = var.fluentbit_config.container_resources.requests_memory
             }
@@ -169,14 +202,91 @@ resource "kubernetes_stateful_set" "grafana" {
         }
 
 
+        dynamic "container" {
+          for_each = var.thanos_query_frontend
+          content {
+            image             = container.value.container_image
+            image_pull_policy = container.value.image_pull_policy
+            name              = container.value.name
+            args = concat([
+              "query-frontend",
+              "--http-address=0.0.0.0:${container.value.container_port}",
+              "--query-frontend.downstream-url=http://${container.value.name_thanos_query}:${container.value.container_port}",
+              "--query-frontend.downstream-tripper-config-file=${container.value.config_path}/config-downstream-tripper.yml",
+              "--query-range.response-cache-config-file=${container.value.config_path}/config-cache-query-range.yml",
+              "--labels.response-cache-config-file=${container.value.config_path}/config-cache-labels.yml",
+              ],
+              container.value.container_args
+            )
+
+            port {
+              container_port = container.value.container_port
+              name           = "http"
+            }
+            security_context {
+              read_only_root_filesystem = true
+            }
+            resources {
+              limits = {
+                cpu    = container.value.container_resources.limits_cpu
+                memory = container.value.container_resources.limits_memory
+              }
+              requests = {
+                cpu    = container.value.container_resources.requests_cpu
+                memory = container.value.container_resources.requests_memory
+              }
+            }
+
+            liveness_probe {
+              initial_delay_seconds = container.value.liveness_probe.initial_delay_seconds
+              timeout_seconds       = container.value.liveness_probe.timeout_seconds
+              period_seconds        = container.value.liveness_probe.period_seconds
+              failure_threshold     = container.value.liveness_probe.failure_threshold
+              http_get {
+                path   = "/-/healthy"
+                scheme = "HTTP"
+                port   = container.value.container_port
+              }
+            }
+
+            readiness_probe {
+              initial_delay_seconds = container.value.readiness_probe.initial_delay_seconds
+              timeout_seconds       = container.value.readiness_probe.timeout_seconds
+              period_seconds        = container.value.readiness_probe.period_seconds
+              failure_threshold     = container.value.readiness_probe.failure_threshold
+              http_get {
+                path   = "/-/ready"
+                scheme = "HTTP"
+                port   = container.value.container_port
+              }
+            }
+
+            volume_mount {
+              mount_path = container.value.config_path
+              name       = "thanos-query-frontend-config"
+              read_only  = true
+            }
+          }
+        }
+
+        dynamic "volume" {
+          for_each = var.thanos_query_frontend
+          content {
+            name = "thanos-query-frontend-config"
+            config_map {
+              name         = "${volume.value.name}-config"
+              default_mode = "0400"
+            }
+          }
+        }
 
         dynamic "volume" {
           for_each = var.dashboards_map
           content {
             name = "${volume.value.folder}-${volume.key}"
             config_map {
-              name         = "${var.name}-dashboard-${volume.value.folder}-${volume.key}"
-              default_mode = "0644"
+              name         = "${var.name}-${volume.value.folder}-${volume.key}"
+              default_mode = "0400"
             }
           }
         }
@@ -186,7 +296,7 @@ resource "kubernetes_stateful_set" "grafana" {
             name = volume.value.map_name
             config_map {
               name         = "${var.name}-${volume.value.map_name}"
-              default_mode = "0644"
+              default_mode = "0400"
             }
           }
         }
@@ -196,7 +306,7 @@ resource "kubernetes_stateful_set" "grafana" {
             name = volume.value.map_name
             secret {
               secret_name  = "${var.name}-${volume.value.map_name}"
-              default_mode = "0644"
+              default_mode = "0400"
             }
           }
         }
@@ -205,7 +315,7 @@ resource "kubernetes_stateful_set" "grafana" {
           name = "cert-volume"
           secret {
             secret_name  = "${var.name}-ssl"
-            default_mode = "0644"
+            default_mode = "0400"
           }
         }
 
@@ -213,12 +323,16 @@ resource "kubernetes_stateful_set" "grafana" {
           name = "grafana-logs"
           empty_dir {}
         }
+        volume {
+          name = "grafana-tmp"
+          empty_dir {}
+        }
 
         volume {
           name = "fluentbit"
           config_map {
             name         = "${var.name}-fluentbit"
-            default_mode = "0644"
+            default_mode = "0400"
           }
         }
 

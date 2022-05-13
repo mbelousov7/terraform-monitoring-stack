@@ -34,6 +34,9 @@ resource "kubernetes_deployment" "thanos_query" {
 
       spec {
 
+        service_account_name            = var.service_account_name
+        automount_service_account_token = var.automount_service_account_token
+
         affinity {
           pod_anti_affinity {
             required_during_scheduling_ignored_during_execution {
@@ -57,11 +60,15 @@ resource "kubernetes_deployment" "thanos_query" {
             "query",
             "--grpc-address=0.0.0.0:${var.container_port_grpc}",
             "--http-address=0.0.0.0:${var.container_port}",
-            "--store.sd-files=${var.config_path}/sd.yml",
+            //"--store.sd-files=${var.config_path}/sd.yml",
             "--query.replica-label=${var.prometheus_replica_label}",
             ],
             var.container_args
           )
+
+          security_context {
+            read_only_root_filesystem = true
+          }
 
           port {
             container_port = var.container_port
@@ -73,11 +80,11 @@ resource "kubernetes_deployment" "thanos_query" {
             name           = "grpc"
           }
           resources {
-            limits {
+            limits = {
               cpu    = var.container_resources.limits_cpu
               memory = var.container_resources.limits_memory
             }
-            requests {
+            requests = {
               cpu    = var.container_resources.requests_cpu
               memory = var.container_resources.requests_memory
             }
@@ -112,19 +119,30 @@ resource "kubernetes_deployment" "thanos_query" {
             read_only  = true
           }
 
+          volume_mount {
+            mount_path = "/var/run/secrets/kubernetes.io/serviceaccount"
+            name       = "serviceaccount"
+            read_only  = true
+          }
+
         }
 
         volume {
           name = "config"
           config_map {
             name         = "${var.name}-config"
-            default_mode = "0644"
+            default_mode = "0400"
           }
         }
 
+        volume {
+          name = "serviceaccount"
+          secret {
+            secret_name  = var.service_account_token_name
+            default_mode = "0400"
+          }
+        }
       }
-
-
 
     }
   }

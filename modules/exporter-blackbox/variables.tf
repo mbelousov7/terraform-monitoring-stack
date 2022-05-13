@@ -29,7 +29,7 @@ variable "strategy" {
 
 variable "image_pull_policy" {
   type    = string
-  default = "IfNotPresent" #"Always"
+  default = "Always" #"IfNotPresent"#
 }
 
 variable "container_image" {
@@ -53,17 +53,17 @@ variable "container_resources" {
 
 variable "readiness_probe" {
   default = {
-    initial_delay_seconds = 30
-    timeout_seconds       = 55
-    period_seconds        = 120
+    initial_delay_seconds = 5
+    timeout_seconds       = 15
+    period_seconds        = 60
     failure_threshold     = 3
   }
 }
 
 variable "liveness_probe" {
   default = {
-    initial_delay_seconds = 15
-    timeout_seconds       = 55
+    initial_delay_seconds = 5
+    timeout_seconds       = 15
     period_seconds        = 60
     failure_threshold     = 3
   }

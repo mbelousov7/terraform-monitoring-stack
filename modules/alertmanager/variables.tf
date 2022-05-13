@@ -49,7 +49,7 @@ variable "container_image" {
 
 variable "image_pull_policy" {
   type    = string
-  default = "IfNotPresent" #"Always"
+  default = "Always" #"IfNotPresent"#
 }
 
 variable "configPath" {
@@ -94,18 +94,28 @@ variable "cluster_port" {
   default = 9094
 }
 
+variable "cluster_peer_add_list" {
+  description = "additional alertmanagers peer list(from other kuber cluster or namespace)"
+  type        = list(any)
+  default     = []
+}
+
+
 variable "container_resources" {
   default = {
-    requests_cpu    = "0.05"
-    limits_cpu      = "0.05"
-    requests_memory = "50M"
-    limits_memory   = "50M"
+    requests_cpu               = "0.05"
+    limits_cpu                 = "0.05"
+    requests_memory            = "50M"
+    limits_memory              = "50M"
+    size_limit                 = "1Gi"
+    requests_ephemeral_storage = "1Gi"
+    limits_ephemeral_storage   = "1Gi"
   }
 }
 
 variable "readiness_probe" {
   default = {
-    initial_delay_seconds = 5
+    initial_delay_seconds = 120
     timeout_seconds       = 30
     period_seconds        = 60
     failure_threshold     = 3
@@ -114,7 +124,7 @@ variable "readiness_probe" {
 
 variable "liveness_probe" {
   default = {
-    initial_delay_seconds = 60
+    initial_delay_seconds = 120
     timeout_seconds       = 30
     period_seconds        = 60
     failure_threshold     = 3
@@ -208,4 +218,10 @@ variable "reloader_sidecar_config" {
       limits_memory   = "30M"
     }
   }
+}
+
+variable "container_extra_args" {
+  description = "extra command line arguments to pass to conatiner"
+  type        = list(string)
+  default     = []
 }

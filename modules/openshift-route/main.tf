@@ -1,11 +1,19 @@
+terraform {
+  experiments = [module_variable_optional_attrs]
+}
+
+locals {
+  route_prefix = var.route_prefix != null && var.route_prefix != "" ? var.route_prefix : var.route_name
+}
+
 resource "null_resource" "oc_route" {
-  count = var.expose == "route" ? 1 : 0
   triggers = {
-    route_namespace = var.namespace
-    route_name      = var.name
+    route_namespace = var.route_namespace
+    route_name      = var.route_name
+    service_name    = var.route_service_name
+    service_port    = var.route_service_port
+    route_prefix    = local.route_prefix
     route_suffix    = var.route_suffix
-    service_name    = var.name
-    service_port    = var.container_port
   }
 
   provisioner "local-exec" {
@@ -27,7 +35,7 @@ resource "null_resource" "oc_route" {
            "port": {
              "targetPort": "${self.triggers.service_port}"
            },
-           "host": "${self.triggers.route_name}-${self.triggers.route_suffix}",
+           "host": "${self.triggers.route_prefix}-${self.triggers.route_suffix}",
            "tls": {
              "termination": "passthrough"
            },

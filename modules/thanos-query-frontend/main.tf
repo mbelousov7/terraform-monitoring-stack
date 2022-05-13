@@ -1,7 +1,7 @@
 locals {
   labels = merge(
     { name = var.name },
-    { module = "thanos-query" },
+    { module = "thanos-query-frontend" },
     var.labels
   )
 

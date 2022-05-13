@@ -10,7 +10,6 @@ variable "name" {
   default     = "thanos-query-frontend"
 }
 
-
 variable "name_thanos_query" {
   description = "thanos query name, using for pod_affinity"
   type        = string
@@ -42,7 +41,7 @@ variable "container_image" {
 
 variable "image_pull_policy" {
   type    = string
-  default = "IfNotPresent" #"Always"
+  default = "Always" #"IfNotPresent"#
 }
 
 
@@ -72,7 +71,7 @@ variable "readiness_probe" {
 
 variable "liveness_probe" {
   default = {
-    initial_delay_seconds = 15
+    initial_delay_seconds = 10
     timeout_seconds       = 5
     period_seconds        = 60
     failure_threshold     = 3
@@ -121,9 +120,6 @@ variable "config_path" {
   default     = "/thanos"
 }
 
-
-#max_size_items: 2048
-
 variable "expose" {
   description = "expose resource type(ingress for kubernetes or route for openshift)"
   type        = string
@@ -146,4 +142,45 @@ variable "nginx_ingress_port" {
   description = "nginx_ingress_port"
   type        = number
   default     = 8080
+}
+
+variable "cache_type" {
+  description = "cache type  inmemory or memcached"
+  type        = string
+  default     = "inmemory"
+}
+
+variable "cache_inmemory_config" {
+  default = {
+    validity = "6h"
+  }
+}
+
+
+variable "cache_memcached_query_range_config" {
+  default = {
+    addresses                    = "thanos-memcached-0.thanos-memcached:11211, thanos-memcached-1.thanos-memcached:11211"
+    timeout                      = "10s"
+    max_idle_connections         = "100"
+    max_async_concurrency        = "20"
+    max_async_buffer_size        = "100000"
+    max_item_size                = "1MB"
+    max_get_multi_concurrency    = "100"
+    max_get_multi_batch_size     = "1000"
+    dns_provider_update_interval = "10s"
+  }
+}
+
+variable "cache_memcached_labels_config" {
+  default = {
+    addresses                    = "thanos-memcached-0.thanos-memcached:11211, thanos-memcached-1.thanos-memcached:11211"
+    timeout                      = "10s"
+    max_idle_connections         = "100"
+    max_async_concurrency        = "20"
+    max_async_buffer_size        = "100000"
+    max_item_size                = "16MB"
+    max_get_multi_concurrency    = "100"
+    max_get_multi_batch_size     = "1000"
+    dns_provider_update_interval = "10s"
+  }
 }

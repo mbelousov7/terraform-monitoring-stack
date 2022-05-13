@@ -50,15 +50,7 @@ variable "role_binding" {
   default     = false
 }
 
-variable "service_account_name" {
-  type    = string
-  default = "default"
-}
 
-variable "automount_service_account_token" {
-  type    = bool
-  default = true
-}
 
 variable "container_image" {
   description = "path to prometheus image"
@@ -67,7 +59,7 @@ variable "container_image" {
 
 variable "image_pull_policy" {
   type    = string
-  default = "IfNotPresent" #"Always"
+  default = "Always" #"IfNotPresent"#
 }
 
 variable "configPath" {
@@ -103,17 +95,33 @@ variable "blockDuration" {
   default = "2h"
 }
 
+variable "container_args" {
+  description = "additional container args"
+  default = {
+    log_level = "warn"
+  }
+}
+
 variable "container_port" {
   type    = number
   default = 9090
 }
 
+variable "container_port_grpc" {
+  description = "query grpc port, must not be changed"
+  type        = number
+  default     = 10901
+}
+
 variable "container_resources" {
   default = {
-    requests_cpu    = "200m"
-    limits_cpu      = "300m"
-    requests_memory = "400Mi"
-    limits_memory   = "500Mi"
+    requests_cpu               = "200m"
+    limits_cpu                 = "300m"
+    requests_memory            = "400Mi"
+    limits_memory              = "500Mi"
+    size_limit                 = "5Gi"
+    requests_ephemeral_storage = "5Gi"
+    limits_ephemeral_storage   = "5Gi"
   }
 }
 
@@ -237,6 +245,11 @@ variable "nginx_ingress_port" {
   default     = 8080
 }
 
+variable "thanos_sidecar_image_pull_policy" {
+  type    = string
+  default = "Always" #"IfNotPresent"#
+}
+
 variable "thanos_sidecar_config" {
   default = []
   /* EXAMPLE
@@ -255,4 +268,19 @@ variable "thanos_sidecar_config" {
         "--objstore.config-file=/thanos/secrets/config-s3.yml",
       ]
   */
+}
+
+variable "service_account_name" {
+  type    = string
+  default = "default"
+}
+
+variable "automount_service_account_token" {
+  type    = bool
+  default = false
+}
+
+variable "service_account_token_name" {
+  default = "default"
+  type    = string
 }
