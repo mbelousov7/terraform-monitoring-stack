@@ -1,7 +1,7 @@
 locals {
   labels = merge(
     { name = var.name },
-    { module = "thanos-store" },
+    { module = "thanos-tools-bucket-web" },
     var.labels
   )
 

@@ -5,4 +5,10 @@ locals {
     var.labels
   )
 
+  annotations = {
+    config_maps_sha1 = sha1(jsonencode(merge(
+      kubernetes_secret.env.data
+    )))
+  }
+
 }

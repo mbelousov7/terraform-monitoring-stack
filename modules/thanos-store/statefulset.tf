@@ -1,11 +1,14 @@
-resource "kubernetes_deployment" "thanos_query" {
+resource "kubernetes_stateful_set" "thanos_store" {
   timeouts {
-    create = "4m"
-    delete = "4m"
-    update = "7m"
+    create = "10m"
+    delete = "2m"
+    update = "15m"
   }
+
+
   depends_on = [
-    kubernetes_service.service,
+    kubernetes_secret.config-s3,
+    kubernetes_config_map.config,
   ]
   metadata {
     name      = var.name
@@ -14,13 +17,14 @@ resource "kubernetes_deployment" "thanos_query" {
   }
 
   spec {
-    replicas                  = var.replicas
-    progress_deadline_seconds = 600
 
-    strategy {
-      type = var.strategy
+    pod_management_policy = "OrderedReady"
+    replicas              = var.replicas
+    service_name          = "${var.name}-headless"
+
+    update_strategy {
+      type = "RollingUpdate"
     }
-
 
     selector {
       match_labels = local.labels
@@ -33,7 +37,6 @@ resource "kubernetes_deployment" "thanos_query" {
       }
 
       spec {
-
         service_account_name            = var.service_account_name
         automount_service_account_token = var.automount_service_account_token
 
@@ -43,9 +46,9 @@ resource "kubernetes_deployment" "thanos_query" {
               topology_key = "kubernetes.io/hostname"
               label_selector {
                 match_expressions {
-                  key      = "name"
+                  key      = "module"
                   operator = "In"
-                  values   = [var.name]
+                  values   = ["thanos-store"]
                 }
               }
             }
@@ -57,11 +60,15 @@ resource "kubernetes_deployment" "thanos_query" {
           image_pull_policy = var.image_pull_policy
           name              = var.name
           args = concat([
-            "query",
+            "store",
+            "--consistency-delay=30m",
             "--grpc-address=0.0.0.0:${var.container_port_grpc}",
             "--http-address=0.0.0.0:${var.container_port}",
-            //"--store.sd-files=${var.config_path}/sd.yml",
-            "--query.replica-label=${var.prometheus_replica_label}",
+            "--objstore.config-file=${var.config_path_s3}/config-s3.yml",
+            "--index-cache.config-file=${var.config_path}/config-cache-index.yml",
+            "--store.caching-bucket.config-file=${var.config_path}/config-cache-bucket.yml",
+            "--chunk-pool-size=${var.cache_bucket_config.chunk_pool_size}",
+            "--data-dir=${var.dataDir}",
             ],
             var.container_args
           )
@@ -81,12 +88,14 @@ resource "kubernetes_deployment" "thanos_query" {
           }
           resources {
             limits = {
-              cpu    = var.container_resources.limits_cpu
-              memory = var.container_resources.limits_memory
+              cpu               = var.container_resources.limits_cpu
+              memory            = var.container_resources.limits_memory
+              ephemeral-storage = var.container_resources.limits_ephemeral_storage
             }
             requests = {
-              cpu    = var.container_resources.requests_cpu
-              memory = var.container_resources.requests_memory
+              cpu               = var.container_resources.requests_cpu
+              memory            = var.container_resources.requests_memory
+              ephemeral-storage = var.container_resources.requests_ephemeral_storage
             }
           }
           liveness_probe {
@@ -114,9 +123,8 @@ resource "kubernetes_deployment" "thanos_query" {
           }
 
           volume_mount {
-            mount_path = var.config_path
-            name       = "config"
-            read_only  = true
+            mount_path = var.dataDir
+            name       = "data-dir"
           }
 
           volume_mount {
@@ -125,6 +133,33 @@ resource "kubernetes_deployment" "thanos_query" {
             read_only  = true
           }
 
+          volume_mount {
+            mount_path = var.config_path
+            name       = "config"
+            read_only  = true
+          }
+
+          volume_mount {
+            mount_path = var.config_path_s3
+            name       = "config-s3"
+            read_only  = true
+          }
+
+        }
+
+        volume {
+          name = "data-dir"
+          empty_dir {
+            size_limit = var.container_resources.size_limit
+          }
+        }
+
+        volume {
+          name = "serviceaccount"
+          secret {
+            secret_name  = var.service_account_token_name
+            default_mode = "0400"
+          }
         }
 
         volume {
@@ -136,12 +171,13 @@ resource "kubernetes_deployment" "thanos_query" {
         }
 
         volume {
-          name = "serviceaccount"
+          name = "config-s3"
           secret {
-            secret_name  = var.service_account_token_name
+            secret_name  = "${var.name}-config-s3"
             default_mode = "0400"
           }
         }
+
       }
 
     }

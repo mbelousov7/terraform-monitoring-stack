@@ -1,4 +1,4 @@
-resource "kubernetes_secret" "secret-env" {
+resource "kubernetes_secret" "env" {
   metadata {
     name      = "${var.name}-env"
     namespace = var.namespace

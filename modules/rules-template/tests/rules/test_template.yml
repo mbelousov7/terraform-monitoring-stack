@@ -1,0 +1,21 @@
+groups:
+- name: ${ system }-test-template
+  rules:
+##################################### NODATA #####################################
+    - alert: HostExporterMetricsStatusNull
+      expr: max by(system, service, unit, instance, noderole) (up{  ${ rule_config.filter }, noderole=~".+" }) == 0
+      for: 60m
+      labels:
+        severity: 0
+        severityText: NODATA
+        summary: Node Exporter не отправляет метрики в prometheus
+        alertid: "{{ $labels.system }}-{{ $labels.instance }}-ExporterMetricsStatusNull"
+%{for key, value in rule_config.labels ~}
+        ${key}: "${value}"
+%{ endfor ~}
+      annotations:
+        summary: Node Exporter не отправляет метрики в prometheus [{{ $labels.system }}] [{{ $labels.instance }}]
+        description: Node exporter not avalible
+%{for key, value in rule_config.annotations ~}
+        ${key}: "${value}"
+%{ endfor ~}

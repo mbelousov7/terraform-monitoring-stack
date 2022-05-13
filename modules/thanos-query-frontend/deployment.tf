@@ -29,6 +29,7 @@ resource "kubernetes_deployment" "thanos_query_frontend" {
         annotations = local.annotations
       }
 
+
       spec {
 
         affinity {
@@ -62,7 +63,8 @@ resource "kubernetes_deployment" "thanos_query_frontend" {
           }
 */
         }
-
+        
+        automount_service_account_token = false
         container {
           image             = var.container_image
           image_pull_policy = var.image_pull_policy
@@ -71,11 +73,16 @@ resource "kubernetes_deployment" "thanos_query_frontend" {
             "query-frontend",
             "--http-address=0.0.0.0:${var.container_port}",
             "--query-frontend.downstream-url=http://${var.name_thanos_query}:${var.container_port}",
-            "--query-range.response-cache-config-file=${var.config_path}/cache.yml",
-            "--labels.response-cache-config-file=${var.config_path}/cache.yml",
+            "--query-frontend.downstream-tripper-config-file=${var.config_path}/config-downstream-tripper.yml",
+            "--query-range.response-cache-config-file=${var.config_path}/config-cache-query-range.yml",
+            "--labels.response-cache-config-file=${var.config_path}/config-cache-labels.yml",
             ],
             var.container_args
           )
+
+          security_context {
+            read_only_root_filesystem = true
+          }
 
           port {
             container_port = var.container_port
@@ -83,11 +90,11 @@ resource "kubernetes_deployment" "thanos_query_frontend" {
           }
 
           resources {
-            limits {
+            limits = {
               cpu    = var.container_resources.limits_cpu
               memory = var.container_resources.limits_memory
             }
-            requests {
+            requests = {
               cpu    = var.container_resources.requests_cpu
               memory = var.container_resources.requests_memory
             }
@@ -117,6 +124,7 @@ resource "kubernetes_deployment" "thanos_query_frontend" {
             }
           }
 
+
           volume_mount {
             mount_path = var.config_path
             name       = "config"
@@ -125,11 +133,12 @@ resource "kubernetes_deployment" "thanos_query_frontend" {
 
         }
 
+
         volume {
           name = "config"
           config_map {
             name         = "${var.name}-config"
-            default_mode = "0644"
+            default_mode = "0400"
           }
         }
 

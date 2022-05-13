@@ -16,3 +16,24 @@ resource "kubernetes_service" "service" {
     }
   }
 }
+
+resource "kubernetes_service" "service_sidecars" {
+  count = var.service_sidecars.name == "sidecars" ? 1 : 0
+  metadata {
+    name      = "${var.name}-sidecars"
+    namespace = var.namespace
+    labels    = local.labels
+  }
+  spec {
+    selector         = var.service_sidecars.selector
+    session_affinity = var.service_sidecars.session_affinity
+    type             = var.service_sidecars.type
+    cluster_ip       = var.service_sidecars.cluster_ip
+    port {
+      name        = "grpc"
+      port        = var.container_port_grpc
+      protocol    = "TCP"
+      target_port = var.container_port_grpc
+    }
+  }
+}

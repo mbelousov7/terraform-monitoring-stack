@@ -49,6 +49,8 @@ resource "kubernetes_deployment" "thanos_tools_bucket_web" {
           }
         }
 
+        automount_service_account_token  = false
+
         container {
           image             = var.container_image
           image_pull_policy = var.image_pull_policy
@@ -63,17 +65,21 @@ resource "kubernetes_deployment" "thanos_tools_bucket_web" {
             var.container_args
           )
 
+          security_context {
+            read_only_root_filesystem = true
+          }
+
           port {
             container_port = var.container_port
             name           = "http"
           }
 
           resources {
-            limits {
+            limits = {
               cpu    = var.container_resources.limits_cpu
               memory = var.container_resources.limits_memory
             }
-            requests {
+            requests = {
               cpu    = var.container_resources.requests_cpu
               memory = var.container_resources.requests_memory
             }
@@ -114,7 +120,7 @@ resource "kubernetes_deployment" "thanos_tools_bucket_web" {
           name = "config-s3"
           secret {
             secret_name  = "${var.name}-config-s3"
-            default_mode = "0644"
+            default_mode = "0400"
           }
         }
 

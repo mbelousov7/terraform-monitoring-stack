@@ -24,7 +24,7 @@ variable "container_image" {
 
 variable "image_pull_policy" {
   type    = string
-  default = "IfNotPresent" #"Always"
+  default = "Always" #"IfNotPresent"#
 }
 
 variable "container_port" {
@@ -33,12 +33,21 @@ variable "container_port" {
   default     = 9090
 }
 
+variable "replicas" {
+  description = "replicas count"
+  type        = number
+  default     = 1
+}
+
 variable "container_resources" {
   default = {
     requests_cpu    = "0.2"
     limits_cpu      = "0.2"
     requests_memory = "250M"
     limits_memory   = "260M"
+    size_limit      = "5Gi"
+    requests_ephemeral_storage = "5Gi"
+    limits_ephemeral_storage = "5Gi"
   }
 }
 
