@@ -46,7 +46,7 @@ resource "kubernetes_deployment" "nginx-ingress" {
           }
         }
 
-        automount_service_account_token  = false
+        automount_service_account_token = false
 
         container {
           image             = var.container_image
@@ -130,19 +130,19 @@ resource "kubernetes_deployment" "nginx-ingress" {
         volume {
           name = "config-volume"
           config_map {
-            name  = "${var.name}-config"
+            name         = "${var.name}-config"
             default_mode = "0400"
           }
         }
 
         volume {
           name = "log-volume"
-          empty_dir{}
+          empty_dir {}
         }
 
         volume {
           name = "temp-volume"
-          empty_dir{}
+          empty_dir {}
         }
 
         volume {
@@ -178,7 +178,7 @@ resource "kubernetes_deployment" "nginx-ingress" {
           content {
             name = volume.value.config_name
             secret {
-              secret_name         = "${var.name}-${volume.value.config_name}-secret"
+              secret_name  = "${var.name}-${volume.value.config_name}-secret"
               default_mode = "0400"
             }
           }

@@ -45,7 +45,7 @@ resource "kubernetes_deployment" "exporter" {
           }
         }
 
-        automount_service_account_token  = false
+        automount_service_account_token = false
 
         container {
           image             = var.container_image
@@ -121,7 +121,7 @@ resource "kubernetes_deployment" "exporter" {
 
         volume {
           name = "cache-volume"
-          empty_dir{}
+          empty_dir {}
         }
 
         dynamic "volume" {

@@ -130,7 +130,7 @@ resource "kubernetes_stateful_set" "thanos_memcached" {
             default_mode = "0400"
           }
         }
-        
+
       }
 
     }

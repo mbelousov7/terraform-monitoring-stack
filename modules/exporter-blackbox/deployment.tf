@@ -46,7 +46,7 @@ resource "kubernetes_deployment" "exporter-blackbox" {
           }
         }
 
-        automount_service_account_token  = false
+        automount_service_account_token = false
 
         container {
           image             = var.container_image

@@ -49,7 +49,7 @@ resource "kubernetes_deployment" "thanos_tools_bucket_web" {
           }
         }
 
-        automount_service_account_token  = false
+        automount_service_account_token = false
 
         container {
           image             = var.container_image

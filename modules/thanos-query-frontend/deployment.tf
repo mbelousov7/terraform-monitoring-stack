@@ -63,7 +63,7 @@ resource "kubernetes_deployment" "thanos_query_frontend" {
           }
 */
         }
-        
+
         automount_service_account_token = false
         container {
           image             = var.container_image

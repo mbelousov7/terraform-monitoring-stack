@@ -103,13 +103,13 @@ variable "cluster_peer_add_list" {
 
 variable "container_resources" {
   default = {
-    requests_cpu    = "0.05"
-    limits_cpu      = "0.05"
-    requests_memory = "50M"
-    limits_memory   = "50M"
-    size_limit      = "1Gi"
+    requests_cpu               = "0.05"
+    limits_cpu                 = "0.05"
+    requests_memory            = "50M"
+    limits_memory              = "50M"
+    size_limit                 = "1Gi"
     requests_ephemeral_storage = "1Gi"
-    limits_ephemeral_storage = "1Gi"
+    limits_ephemeral_storage   = "1Gi"
   }
 }
 

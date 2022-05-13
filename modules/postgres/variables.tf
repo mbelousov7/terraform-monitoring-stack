@@ -64,7 +64,7 @@ variable "container_args" {
 }
 
 variable "read_only_root_filesystem" {
-  default     = true
+  default = true
 }
 
 

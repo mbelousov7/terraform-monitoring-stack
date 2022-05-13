@@ -41,13 +41,13 @@ variable "replicas" {
 
 variable "container_resources" {
   default = {
-    requests_cpu    = "0.2"
-    limits_cpu      = "0.2"
-    requests_memory = "250M"
-    limits_memory   = "260M"
-    size_limit      = "5Gi"
+    requests_cpu               = "0.2"
+    limits_cpu                 = "0.2"
+    requests_memory            = "250M"
+    limits_memory              = "260M"
+    size_limit                 = "5Gi"
     requests_ephemeral_storage = "5Gi"
-    limits_ephemeral_storage = "5Gi"
+    limits_ephemeral_storage   = "5Gi"
   }
 }
 

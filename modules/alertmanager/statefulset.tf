@@ -47,7 +47,7 @@ resource "kubernetes_stateful_set" "alertmanager" {
           }
         }
 
-        automount_service_account_token  = false
+        automount_service_account_token = false
 
         container {
           name              = var.name

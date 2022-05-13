@@ -45,7 +45,7 @@ resource "kubernetes_stateful_set" "thanos_compact" {
           }
         }
 
-        automount_service_account_token  = false
+        automount_service_account_token = false
 
         container {
           image             = var.container_image
@@ -77,13 +77,13 @@ resource "kubernetes_stateful_set" "thanos_compact" {
 
           resources {
             limits = {
-              cpu    = var.container_resources.limits_cpu
-              memory = var.container_resources.limits_memory
+              cpu               = var.container_resources.limits_cpu
+              memory            = var.container_resources.limits_memory
               ephemeral-storage = var.container_resources.limits_ephemeral_storage
             }
             requests = {
-              cpu    = var.container_resources.requests_cpu
-              memory = var.container_resources.requests_memory
+              cpu               = var.container_resources.requests_cpu
+              memory            = var.container_resources.requests_memory
               ephemeral-storage = var.container_resources.requests_ephemeral_storage
             }
           }

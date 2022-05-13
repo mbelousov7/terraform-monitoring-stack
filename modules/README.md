@@ -1,1 +1,1 @@
-# Модули  для деплоя Prometheus stack в k8s(включая OpenShift)
+# Terraform Modules for deploying Prometheus stack в k8s(including OpenShift)

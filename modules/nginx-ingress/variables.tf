@@ -100,15 +100,15 @@ variable "configMap_volumes" {
 variable "server_map" {
   description = "server config list"
   type = map(object({
-    name          = optional(string)
-    app_port      = optional(number)
-    auth_locations     = optional(map(list(string)))
-    proxy_pass    = optional(map(string))
-    ssl_data      = optional(map(string))
+    name           = optional(string)
+    app_port       = optional(number)
+    auth_locations = optional(map(list(string)))
+    proxy_pass     = optional(map(string))
+    ssl_data       = optional(map(string))
   }))
 
   validation {
-    condition     = length(setintersection(["none", "basic", "kerberos", "mtls"], keys(try(var.server_map.auth_locations, {"none" = null})))) > 0
+    condition     = length(setintersection(["none", "basic", "kerberos", "mtls"], keys(try(var.server_map.auth_locations, { "none" = null })))) > 0
     error_message = "Attribute auth_type should be in [none|basic|kerberos|mtls]."
   }
 }
